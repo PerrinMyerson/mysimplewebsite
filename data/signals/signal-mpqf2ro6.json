@@ -14,7 +14,7 @@
     "createdAt": "2026-05-29T04:23:32.502Z",
     "status": "merged",
     "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26617816595",
-    "prUrl": "",
+    "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/5",
     "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
     "message": ""
   },
@@ -163,7 +163,7 @@
         ]
       }
     },
-    "prUrl": "",
+    "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/5",
     "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
   }
 }
