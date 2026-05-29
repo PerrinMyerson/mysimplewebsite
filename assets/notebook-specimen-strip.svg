@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" role="img" aria-labelledby="title desc">
+  <title id="title">Notebook specimen strip</title>
+  <desc id="desc">Three clipped notebook specimens with ink diagrams, sharp labels, and high contrast surreal colors.</desc>
+  <rect width="760" height="300" fill="#171a20"/>
+  <g stroke="#171a20" stroke-width="5">
+    <path d="M54 42H232V248H54Z" fill="#fffdf5"/>
+    <path d="M290 26H484V260H290Z" fill="#f4fff8"/>
+    <path d="M530 54H708V242H530Z" fill="#fff8fb"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M86 98H202M86 142H180M86 186H210" stroke="#9bb3a8" stroke-width="3"/>
+    <path d="M326 84C366 48 400 122 442 82" stroke="#006cff" stroke-width="10"/>
+    <path d="M324 150L374 118L436 172" stroke="#ff5d2e" stroke-width="10"/>
+    <path d="M564 104H674M564 148H642M564 192H688" stroke="#9bb3a8" stroke-width="3"/>
+    <path d="M596 216C622 184 650 232 684 198" stroke="#00a884" stroke-width="9"/>
+  </g>
+  <g fill="#fff15c" stroke="#171a20" stroke-width="5">
+    <circle cx="190" cy="78" r="22"/>
+    <path d="M384 194L404 230H364Z"/>
+    <path d="M630 78L646 106L678 112L656 136L660 168L630 154L600 168L604 136L582 112L614 106Z"/>
+  </g>
+  <g fill="#ff5d2e">
+    <path d="M78 34H138V56H78Z"/>
+    <path d="M318 18H396V42H318Z"/>
+    <path d="M560 46H626V68H560Z"/>
+  </g>
+</svg>
