@@ -119,6 +119,21 @@ jobs:
             exit 1
           fi
 
+          if [[ "$OPENAI_API_KEY" == OPENAI_API_KEY=* ]]; then
+            echo "::error::OPENAI_API_KEY should be the raw key only, not an OPENAI_API_KEY=... assignment."
+            exit 1
+          fi
+
+          if [[ "$OPENAI_API_KEY" =~ [[:space:]] ]]; then
+            echo "::error::OPENAI_API_KEY contains whitespace. Re-set the secret by pasting only the raw key."
+            exit 1
+          fi
+
+          if [[ ! "$OPENAI_API_KEY" =~ ^[A-Za-z0-9_-]+$ ]]; then
+            echo "::error::OPENAI_API_KEY contains unsupported characters for codex-action. Re-set the secret with only the raw key characters."
+            exit 1
+          fi
+
       - name: Freeze validator
         run: |
           cp scripts/validate-site.mjs /tmp/validate-site.mjs
