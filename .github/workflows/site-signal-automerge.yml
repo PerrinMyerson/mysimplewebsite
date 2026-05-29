@@ -256,6 +256,11 @@ jobs:
           name: prepared-signal
           path: .
 
+      - name: Move to latest main
+        run: |
+          git fetch origin main
+          git checkout -B failed-main origin/main
+
       - name: Mark signal failed
         run: |
           node scripts/mark-signal-status.mjs failed \
@@ -268,10 +273,17 @@ jobs:
 
       - name: Commit failed signal status
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SITE_SIGNAL_GITHUB_TOKEN }}
+          PUBLISH_TOKEN: ${{ secrets.SITE_SIGNAL_GITHUB_TOKEN }}
         run: |
+          if [ -z "$PUBLISH_TOKEN" ]; then
+            echo "::error::Missing SITE_SIGNAL_GITHUB_TOKEN repository secret. Failed signal records need a repo token when main advances during generation."
+            exit 1
+          fi
+
           git config user.name "site-signal-bot"
           git config user.email "site-signal-bot@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${PUBLISH_TOKEN}@github.com/${{ github.repository }}.git"
           git add data
 
           if git diff --cached --quiet; then
@@ -280,6 +292,5 @@ jobs:
           fi
 
           git commit -m "Record failed site signal ${{ needs.prepare-signal.outputs.signal_id }}"
-          git pull --rebase origin main
           git push origin HEAD:main
           gh workflow run pages.yml --ref main || true
