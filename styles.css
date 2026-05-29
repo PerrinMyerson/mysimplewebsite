@@ -1398,15 +1398,12 @@ body.version-swap .article-page {
     transform: translate(-0.2rem, 0.1rem);
     transition:
         opacity 0.16s ease,
-        transform 0.16s ease,
-        visibility 0.16s ease;
-    visibility: hidden;
+        transform 0.16s ease;
 }
 
 .annotation-card.is-active {
     opacity: 1;
     transform: translate(0, 0);
-    visibility: visible;
 }
 
 .annotation-card-index,
