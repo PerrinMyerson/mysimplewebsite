@@ -1,0 +1,19 @@
+{
+  "currentVersion": "v1",
+  "versions": [
+    {
+      "id": "v1",
+      "label": "Version 1",
+      "contributor": "@perrinmyerson + Codex",
+      "createdAt": "2026-05-28",
+      "summary": "Preserved baseline: plain white article pages with hover notes, Bosch image studies, feedback, and version lineage.",
+      "source": "",
+      "locked": true,
+      "treatment": {
+        "tone": "plain",
+        "imageDensity": "normal"
+      }
+    }
+  ],
+  "signals": []
+}

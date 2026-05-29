@@ -1,0 +1,28 @@
+{
+  "name": "mysimplewebsite",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "script.js",
+  "scripts": {
+    "apply-signal": "node scripts/apply-signal.mjs",
+    "build": "esbuild src/script-source.js --bundle --format=esm --platform=browser --target=es2022 --outfile=script.js",
+    "check": "npm run build && node --check script.js",
+    "test": "npm run check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerrinMyerson/mysimplewebsite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PerrinMyerson/mysimplewebsite/issues"
+  },
+  "homepage": "https://github.com/PerrinMyerson/mysimplewebsite#readme",
+  "devDependencies": {
+    "@automerge/automerge": "^3.2.6",
+    "esbuild": "^0.28.0"
+  }
+}

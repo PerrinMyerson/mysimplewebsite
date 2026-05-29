@@ -1,0 +1,98 @@
+name: Site signal automerge
+
+on:
+  repository_dispatch:
+    types: [site_signal]
+  workflow_dispatch:
+    inputs:
+      handle:
+        description: Contributor handle
+        required: true
+        default: "@visitor"
+      section:
+        description: Site section
+        required: true
+        default: "Whole site"
+      text:
+        description: Customization request
+        required: true
+      sourceVersion:
+        description: Source version id
+        required: true
+        default: "v1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply signal
+        env:
+          DISPATCH_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+          WORKFLOW_HANDLE: ${{ inputs.handle }}
+          WORKFLOW_SECTION: ${{ inputs.section }}
+          WORKFLOW_TEXT: ${{ inputs.text }}
+          WORKFLOW_SOURCE_VERSION: ${{ inputs.sourceVersion }}
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            export SIGNAL_PAYLOAD="$DISPATCH_PAYLOAD"
+          else
+            export SIGNAL_PAYLOAD="$(jq -nc \
+              --arg handle "$WORKFLOW_HANDLE" \
+              --arg section "$WORKFLOW_SECTION" \
+              --arg text "$WORKFLOW_TEXT" \
+              --arg sourceVersion "$WORKFLOW_SOURCE_VERSION" \
+              '{handle:$handle, section:$section, text:$text, sourceVersion:$sourceVersion}')"
+          fi
+
+          node scripts/apply-signal.mjs
+
+      - name: Build and check
+        run: npm run check
+
+      - name: Commit version branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="$(cat .signal-branch-name)"
+          TITLE="$(cat .signal-pr-title)"
+
+          git config user.name "site-signal-bot"
+          git config user.email "site-signal-bot@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add data script.js src scripts package.json package-lock.json index.html styles.css .gitignore api .github
+
+          if git diff --cached --quiet; then
+            echo "No lineage changes to commit."
+            exit 0
+          fi
+
+          git commit -m "$TITLE"
+          git push --force-with-lease origin "$BRANCH"
+
+          PR_URL="$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "$TITLE" \
+            --body-file .signal-pr-body.md)"
+
+          gh pr merge "$PR_URL" --squash --auto --delete-branch || \
+            gh pr merge "$PR_URL" --squash --delete-branch
