@@ -1,0 +1,121 @@
+{
+  "https://github.com/perrinmyerson": {
+    "title": "Perrin Myerson on GitHub",
+    "description": "Code, experiments, and public projects.",
+    "domain": "github.com",
+    "image": "https://github.githubassets.com/favicons/favicon.svg",
+    "siteName": "GitHub",
+    "source": "static"
+  },
+  "https://www.truveta.com/": {
+    "title": "Truveta",
+    "description": "Health data platform built with health systems to improve patient care and research.",
+    "domain": "truveta.com",
+    "image": "https://www.truveta.com/favicon.ico",
+    "siteName": "Truveta",
+    "source": "static"
+  },
+  "https://www.darpa.mil/": {
+    "title": "DARPA",
+    "description": "The Defense Advanced Research Projects Agency creates breakthrough technologies for national security.",
+    "domain": "darpa.mil",
+    "image": "https://www.darpa.mil/favicon.ico",
+    "siteName": "DARPA",
+    "source": "static"
+  },
+  "https://www.extellis.com/": {
+    "title": "Extellis",
+    "description": "Embedded systems and machine learning research spin-out.",
+    "domain": "extellis.com",
+    "image": "https://www.extellis.com/favicon.ico",
+    "siteName": "Extellis",
+    "source": "static"
+  },
+  "https://www.ycombinator.com/": {
+    "title": "Y Combinator",
+    "description": "Startup accelerator and founder community.",
+    "domain": "ycombinator.com",
+    "image": "https://www.ycombinator.com/favicon.ico",
+    "siteName": "Y Combinator",
+    "source": "static"
+  },
+  "https://www.govgoose.com/": {
+    "title": "GovGoose",
+    "description": "YC W25 company.",
+    "domain": "govgoose.com",
+    "siteName": "GovGoose",
+    "source": "static"
+  },
+  "https://www.linkedin.com/": {
+    "title": "LinkedIn",
+    "description": "Professional network and career platform.",
+    "domain": "linkedin.com",
+    "image": "https://www.linkedin.com/favicon.ico",
+    "siteName": "LinkedIn",
+    "source": "static"
+  },
+  "https://aws.amazon.com/": {
+    "title": "Amazon Web Services",
+    "description": "Cloud computing services and infrastructure.",
+    "domain": "aws.amazon.com",
+    "image": "https://aws.amazon.com/favicon.ico",
+    "siteName": "AWS",
+    "source": "static"
+  },
+  "https://civicnews.org/": {
+    "title": "Civic News Company",
+    "description": "Civic news products and local information infrastructure.",
+    "domain": "civicnews.org",
+    "image": "https://civicnews.org/favicon.ico",
+    "siteName": "Civic News Company",
+    "source": "static"
+  },
+  "https://www.obama.org/": {
+    "title": "Obama Foundation",
+    "description": "Civic leadership, public service, and community programs.",
+    "domain": "obama.org",
+    "image": "https://www.obama.org/favicon.ico",
+    "siteName": "Obama Foundation",
+    "source": "static"
+  },
+  "https://ece.duke.edu/": {
+    "title": "Duke Electrical and Computer Engineering",
+    "description": "Electrical and computer engineering at Duke University.",
+    "domain": "ece.duke.edu",
+    "image": "https://ece.duke.edu/favicon.ico",
+    "siteName": "Duke ECE",
+    "source": "static"
+  },
+  "https://cs.duke.edu/": {
+    "title": "Duke Computer Science",
+    "description": "Computer science at Duke University.",
+    "domain": "cs.duke.edu",
+    "image": "https://cs.duke.edu/favicon.ico",
+    "siteName": "Duke CS",
+    "source": "static"
+  },
+  "https://duke.edu/": {
+    "title": "Duke University",
+    "description": "Duke University.",
+    "domain": "duke.edu",
+    "image": "https://duke.edu/favicon.ico",
+    "siteName": "Duke",
+    "source": "static"
+  },
+  "https://www.firstinspires.org/": {
+    "title": "FIRST",
+    "description": "Robotics programs and competitions for students.",
+    "domain": "firstinspires.org",
+    "image": "https://www.firstinspires.org/favicon.ico",
+    "siteName": "FIRST",
+    "source": "static"
+  },
+  "https://www.taylorswift.com/": {
+    "title": "Taylor Swift",
+    "description": "Official Taylor Swift site.",
+    "domain": "taylorswift.com",
+    "image": "https://www.taylorswift.com/favicon.ico",
+    "siteName": "Taylor Swift",
+    "source": "static"
+  }
+}

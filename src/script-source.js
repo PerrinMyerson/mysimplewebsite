@@ -28,6 +28,12 @@ const SIGNAL_ENDPOINT =
         ? `${PRODUCTION_SIGNAL_ORIGIN}/api/site-signal`
         : "/api/site-signal";
 const PUBLISHED_LINEAGE_URL = "data/site-lineage.json";
+const LINK_PREVIEWS_URL = "data/link-previews.json";
+const LINK_PREVIEW_ENDPOINT =
+    window.location.hostname === "perrinmyerson.github.io" &&
+    PRODUCTION_SIGNAL_ORIGIN
+        ? `${PRODUCTION_SIGNAL_ORIGIN}/api/link-preview`
+        : "/api/link-preview";
 const AUTOMERGE_KEY = "perrin-site-automerge-v1";
 const JSON_KEY = "perrin-site-lineage-v1";
 const VISITOR_COOKIE = "perrin_site_visitor";
@@ -159,6 +165,9 @@ const ORG_LINK_PATTERN = new RegExp(
 
 let baseVariantSnapshot = null;
 let activePollTimer = null;
+let linkPreviewManifest = null;
+let linkPreviewManifestPromise = null;
+const linkPreviewRequests = new Map();
 
 const seedLineage = {
     currentVersion: BASE_VERSION_ID,
@@ -211,6 +220,182 @@ function escapeHtml(value) {
     });
 }
 
+function linkPreviewKey(value) {
+    try {
+        const url = new URL(value, window.location.href);
+        url.hash = "";
+        url.hostname = url.hostname.toLowerCase();
+        return url.href;
+    } catch {
+        return "";
+    }
+}
+
+function linkPreviewDomain(value) {
+    try {
+        return new URL(value).hostname.replace(/^www\./, "");
+    } catch {
+        return "";
+    }
+}
+
+function linkPreviewFromManifest(value) {
+    if (!linkPreviewManifest) return null;
+
+    const key = linkPreviewKey(value);
+    if (!key) return null;
+
+    if (linkPreviewManifest[key]) {
+        return { url: key, ...linkPreviewManifest[key] };
+    }
+
+    const root = new URL(key);
+    root.pathname = "/";
+    root.search = "";
+
+    return linkPreviewManifest[root.href]
+        ? { url: root.href, ...linkPreviewManifest[root.href] }
+        : null;
+}
+
+async function loadLinkPreviewManifest() {
+    if (linkPreviewManifest) return linkPreviewManifest;
+
+    linkPreviewManifestPromise ||= fetch(LINK_PREVIEWS_URL, { cache: "no-store" })
+        .then((response) => (response.ok ? response.json() : {}))
+        .then((manifest) => {
+            linkPreviewManifest = manifest && typeof manifest === "object" ? manifest : {};
+            return linkPreviewManifest;
+        })
+        .catch(() => {
+            linkPreviewManifest = {};
+            return linkPreviewManifest;
+        });
+
+    return linkPreviewManifestPromise;
+}
+
+function clearElement(element) {
+    while (element.firstChild) element.firstChild.remove();
+}
+
+function appendIfPresent(parent, tag, className, text) {
+    if (!text) return null;
+
+    const element = document.createElement(tag);
+    element.className = className;
+    element.textContent = text;
+    parent.append(element);
+    return element;
+}
+
+function renderLinkPreview(link, preview) {
+    if (!preview) return;
+
+    let card = link.querySelector(".reveal-card");
+    if (!card) {
+        card = document.createElement("span");
+        card.className = "reveal-card";
+        card.setAttribute("role", "note");
+        link.append(card);
+    }
+
+    clearElement(card);
+    card.className = `reveal-card link-preview-card${
+        preview.image || preview.icon ? " has-image" : ""
+    }`;
+    card.dataset.previewSource = preview.source || "static";
+
+    const inner = document.createElement("span");
+    inner.className = "link-preview-inner";
+
+    if (preview.image || preview.icon) {
+        const image = document.createElement("img");
+        image.className = "link-preview-image";
+        image.alt = "";
+        image.loading = "lazy";
+        image.referrerPolicy = "no-referrer";
+        image.src = preview.image || preview.icon;
+        image.addEventListener("error", () => {
+            image.remove();
+            card.classList.remove("has-image");
+        });
+        inner.append(image);
+    }
+
+    const body = document.createElement("span");
+    body.className = "link-preview-body";
+    appendIfPresent(body, "span", "link-preview-title", preview.title);
+    appendIfPresent(body, "span", "link-preview-description", preview.description);
+    appendIfPresent(
+        body,
+        "span",
+        "link-preview-domain",
+        preview.domain || linkPreviewDomain(preview.url || link.href),
+    );
+    inner.append(body);
+    card.append(inner);
+    link.dataset.previewState = "ready";
+}
+
+async function fetchLinkPreview(value) {
+    const key = linkPreviewKey(value);
+    if (!key) return null;
+
+    if (linkPreviewRequests.has(key)) return linkPreviewRequests.get(key);
+
+    const request = fetch(`${LINK_PREVIEW_ENDPOINT}?url=${encodeURIComponent(key)}`)
+        .then((response) => (response.ok ? response.json() : null))
+        .then((preview) => (preview?.ok ? preview : null))
+        .catch(() => null);
+
+    linkPreviewRequests.set(key, request);
+    return request;
+}
+
+async function ensureLinkPreview(link, { allowFetch = true } = {}) {
+    if (!link?.href || link.dataset.previewState === "ready") return;
+    if (link.dataset.previewState === "loading") return;
+
+    const staticPreview = linkPreviewFromManifest(link.href);
+    if (staticPreview) {
+        renderLinkPreview(link, staticPreview);
+        return;
+    }
+
+    link.dataset.previewState = "loading";
+
+    await loadLinkPreviewManifest();
+    const manifestPreview = linkPreviewFromManifest(link.href);
+    if (manifestPreview) {
+        renderLinkPreview(link, manifestPreview);
+        return;
+    }
+
+    if (!allowFetch) {
+        link.dataset.previewState = "fallback";
+        return;
+    }
+
+    const fetchedPreview = await fetchLinkPreview(link.href);
+    if (fetchedPreview) {
+        renderLinkPreview(link, fetchedPreview);
+    } else {
+        link.dataset.previewState = "fallback";
+    }
+}
+
+function hydrateStaticLinkPreviews() {
+    document.querySelectorAll("a.reveal-link[href]").forEach((link) => {
+        ensureLinkPreview(link, { allowFetch: false });
+    });
+}
+
+function scheduleLinkPreviewHydration() {
+    hydrateStaticLinkPreviews();
+    loadLinkPreviewManifest().then(hydrateStaticLinkPreviews);
+}
+
 function orgLinkElement(label) {
     const org = ORG_LINKS.find((item) => item.label === label);
     if (!org) return document.createTextNode(label);
@@ -223,6 +408,7 @@ function orgLinkElement(label) {
     const card = document.createElement("span");
     card.className = "reveal-card text-only";
     card.setAttribute("role", "note");
+    link.dataset.previewUrl = org.href;
 
     const text = document.createElement("span");
     text.textContent = org.note;
@@ -1125,6 +1311,7 @@ function renderLineage() {
     renderContributorHandle(lineage);
     renderVersionDial(lineage, activeVersion);
     renderGenerationConsole(lineage);
+    scheduleLinkPreviewHydration();
 
     if (automergeStatus) {
         automergeStatus.textContent = automergeReady
@@ -1519,19 +1706,28 @@ tabs.forEach((tab) => {
 
 document.addEventListener("mouseover", (event) => {
     const link = event.target.closest?.(".reveal-link");
-    if (link) fitRevealCard(link);
+    if (link) {
+        ensureLinkPreview(link).then(() => fitRevealCard(link));
+        fitRevealCard(link);
+    }
 });
 
 document.addEventListener("focusin", (event) => {
     const link = event.target.closest?.(".reveal-link");
-    if (link) fitRevealCard(link);
+    if (link) {
+        ensureLinkPreview(link).then(() => fitRevealCard(link));
+        fitRevealCard(link);
+    }
 });
 
 document.addEventListener(
     "touchstart",
     (event) => {
         const link = event.target.closest?.(".reveal-link");
-        if (link) fitRevealCard(link);
+        if (link) {
+            ensureLinkPreview(link).then(() => fitRevealCard(link));
+            fitRevealCard(link);
+        }
     },
     {
         passive: true,
