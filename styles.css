@@ -183,10 +183,10 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .version-switcher.has-scrollable-dial::after {
     position: absolute;
-    top: 2.1rem;
-    right: -0.65rem;
+    top: 1.65rem;
+    right: -0.45rem;
     width: 2px;
-    height: 5.6rem;
+    height: 3.8rem;
     border-radius: 999px;
     background: linear-gradient(
         to bottom,
@@ -229,10 +229,10 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .version-dial {
     position: absolute;
-    top: 1.55rem;
+    top: 0.15rem;
     right: 0;
-    width: min(28rem, calc(100vw - 1.5rem));
-    height: min(24rem, calc(100vh - 3rem));
+    width: min(13rem, calc(100vw - 1.25rem));
+    height: min(9.5rem, calc(100vh - 2rem));
     pointer-events: none;
 }
 
@@ -247,28 +247,28 @@ html[data-version-flavor="pending"] .bottom-tabs {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 0.45rem;
-    width: min(16.5rem, calc(100vw - 2rem));
+    gap: 0.32rem;
+    width: min(10.75rem, calc(100vw - 1.5rem));
     min-width: 0;
     max-width: none;
     border: 1px solid #ececea;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     color: #111;
     cursor: pointer;
     font: inherit;
-    font-size: 0.8125rem;
-    line-height: 1.12rem;
+    font-size: 0.6875rem;
+    line-height: 0.94rem;
     opacity: 0;
-    padding: 0.42rem 0.64rem 0.42rem 0.48rem;
+    padding: 0.28rem 0.42rem 0.28rem 0.34rem;
     pointer-events: none;
-    transform: translate(0.55rem, -50%) rotate(var(--dial-closed-rotation, -22deg))
-        scale(0.56);
+    transform: translate(0, -0.2rem) rotate(var(--dial-closed-rotation, -8deg))
+        scale(0.24);
     transform-origin: right center;
     transition:
         opacity 0.22s ease,
-        transform 0.46s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 0.38s cubic-bezier(0.19, 1, 0.22, 1),
         border-color 0.16s ease;
     transition-delay: var(--dial-delay, 0ms);
     white-space: nowrap;
@@ -284,7 +284,7 @@ html[data-version-flavor="pending"] .bottom-tabs {
 }
 
 .version-switcher.is-scrolling .version-dial-item {
-    transition-duration: 0.16s, 0.3s, 0.16s;
+    transition-duration: 0.14s, 0.22s, 0.14s;
 }
 
 .version-switcher.is-open .version-dial-item[data-dial-hidden="true"] {
@@ -301,24 +301,24 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .version-dial-item[aria-current="true"] {
     box-shadow:
-        0 12px 28px rgba(0, 0, 0, 0.08),
+        0 8px 18px rgba(0, 0, 0, 0.08),
         0 0 0 2px rgba(0, 0, 0, 0.05);
 }
 
 .version-dial-index {
     display: grid;
-    min-width: 1.55rem;
-    height: 1.55rem;
+    min-width: 1.12rem;
+    height: 1.12rem;
     border: 1px solid #ececea;
     border-radius: 999px;
     color: rgba(0, 0, 0, 0.62);
-    font-size: 0.72rem;
+    font-size: 0.58rem;
     place-items: center;
 }
 
 .version-dial-handle {
     min-width: 0;
-    max-width: 13rem;
+    max-width: 8.5rem;
     overflow: hidden;
     text-overflow: ellipsis;
 }
