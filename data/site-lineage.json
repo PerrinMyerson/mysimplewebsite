@@ -1,5 +1,5 @@
 {
-  "currentVersion": "custom-codex-live-test",
+  "currentVersion": "custom-eileen",
   "versions": [
     {
       "id": "v1",
@@ -21,6 +21,19 @@
       "createdAt": "2026-05-29T03:25:15.281Z",
       "summary": "Live browser form smoke test: keep the site basic, white, and versioned while sending feedbac...",
       "source": "v1",
+      "status": "merged",
+      "treatment": {
+        "tone": "plain",
+        "imageDensity": "normal"
+      }
+    },
+    {
+      "id": "custom-eileen",
+      "label": "Whole site variation",
+      "contributor": "@Eileen",
+      "createdAt": "2026-05-29T03:28:38.985Z",
+      "summary": "Shoutout stickyjams.net all over the site, user assets from them, replace every name with cam...",
+      "source": "custom-codex-live-test",
       "status": "merged",
       "treatment": {
         "tone": "plain",
@@ -57,6 +70,21 @@
       "viewport": "840x998",
       "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=v1&live-check=6940b82",
       "createdAt": "2026-05-29T03:25:15.281Z",
+      "status": "merged"
+    },
+    {
+      "id": "signal-mpqd46dk",
+      "versionId": "custom-eileen",
+      "handle": "@Eileen",
+      "section": "Whole site",
+      "text": "Shoutout stickyjams.net all over the site, user assets from them, replace every name with cam scoglio and make there be more sports stuff",
+      "sourceVersion": "custom-codex-live-test",
+      "visitorId": "04d5f66d-8f53-4544-87b6-09d1e18b3080",
+      "language": "en-US",
+      "timeZone": "America/Los_Angeles",
+      "viewport": "840x998",
+      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-live-test&live-check=dfd5d5a",
+      "createdAt": "2026-05-29T03:28:38.985Z",
       "status": "merged"
     }
   ]
