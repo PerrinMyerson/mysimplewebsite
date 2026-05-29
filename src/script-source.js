@@ -162,12 +162,66 @@ const ORG_LINK_PATTERN = new RegExp(
     ).join("|")})\\b`,
     "g",
 );
+const ANNOTATION_RULES = [
+    {
+        phrase: "First intern",
+        title: "First intern",
+        text: "Early Truveta context, separated from the Truveta link so the company card can stay purely navigational.",
+    },
+    {
+        phrase: "LLM embedding based recommendation system",
+        title: "LinkedIn recommender",
+        text: "The note belongs to the work itself; the LinkedIn word remains just a link preview.",
+    },
+    {
+        phrase: "roughly 40% of suicide hotlines",
+        title: "Hotline infrastructure",
+        text: "Foundational infrastructure work for a large share of suicide hotline operations.",
+    },
+    {
+        phrase: "three-year grad with honors",
+        title: "Duke timeline",
+        text: "Finished the Duke ECE/CS arc in three years with honors.",
+    },
+    {
+        phrase: "Shanghai + Guangzhou",
+        title: "China",
+        text: "Grew up between Shanghai and Guangzhou, with practical Shenzhen navigation instincts.",
+    },
+    {
+        phrase: "Shenzhen",
+        title: "Shenzhen",
+        text: "Hardware, supply-chain, and city-navigation fluency lives here as context, not as an outbound link.",
+    },
+    {
+        phrase: "FIRST robotics worlds",
+        title: "Robotics",
+        text: "FIRST robotics worlds sits in the hardware/mechanical thread.",
+    },
+    {
+        phrase: "national civil engineering competition",
+        title: "Tuition paid",
+        text: "Placed third nationally; the competition paid for tuition.",
+    },
+    {
+        phrase: "era's tour",
+        title: "Tour work",
+        text: "A tiny design/production side quest from the Eras Tour period.",
+    },
+];
+const ANNOTATION_PATTERN = new RegExp(
+    `\\b(${ANNOTATION_RULES.map((item) =>
+        item.phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    ).join("|")})\\b`,
+    "g",
+);
 
 let baseVariantSnapshot = null;
 let activePollTimer = null;
 let linkPreviewManifest = null;
 let linkPreviewManifestPromise = null;
 const linkPreviewRequests = new Map();
+let annotationCounter = 0;
 
 const seedLineage = {
     currentVersion: BASE_VERSION_ID,
@@ -419,6 +473,208 @@ function scheduleLinkPreviewHydration() {
     loadLinkPreviewManifest().then(hydrateStaticLinkPreviews);
 }
 
+function cleanAnnotationText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+function isAnnotationNote(value) {
+    const text = cleanAnnotationText(value);
+    return text && !/^Visit\b/i.test(text);
+}
+
+function annotationRuleForPhrase(phrase) {
+    return ANNOTATION_RULES.find((item) => item.phrase === phrase);
+}
+
+function annotationTriggerElement({ title, text }) {
+    const trigger = document.createElement("button");
+    const index = annotationCounter + 1;
+
+    annotationCounter = index;
+    trigger.type = "button";
+    trigger.className = "annotation-trigger";
+    trigger.dataset.annotationTitle = title || "Annotation";
+    trigger.dataset.annotationText = cleanAnnotationText(text);
+    trigger.dataset.annotationIndex = String(index);
+    trigger.setAttribute(
+        "aria-label",
+        `${title || "Annotation"}: ${cleanAnnotationText(text)}`,
+    );
+    trigger.textContent = `[${index}]`;
+
+    return trigger;
+}
+
+function annotationScope(trigger) {
+    return (
+        trigger.closest(".benji-article") ||
+        trigger.closest("#main") ||
+        trigger.closest(".center") ||
+        trigger.closest(".slide-panel")
+    );
+}
+
+function ensureAnnotationRail(scope) {
+    if (!scope) return null;
+
+    let rail = scope.querySelector(":scope > .annotation-rail");
+
+    scope.classList.add("has-annotation-rail");
+
+    if (!rail) {
+        rail = document.createElement("aside");
+        rail.className = "annotation-rail";
+        rail.setAttribute("aria-live", "polite");
+        rail.innerHTML = `
+            <div class="annotation-card" role="note">
+                <span class="annotation-card-index"></span>
+                <span class="annotation-card-title"></span>
+                <span class="annotation-card-text"></span>
+            </div>
+        `;
+        scope.append(rail);
+    }
+
+    return rail;
+}
+
+function clearActiveAnnotation() {
+    document
+        .querySelectorAll(".annotation-trigger.is-active")
+        .forEach((trigger) => trigger.classList.remove("is-active"));
+    document
+        .querySelectorAll(".annotation-card.is-active")
+        .forEach((card) => card.classList.remove("is-active"));
+}
+
+function showAnnotation(trigger) {
+    const scope = annotationScope(trigger);
+    const rail = ensureAnnotationRail(scope);
+    const card = rail?.querySelector(".annotation-card");
+
+    if (!scope || !card) return;
+
+    clearActiveAnnotation();
+
+    const scopeRect = scope.getBoundingClientRect();
+    const triggerRect = trigger.getBoundingClientRect();
+    const top = clamp(triggerRect.top - scopeRect.top - 8, 0, scope.scrollHeight);
+
+    card.style.setProperty("--annotation-top", `${Math.round(top)}px`);
+    card.querySelector(".annotation-card-index").textContent =
+        trigger.dataset.annotationIndex || "";
+    card.querySelector(".annotation-card-title").textContent =
+        trigger.dataset.annotationTitle || "Annotation";
+    card.querySelector(".annotation-card-text").textContent =
+        trigger.dataset.annotationText || "";
+    card.classList.add("is-active");
+    trigger.classList.add("is-active");
+}
+
+function removeAnnotationScaffolding() {
+    document.querySelectorAll(".annotation-rail").forEach((rail) => rail.remove());
+    document
+        .querySelectorAll(".annotation-trigger")
+        .forEach((trigger) => trigger.remove());
+    annotationCounter = 0;
+}
+
+function liftInlineLinkNotes() {
+    document.querySelectorAll("a.reveal-link .reveal-card.text-only").forEach((card) => {
+        const link = card.closest("a.reveal-link");
+        const text = cleanAnnotationText(card.textContent);
+
+        card.remove();
+
+        if (!link || !isAnnotationNote(text)) return;
+
+        link.after(
+            annotationTriggerElement({
+                title: link.childNodes[0]?.textContent?.trim() || "Annotation",
+                text,
+            }),
+        );
+    });
+}
+
+function shouldAnnotateTextNode(node) {
+    const parent = node.parentElement;
+    if (!parent || !node.nodeValue?.trim()) return false;
+
+    return !parent.closest(
+        "a, button, input, select, textarea, script, style, .reveal-card, .annotation-trigger, .annotation-rail, .version-switcher, #versions",
+    );
+}
+
+function decorateAnnotationText() {
+    const roots = document.querySelectorAll("#home, #about, #timeline, #notes");
+
+    roots.forEach((root) => {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+                return shouldAnnotateTextNode(node)
+                    ? NodeFilter.FILTER_ACCEPT
+                    : NodeFilter.FILTER_REJECT;
+            },
+        });
+        const textNodes = [];
+
+        while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+        textNodes.forEach((node) => {
+            const text = node.nodeValue || "";
+            ANNOTATION_PATTERN.lastIndex = 0;
+            if (!ANNOTATION_PATTERN.test(text)) return;
+
+            ANNOTATION_PATTERN.lastIndex = 0;
+            const fragment = document.createDocumentFragment();
+            let lastIndex = 0;
+
+            for (const match of text.matchAll(ANNOTATION_PATTERN)) {
+                const [phrase] = match;
+                const index = match.index || 0;
+                const rule = annotationRuleForPhrase(phrase);
+
+                if (!rule) continue;
+                if (index > lastIndex) {
+                    fragment.append(document.createTextNode(text.slice(lastIndex, index)));
+                }
+
+                fragment.append(document.createTextNode(phrase));
+                fragment.append(
+                    annotationTriggerElement({
+                        title: rule.title,
+                        text: rule.text,
+                    }),
+                );
+                lastIndex = index + phrase.length;
+            }
+
+            if (lastIndex < text.length) {
+                fragment.append(document.createTextNode(text.slice(lastIndex)));
+            }
+
+            node.replaceWith(fragment);
+        });
+    });
+}
+
+function renumberAnnotations() {
+    annotationCounter = 0;
+    document.querySelectorAll(".annotation-trigger").forEach((trigger) => {
+        annotationCounter += 1;
+        trigger.dataset.annotationIndex = String(annotationCounter);
+        trigger.textContent = `[${annotationCounter}]`;
+    });
+}
+
+function syncAnnotations() {
+    removeAnnotationScaffolding();
+    liftInlineLinkNotes();
+    decorateAnnotationText();
+    renumberAnnotations();
+}
+
 function orgLinkElement(label) {
     const org = ORG_LINKS.find((item) => item.label === label);
     if (!org) return document.createTextNode(label);
@@ -427,16 +683,7 @@ function orgLinkElement(label) {
     link.className = "reveal-link";
     link.href = org.href;
     link.append(document.createTextNode(label));
-
-    const card = document.createElement("span");
-    card.className = "reveal-card text-only";
-    card.setAttribute("role", "note");
     link.dataset.previewUrl = org.href;
-
-    const text = document.createElement("span");
-    text.textContent = org.note;
-    card.append(text);
-    link.append(card);
 
     return link;
 }
@@ -1161,6 +1408,7 @@ function renderContributorHandle(lineage = getPlainLineage()) {
     applyVersionTreatment(version);
     applyVersionProjection(version, lineage);
     decorateOrgLinks();
+    syncAnnotations();
 }
 
 function renderVersionDial(lineage, activeVersion) {
@@ -1728,6 +1976,12 @@ tabs.forEach((tab) => {
 });
 
 document.addEventListener("mouseover", (event) => {
+    const annotation = event.target.closest?.(".annotation-trigger");
+    if (annotation) {
+        showAnnotation(annotation);
+        return;
+    }
+
     const link = event.target.closest?.(".reveal-link");
     if (link) {
         ensureLinkPreview(link).then(() => fitRevealCard(link));
@@ -1735,17 +1989,50 @@ document.addEventListener("mouseover", (event) => {
     }
 });
 
+document.addEventListener("mouseout", (event) => {
+    const annotation = event.target.closest?.(".annotation-trigger");
+    if (annotation && !annotation.matches(":focus-visible")) {
+        window.setTimeout(() => {
+            if (!annotation.matches(":hover, :focus-visible")) {
+                clearActiveAnnotation();
+            }
+        }, 90);
+    }
+});
+
 document.addEventListener("focusin", (event) => {
+    const annotation = event.target.closest?.(".annotation-trigger");
+    if (annotation) {
+        showAnnotation(annotation);
+        return;
+    }
+
     const link = event.target.closest?.(".reveal-link");
     if (link) {
         ensureLinkPreview(link).then(() => fitRevealCard(link));
         fitRevealCard(link);
+    }
+});
+
+document.addEventListener("focusout", (event) => {
+    if (event.target.closest?.(".annotation-trigger")) {
+        window.setTimeout(() => {
+            if (!document.activeElement?.closest?.(".annotation-trigger")) {
+                clearActiveAnnotation();
+            }
+        }, 90);
     }
 });
 
 document.addEventListener(
     "touchstart",
     (event) => {
+        const annotation = event.target.closest?.(".annotation-trigger");
+        if (annotation) {
+            showAnnotation(annotation);
+            return;
+        }
+
         const link = event.target.closest?.(".reveal-link");
         if (link) {
             ensureLinkPreview(link).then(() => fitRevealCard(link));
@@ -1837,7 +2124,10 @@ feedbackForm?.addEventListener("submit", async (event) => {
 });
 
 window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setDialOpen(false);
+    if (event.key === "Escape") {
+        setDialOpen(false);
+        clearActiveAnnotation();
+    }
 
     if (
         versionSwitcher?.classList.contains("is-open") &&
