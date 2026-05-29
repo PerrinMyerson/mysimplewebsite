@@ -3818,6 +3818,40 @@ var LEGACY_VERSION_IDS = /* @__PURE__ */ new Set([
   "benji-feedback-final",
   "benji-signal-loop-final"
 ]);
+var STICKY_JAMS_URL = "https://stickyjams.net";
+var STICKY_JAMS_IMAGES = [
+  {
+    src: "https://stickyjams.net/cdn/shop/files/Football_Speaker.png?v=1779377751&width=1200",
+    alt: "Sticky Jams football helmet speaker",
+    caption: "football drop"
+  },
+  {
+    src: "https://stickyjams.net/cdn/shop/files/Football_Speaker_Side.png?v=1779377766&width=1400",
+    alt: "Sticky Jams speaker side view",
+    caption: "helmet speaker"
+  },
+  {
+    src: "https://stickyjams.net/cdn/shop/files/Red_StickyJam_With_Speaker.png?v=1779377739&width=1200",
+    alt: "Sticky Jams wrestling headgear speaker",
+    caption: "wrestling pouch"
+  },
+  {
+    src: "https://stickyjams.net/cdn/shop/files/Sticky_Jams_1_1.jpg?v=1763836409&width=600",
+    alt: "Sticky Jams product on a white background",
+    caption: "headgear audio"
+  },
+  {
+    src: "https://stickyjams.net/cdn/shop/files/ChatGPT_Image_May_9_2026_11_25_43_PM.png?v=1778385420&width=800",
+    alt: "Sticky Jams shirt",
+    caption: "sticky shirt"
+  },
+  {
+    src: "https://stickyjams.net/cdn/shop/files/Red_Jam.png?v=1779377927&width=800",
+    alt: "Red Sticky Jams product",
+    caption: "red jam"
+  }
+];
+var baseVariantSnapshot = null;
 var seedLineage = {
   currentVersion: BASE_VERSION_ID,
   versions: [
@@ -4055,8 +4089,12 @@ function normalizeHandle(value) {
 }
 function inferTreatment(text, section) {
   const haystack = `${section} ${text}`.toLowerCase();
-  const tone = haystack.match(/quiet|minimal|plain|simple|less|fewer/) ? "plain" : haystack.match(/green|biology|climate|plant|garden|nature/) ? "botanical" : haystack.match(/dark|night|black|moody/) ? "ink" : haystack.match(/image|painting|gallery|visual|bosch/) ? "gallery" : "plain";
-  const imageDensity = haystack.match(/less|fewer|no image|minimal/) ? "low" : haystack.match(/more image|many image|gallery|visual|bosch/) ? "high" : "normal";
+  const tone = haystack.match(
+    /stickyjams|sticky jams|cam scoglio|football|wrestling|sports|helmet/
+  ) ? "sport" : haystack.match(/quiet|minimal|plain|simple|less|fewer/) ? "plain" : haystack.match(/green|biology|climate|plant|garden|nature/) ? "botanical" : haystack.match(/dark|night|black|moody/) ? "ink" : haystack.match(/image|painting|gallery|visual|bosch/) ? "gallery" : "plain";
+  const imageDensity = haystack.match(/less|fewer|no image|minimal/) ? "low" : haystack.match(
+    /more image|many image|gallery|visual|bosch|stickyjams|sticky jams|football|wrestling|sports/
+  ) ? "high" : "normal";
   return { tone, imageDensity };
 }
 function signalToVersion(signal, status = "pending") {
@@ -4076,12 +4114,250 @@ function applyVersionTreatment(version) {
   document.documentElement.dataset.versionTone = treatment.tone || "plain";
   document.documentElement.dataset.imageDensity = treatment.imageDensity || "normal";
 }
+function variantTargets() {
+  return {
+    homeName: document.querySelector("#header h1"),
+    homeLinks: document.querySelector("#header ul"),
+    homeMain: document.querySelector("#main .top"),
+    quote: document.querySelector(".quote i"),
+    aboutTitle: document.querySelector("#about .article-header h1"),
+    aboutTime: document.querySelector("#about .article-header time"),
+    timelineTitle: document.querySelector("#timeline .article-header h1"),
+    timelineTime: document.querySelector("#timeline .article-header time"),
+    timelineList: document.querySelector("#timeline .writing-list"),
+    notesTitle: document.querySelector("#notes .article-header h1"),
+    notesTime: document.querySelector("#notes .article-header time"),
+    articleLinks: document.querySelector("#notes .article-links")
+  };
+}
+function captureBaseVariant() {
+  if (baseVariantSnapshot) return;
+  const targets = variantTargets();
+  baseVariantSnapshot = {
+    html: Object.fromEntries(
+      Object.entries(targets).map(([key, element]) => [
+        key,
+        element?.innerHTML || ""
+      ])
+    ),
+    images: Array.from(
+      document.querySelectorAll(".image-tile img, .wide-image img")
+    ).map((image) => ({
+      src: image.getAttribute("src"),
+      alt: image.getAttribute("alt")
+    })),
+    captions: Array.from(
+      document.querySelectorAll(".image-tile figcaption, .wide-image figcaption")
+    ).map((caption) => caption.innerHTML)
+  };
+}
+function restoreBaseVariant() {
+  captureBaseVariant();
+  const targets = variantTargets();
+  Object.entries(targets).forEach(([key, element]) => {
+    if (element) element.innerHTML = baseVariantSnapshot.html[key];
+  });
+  document.querySelectorAll(".version-note").forEach((note) => note.remove());
+  document.documentElement.dataset.versionFlavor = "base";
+  document.body.classList.remove("version-swap");
+  Array.from(document.querySelectorAll(".image-tile img, .wide-image img")).forEach(
+    (image, index) => {
+      const baseImage = baseVariantSnapshot.images[index];
+      if (!baseImage) return;
+      image.setAttribute("src", baseImage.src);
+      image.setAttribute("alt", baseImage.alt);
+    }
+  );
+  Array.from(
+    document.querySelectorAll(".image-tile figcaption, .wide-image figcaption")
+  ).forEach((caption, index) => {
+    if (baseVariantSnapshot.captions[index] !== void 0) {
+      caption.innerHTML = baseVariantSnapshot.captions[index];
+    }
+  });
+}
+function signalForVersion(version, lineage) {
+  if (!version) return null;
+  const key = contributorKey(version.contributor);
+  return [...lineage.signals || []].reverse().find((signal) => {
+    return signal.versionId === version.id || key && contributorKey(signal.handle) === key;
+  });
+}
+function requestForVersion(version, lineage) {
+  return signalForVersion(version, lineage)?.text || version?.summary || "";
+}
+function versionIndex(version, lineage) {
+  return Math.max(
+    0,
+    (lineage.versions || []).findIndex((item) => item.id === version?.id)
+  );
+}
+function hasAny(haystack, needles) {
+  return needles.some((needle) => haystack.includes(needle));
+}
+function variantKind(version, request) {
+  const haystack = `${version?.id || ""} ${version?.contributor || ""} ${version?.summary || ""} ${request}`.toLowerCase();
+  if (hasAny(haystack, [
+    "stickyjams",
+    "sticky jams",
+    "cam scoglio",
+    "football",
+    "wrestling",
+    "sports"
+  ])) {
+    return "sticky-sports";
+  }
+  if (hasAny(haystack, ["vercel", "backend", "automerge", "live browser"])) {
+    return "live-loop";
+  }
+  if (hasAny(haystack, ["bosch", "gallery", "image", "painting"])) {
+    return "gallery";
+  }
+  return "generic";
+}
+function insertVersionNote(article, version, lineage, request) {
+  const header = article?.querySelector(".article-header");
+  if (!header || !version) return;
+  const note = document.createElement("p");
+  note.className = "version-note";
+  note.innerHTML = `
+        <span>Version ${versionNumber(versionIndex(version, lineage))}</span>
+        ${escapeHtml(version.contributor)} requested: ${escapeHtml(summarize(request))}
+    `;
+  header.after(note);
+}
+function insertAllVersionNotes(version, lineage, request) {
+  document.querySelectorAll(".article-page .benji-article").forEach((article) => {
+    insertVersionNote(article, version, lineage, request);
+  });
+}
+function setVariantImage(index, imageData) {
+  const image = document.querySelectorAll(".image-tile img, .wide-image img")[index];
+  const caption = document.querySelectorAll(
+    ".image-tile figcaption, .wide-image figcaption"
+  )[index];
+  if (!image || !imageData) return;
+  image.setAttribute("src", imageData.src);
+  image.setAttribute("alt", imageData.alt);
+  if (caption) caption.textContent = imageData.caption;
+}
+function applyStickySportsProjection(version, lineage, request) {
+  const targets = variantTargets();
+  if (targets.homeName) targets.homeName.textContent = "Cam Scoglio";
+  if (targets.homeLinks) {
+    targets.homeLinks.innerHTML += `
+            <li><a href="${STICKY_JAMS_URL}">Sticky Jams</a></li>
+        `;
+  }
+  if (targets.homeMain) {
+    targets.homeMain.innerHTML = `
+            Cam Scoglio is routing this version through
+            <a href="${STICKY_JAMS_URL}">stickyjams.net</a>.
+            Football helmet audio, wrestling-room energy, and sports gear on
+            white backgrounds.
+            <br /><br />
+            Train loud. Win quiet.
+        `;
+  }
+  if (targets.quote) {
+    targets.quote.textContent = '"Music in your headgear. Music in your helmet." - Sticky Jams';
+  }
+  if (targets.aboutTitle) targets.aboutTitle.textContent = "About Cam";
+  if (targets.aboutTime) targets.aboutTime.textContent = "Sticky Jams version";
+  if (targets.timelineTitle) targets.timelineTitle.textContent = "Sports timeline";
+  if (targets.timelineTime) targets.timelineTime.textContent = "Sticky version";
+  if (targets.timelineList) {
+    targets.timelineList.innerHTML = `
+            <li><span>Cam Scoglio and Sticky Jams</span><span>now</span></li>
+            <li><span>Football, wrestling, jiu-jitsu</span><span>drop list</span></li>
+            <li><span>Headgear speakers and helmet audio</span><span>gear</span></li>
+        `;
+  }
+  if (targets.notesTitle) targets.notesTitle.textContent = "Sports notes";
+  if (targets.notesTime) targets.notesTime.textContent = "Train loud, win quiet";
+  if (targets.articleLinks) {
+    targets.articleLinks.innerHTML = `
+            <a class="basic-link" href="${STICKY_JAMS_URL}">Sticky Jams</a>
+            <a class="basic-link" href="${STICKY_JAMS_URL}/collections/all">Products</a>
+            <a class="basic-link" href="mailto:perrinmyerson@gmail.com">Email</a>
+        `;
+  }
+  STICKY_JAMS_IMAGES.forEach((imageData, index) => {
+    setVariantImage(index, imageData);
+  });
+  insertAllVersionNotes(version, lineage, request);
+}
+function applyLiveLoopProjection(version, lineage, request) {
+  const targets = variantTargets();
+  if (targets.homeName) targets.homeName.textContent = "Perrin Myerson / live loop";
+  if (targets.homeMain) {
+    targets.homeMain.innerHTML = `
+            This version exists to prove the feedback loop:
+            GitHub Pages sends a signal to Vercel, Vercel dispatches GitHub
+            Actions, and the site records a new visible version.
+            <br /><br />
+            The page stays intentionally plain so the mechanism is easy to see.
+        `;
+  }
+  if (targets.aboutTitle) targets.aboutTitle.textContent = "About this loop";
+  if (targets.timelineTitle) targets.timelineTitle.textContent = "Signal path";
+  if (targets.timelineList) {
+    targets.timelineList.innerHTML = `
+            <li><span>Feedback form submitted</span><span>GitHub Pages</span></li>
+            <li><span>Signal accepted</span><span>Vercel API</span></li>
+            <li><span>Version merged</span><span>GitHub Actions</span></li>
+        `;
+  }
+  if (targets.notesTitle) targets.notesTitle.textContent = "Backend notes";
+  insertAllVersionNotes(version, lineage, request);
+}
+function applyGenericProjection(version, lineage, request) {
+  const targets = variantTargets();
+  if (targets.homeName) {
+    targets.homeName.textContent = `${targets.homeName.textContent} / ${version.contributor}`;
+  }
+  if (targets.homeMain) {
+    targets.homeMain.innerHTML += `
+            <br /><br />
+            <span class="version-inline-note">Version request: ${escapeHtml(
+      summarize(request)
+    )}</span>
+        `;
+  }
+  insertAllVersionNotes(version, lineage, request);
+}
+function applyVersionProjection(version, lineage) {
+  restoreBaseVariant();
+  if (!version || version.id === BASE_VERSION_ID) return;
+  const request = requestForVersion(version, lineage);
+  const kind = variantKind(version, request);
+  document.documentElement.dataset.versionFlavor = kind;
+  document.documentElement.dataset.activeVersionId = version.id;
+  if (kind === "sticky-sports") {
+    document.documentElement.dataset.versionTone = "sport";
+    document.documentElement.dataset.imageDensity = "high";
+    applyStickySportsProjection(version, lineage, request);
+  } else if (kind === "live-loop") {
+    document.documentElement.dataset.versionTone = "plain";
+    document.documentElement.dataset.imageDensity = "normal";
+    applyLiveLoopProjection(version, lineage, request);
+  } else if (kind === "gallery") {
+    document.documentElement.dataset.imageDensity = "high";
+    applyGenericProjection(version, lineage, request);
+  } else {
+    applyGenericProjection(version, lineage, request);
+  }
+  window.requestAnimationFrame(() => {
+    document.body.classList.add("version-swap");
+  });
+}
 function renderContributorHandle(lineage = getPlainLineage()) {
   const version = currentVersion(lineage);
   if (!versionHandle || !version) return;
   versionHandle.textContent = version.contributor;
   versionHandle.title = `Customized by ${version.contributor}`;
   applyVersionTreatment(version);
+  applyVersionProjection(version, lineage);
 }
 function renderVersionDial(lineage, activeVersion) {
   if (!versionDial) return;

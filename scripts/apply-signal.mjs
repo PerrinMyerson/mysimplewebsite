@@ -63,7 +63,11 @@ function normalizeSourceVersion(value) {
 
 function inferTreatment(text, section) {
     const haystack = `${section} ${text}`.toLowerCase();
-    const tone = haystack.match(/quiet|minimal|plain|simple|less|fewer/)
+    const tone = haystack.match(
+        /stickyjams|sticky jams|cam scoglio|football|wrestling|sports|helmet/,
+    )
+        ? "sport"
+        : haystack.match(/quiet|minimal|plain|simple|less|fewer/)
         ? "plain"
         : haystack.match(/green|biology|climate|plant|garden|nature/)
           ? "botanical"
@@ -74,7 +78,9 @@ function inferTreatment(text, section) {
               : "plain";
     const imageDensity = haystack.match(/less|fewer|no image|minimal/)
         ? "low"
-        : haystack.match(/more image|many image|gallery|visual|bosch/)
+        : haystack.match(
+              /more image|many image|gallery|visual|bosch|stickyjams|sticky jams|football|wrestling|sports/,
+          )
           ? "high"
           : "normal";
 

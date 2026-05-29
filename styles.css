@@ -283,6 +283,18 @@ html[data-version-tone="ink"] .article-page {
     background: #fbfbfb;
 }
 
+html[data-version-tone="sport"] .article-page {
+    background: #fff;
+}
+
+html[data-version-flavor="sticky-sports"] .article-page {
+    background: #fff;
+}
+
+html[data-version-flavor="live-loop"] .article-page {
+    background: #fdfdfb;
+}
+
 html[data-image-density="low"] .image-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -335,6 +347,27 @@ html[data-image-density="high"] .image-tile img {
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.25rem;
+}
+
+.version-note,
+.version-inline-note {
+    color: rgba(0, 0, 0, 0.58);
+}
+
+.version-note {
+    margin: 0.8rem 0 0;
+    padding-top: 0.8rem !important;
+    border-top: 1px solid #ececea;
+}
+
+.version-note span {
+    display: block;
+    color: #111;
+    font-size: 0.75rem;
+}
+
+body.version-swap .article-page {
+    animation: versionSwap 0.28s ease;
 }
 
 .basic-link,
@@ -746,5 +779,19 @@ html[data-image-density="high"] .image-tile img {
 @media (prefers-reduced-motion: reduce) {
     .slide-track.is-ready {
         transition-duration: 1ms;
+    }
+
+    body.version-swap .article-page {
+        animation: none;
+    }
+}
+
+@keyframes versionSwap {
+    from {
+        opacity: 0.84;
+    }
+
+    to {
+        opacity: 1;
     }
 }

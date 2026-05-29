@@ -22,8 +22,8 @@
     "source": "custom-codex-live-test",
     "status": "merged",
     "treatment": {
-      "tone": "plain",
-      "imageDensity": "normal"
+      "tone": "sport",
+      "imageDensity": "high"
     }
   }
 }
