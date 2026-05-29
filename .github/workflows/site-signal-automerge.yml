@@ -155,7 +155,7 @@ jobs:
           prompt-file: .codex-signal-prompt.md
           output-file: .codex-final-message.md
           sandbox: workspace-write
-          effort: high
+          effort: medium
           allow-bots: true
 
       - name: Mark signal merged

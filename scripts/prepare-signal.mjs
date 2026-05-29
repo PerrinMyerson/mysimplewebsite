@@ -72,6 +72,7 @@ Make the redesign meaningfully chaotic and interesting:
 - You may edit index.html, styles.css, src/script-source.js, data/site-lineage.json, data/signals/${signal.id}.json, and add static assets under assets/.
 - The whole site should feel redesigned for this contributor, not like a one-line text swap.
 - Favor surprising layout, copy, color, motion, image treatment, and interaction while keeping the site usable.
+- Keep the implementation compact enough to finish in one run: prefer version data, theme tokens, and tightly scoped CSS; add at most two small assets; avoid broad rewrites or more than roughly 650 inserted lines.
 - Do not mutate v1 baseline content. Put version-specific changes behind the selected version data/rendering path.
 
 Update data/site-lineage.json:
