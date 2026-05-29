@@ -803,6 +803,25 @@
       "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
       "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/6",
       "message": ""
+    },
+    {
+      "id": "signal-vercel-node24-smoke",
+      "versionId": "custom-codex-vercel-node24",
+      "handle": "@codex-vercel-node24",
+      "section": "Whole site",
+      "text": "Smoke test the live Vercel API dispatch path after the Node 24 fix. Make a tiny but visibly different chaotic version with a clear Node 24 / signal relay motif, while preserving v1, the dial, the feedback form, and the API contract.",
+      "sourceVersion": "custom-codex-direct-publish-test",
+      "visitorId": "codex-vercel-smoke",
+      "language": "en-US",
+      "timeZone": "America/Los_Angeles",
+      "viewport": "1440x900",
+      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-direct-publish-test",
+      "createdAt": "2026-05-29T04:39:14.630Z",
+      "status": "failed",
+      "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26618318523",
+      "prUrl": "",
+      "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
+      "message": "Automatic Codex generation failed before publishing."
     }
   ]
 }
