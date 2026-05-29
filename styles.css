@@ -705,6 +705,315 @@ html[data-version-flavor="living-notebook-dream"] .feedback-form button {
     box-shadow: 4px 4px 0 #ff4c9a;
 }
 
+html[data-version-flavor="crisp-surreal-notebook"] body,
+html[data-version-flavor="crisp-surreal-notebook"] .page {
+    background:
+        linear-gradient(90deg, rgba(255, 93, 46, 0.22) 0 2px, transparent 2px),
+        linear-gradient(180deg, rgba(0, 108, 255, 0.12) 0 1px, transparent 1px),
+        linear-gradient(135deg, #f8fff0 0%, #fffdf5 42%, #eef7ff 100%);
+    background-size:
+        70px 70px,
+        100% 34px,
+        auto;
+    color: var(--version-text, #171a20);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] body::before {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    width: 12px;
+    background: linear-gradient(#ff5d2e, #006cff 48%, #00a884);
+    content: "";
+    pointer-events: none;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .center {
+    display: block;
+    width: min(calc(100vw - 52px), 780px);
+    padding: 1.15rem 1.25rem 1.2rem;
+    border: 3px solid var(--version-text, #171a20);
+    border-radius: 6px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.78)),
+        url("assets/crisp-field-notebook.svg") right -3.5rem bottom -2.8rem / 27rem
+            auto no-repeat,
+        #fffdf5;
+    box-shadow: 8px 8px 0 var(--version-accent, #ff5d2e);
+    transform: translate(-50%, -50%) rotate(0.6deg);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .center table,
+html[data-version-flavor="crisp-surreal-notebook"] .center tbody,
+html[data-version-flavor="crisp-surreal-notebook"] .center tr,
+html[data-version-flavor="crisp-surreal-notebook"] .center th,
+html[data-version-flavor="crisp-surreal-notebook"] .center td {
+    display: block;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .center th {
+    width: 58px;
+    height: 58px;
+    margin: 0 0 0.7rem;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .horiz {
+    width: 58px;
+    height: 58px;
+    border: 2px solid var(--version-text, #171a20);
+    border-radius: 6px;
+    background: #fff15c;
+    filter: contrast(1.2) saturate(1.3);
+    object-fit: contain;
+    transform: rotate(-4deg);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #header {
+    max-width: 27rem;
+    margin-top: 0 !important;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #header h1 {
+    margin: 0;
+    color: var(--version-text, #171a20);
+    font-family: var(--version-font-family, ui-monospace), SFMono-Regular, Menlo,
+        monospace;
+    font-size: 2.45rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 0.98;
+    text-transform: uppercase;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #header ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.85rem 0 0;
+    padding: 0;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #header li {
+    display: block;
+    float: none;
+    margin: 0;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #header a,
+html[data-version-flavor="crisp-surreal-notebook"] .article-links a {
+    display: inline-flex;
+    min-height: 1.75rem;
+    align-items: center;
+    padding: 0.18rem 0.45rem;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    background: #fff;
+    color: var(--version-link, #006cff);
+    text-decoration: none;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #header li:nth-child(2n) a,
+html[data-version-flavor="crisp-surreal-notebook"] .article-links a:nth-child(2n) {
+    color: #00a884;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #main {
+    max-width: 28rem;
+    margin-top: 0.9rem;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] #main p {
+    color: var(--version-text, #171a20);
+    font-family: var(--version-font-family, ui-monospace), SFMono-Regular, Menlo,
+        monospace;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .quote {
+    right: max(24px, 8vw);
+    bottom: 84px;
+    left: auto;
+    width: min(25rem, calc(100vw - 48px));
+    color: var(--version-text, #171a20);
+    text-align: right;
+    transform: rotate(-1deg);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .quote p {
+    display: inline;
+    padding: 0.24rem 0.42rem;
+    background: #fff15c;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .article-page {
+    background:
+        linear-gradient(90deg, transparent 0 4.1rem, rgba(255, 93, 46, 0.78) 4.1rem 4.22rem, transparent 4.22rem),
+        repeating-linear-gradient(180deg, #fffdf5 0 2.15rem, rgba(0, 108, 255, 0.1) 2.18rem 2.25rem),
+        #f8fff0;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .benji-article {
+    width: min(calc(100vw - 40px), 58rem);
+    padding: 4.5rem 0 7.5rem;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .article-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: end;
+    padding: 0.65rem 0;
+    border-top: 3px solid var(--version-text, #171a20);
+    border-bottom: 3px solid var(--version-text, #171a20);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .article-header h1 {
+    font-family: var(--version-font-family, ui-monospace), SFMono-Regular, Menlo,
+        monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .article-header time {
+    max-width: 14rem;
+    color: var(--version-text, #171a20);
+    font-weight: 800;
+    text-align: right;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .version-note {
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.42rem 0.55rem !important;
+    border: 2px solid var(--version-text, #171a20);
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 4px 4px 0 rgba(0, 108, 255, 0.25);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .benji-article p {
+    max-width: 35rem;
+    padding-top: 0.85rem;
+    color: var(--version-text, #171a20);
+    font-size: 0.94rem;
+    line-height: 1.55;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .writing-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+    border-top: 0;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .writing-list li {
+    display: grid;
+    min-height: 5.75rem;
+    align-content: space-between;
+    padding: 0.55rem;
+    border: 2px solid var(--version-text, #171a20);
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 3px 3px 0 var(--version-accent, #ff5d2e);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .writing-list li:nth-child(2n) {
+    box-shadow: 3px 3px 0 #00a884;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .writing-list li span:last-child {
+    justify-self: start;
+    padding: 0.08rem 0.28rem;
+    background: #fff15c;
+    color: var(--version-text, #171a20);
+    white-space: normal;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .image-row,
+html[data-version-flavor="crisp-surreal-notebook"] .image-row.two-up {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.35rem;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .image-tile {
+    padding: 0.38rem;
+    border: 2px solid var(--version-text, #171a20);
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 5px 5px 0 rgba(255, 93, 46, 0.32);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .image-tile:nth-child(3n) {
+    grid-column: span 2;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .image-tile img {
+    aspect-ratio: 5 / 3;
+    border-radius: 2px;
+    filter: var(--version-image-filter, none);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .bottom-tabs {
+    border-top: 2px solid rgba(23, 26, 32, 0.22);
+    background: rgba(248, 255, 240, 0.9);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .bottom-tabs button,
+html[data-version-flavor="crisp-surreal-notebook"] .version-dial-item,
+html[data-version-flavor="crisp-surreal-notebook"] .version-dial-index {
+    color: var(--version-text, #171a20);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .tab-active {
+    border-bottom-color: var(--version-accent, #ff5d2e) !important;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .version-dial-item {
+    border: 2px solid var(--version-text, #171a20);
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 4px 4px 0 rgba(0, 168, 132, 0.35);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .version-dial-index {
+    border-color: var(--version-text, #171a20);
+    border-radius: 4px;
+    background: #fff15c;
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .generation-console,
+html[data-version-flavor="crisp-surreal-notebook"] .feedback-form,
+html[data-version-flavor="crisp-surreal-notebook"] .version-list,
+html[data-version-flavor="crisp-surreal-notebook"] .version-list li,
+html[data-version-flavor="crisp-surreal-notebook"] .signal-log li {
+    border-color: rgba(23, 26, 32, 0.28);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .feedback-form input,
+html[data-version-flavor="crisp-surreal-notebook"] .feedback-form select,
+html[data-version-flavor="crisp-surreal-notebook"] .feedback-form textarea {
+    border: 2px solid rgba(23, 26, 32, 0.34);
+    background: rgba(255, 255, 255, 0.84);
+    color: var(--version-text, #171a20);
+}
+
+html[data-version-flavor="crisp-surreal-notebook"] .feedback-form button {
+    padding: 0.36rem 0.55rem;
+    border: 2px solid var(--version-text, #171a20);
+    border-radius: 4px;
+    background: #fff15c;
+    color: var(--version-text, #171a20);
+    box-shadow: 3px 3px 0 var(--version-accent, #ff5d2e);
+}
+
 html[data-version-flavor="generated"] .article-page,
 html[data-version-flavor="pending"] .article-page {
     background: var(--version-background, #fdfdfb);
@@ -1324,6 +1633,65 @@ body.version-swap .article-page {
 
     html[data-version-flavor="living-notebook-dream"] .image-tile,
     html[data-version-flavor="living-notebook-dream"] .image-tile:nth-child(3n) {
+        grid-column: auto;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .center {
+        left: 18px;
+        width: calc(100vw - 36px);
+        padding: 1rem;
+        background:
+            linear-gradient(rgba(255, 255, 255, 0.91), rgba(255, 255, 255, 0.82)),
+            url("assets/crisp-field-notebook.svg") right -7rem bottom -3rem / 22rem
+                auto no-repeat,
+            #fffdf5;
+        box-shadow: 5px 5px 0 var(--version-accent, #ff5d2e);
+        transform: translate(0, -50%) rotate(0.4deg);
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] #header,
+    html[data-version-flavor="crisp-surreal-notebook"] #main {
+        max-width: 100%;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] #header h1 {
+        font-size: 2rem;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .quote {
+        right: auto;
+        bottom: 78px;
+        left: 18px;
+        width: calc(100vw - 36px);
+        text-align: left;
+        transform: rotate(-0.4deg);
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .benji-article {
+        width: min(calc(100vw - 36px), 36.375rem);
+        padding-top: 3.8rem;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .article-header {
+        grid-template-columns: 1fr;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .article-header h1 {
+        font-size: 1.65rem;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .article-header time {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .writing-list,
+    html[data-version-flavor="crisp-surreal-notebook"] .image-row,
+    html[data-version-flavor="crisp-surreal-notebook"] .image-row.two-up {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    html[data-version-flavor="crisp-surreal-notebook"] .image-tile:nth-child(3n) {
         grid-column: auto;
     }
 }

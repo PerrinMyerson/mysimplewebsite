@@ -1,5 +1,5 @@
 {
-  "currentVersion": "custom-codex-chaos-test",
+  "currentVersion": "custom-codex-direct-publish-test",
   "versions": [
     {
       "id": "v1",
@@ -536,6 +536,154 @@
       },
       "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/5",
       "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
+    },
+    {
+      "id": "custom-codex-direct-publish-test",
+      "label": "Whole site variation",
+      "contributor": "@codex-direct-publish-test",
+      "createdAt": "2026-05-29T04:31:55.092Z",
+      "summary": "Direct publish smoke test: compact crisp surreal notebook version with custom assets and an intact feedback loop.",
+      "source": "custom-codex-chaos-test",
+      "status": "merged",
+      "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26618077145",
+      "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
+      "treatment": {
+        "tone": "crisp-surreal-notebook",
+        "imageDensity": "high"
+      },
+      "theme": {
+        "flavor": "crisp-surreal-notebook",
+        "accent": "#ff5d2e",
+        "background": "#f8fff0",
+        "text": "#171a20",
+        "muted": "rgba(23, 26, 32, 0.58)",
+        "rule": "#9bb3a8",
+        "link": "#006cff",
+        "imageFilter": "contrast(1.18) saturate(1.28) hue-rotate(3deg)",
+        "fontFamily": "ui-monospace"
+      },
+      "content": {
+        "home": {
+          "name": "Crisp Signal Notebook",
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "GitHub",
+              "href": "https://github.com/perrinmyerson"
+            },
+            {
+              "label": "Run",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26618077145"
+            }
+          ],
+          "main": [
+            "A compact direct-publish smoke test: the site snaps into a surreal field notebook with sharp rules, specimen strips, colored tabs, and signal arrows pinned to the page.",
+            "The machinery stays visible and working. The dial still switches versions, the Versions page still logs the run, the feedback form still posts to /api/site-signal, and Version 1 remains untouched."
+          ],
+          "quote": "Keep the loop intact; let the margins misbehave."
+        },
+        "about": {
+          "title": "Notebook Skin",
+          "time": "Generated 2026-05-29 04:31 UTC",
+          "paragraphs": [
+            "This version turns the whole site into a crisp surreal notebook: less dream fog, more exact ink, bright tabs, ruled paper, and small impossible diagrams arranged like evidence.",
+            "The redesign is data-driven through the selected contributor version. The baseline article content remains the locked Version 1 object, while this version supplies its own copy, theme, assets, and image treatment."
+          ],
+          "images": [
+            {
+              "src": "assets/crisp-field-notebook.svg",
+              "alt": "Crisp surreal field notebook with colored signal paths",
+              "caption": "field log"
+            },
+            {
+              "src": "assets/notebook-specimen-strip.svg",
+              "alt": "Three clipped notebook specimen cards with diagrams",
+              "caption": "specimen strip"
+            },
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Hieronymus_Bosch_013.jpg/960px-Hieronymus_Bosch_013.jpg",
+              "alt": "Hieronymus Bosch, Ascent of the Blessed",
+              "caption": "borrowed lift"
+            }
+          ]
+        },
+        "timeline": {
+          "title": "Direct Publish Path",
+          "time": "Signal path",
+          "items": [
+            {
+              "label": "Visitor signal normalized",
+              "meta": "04:31 UTC"
+            },
+            {
+              "label": "Contributor slot created",
+              "meta": "@codex-direct-publish-test"
+            },
+            {
+              "label": "Custom assets clipped in",
+              "meta": "2 svg"
+            },
+            {
+              "label": "Workflow marks final state later",
+              "meta": "generating"
+            }
+          ],
+          "paragraphs": [
+            "The lineage keeps one version per contributor. This direct-publish handle gets one slot, one generated skin, and one latest signal entry that can move from generating to merged without duplication.",
+            "Read the layout as a compact lab note: title block, ruled surfaces, specimen images, run link, and a console that keeps reporting the latest automatic chaos state."
+          ],
+          "images": [
+            {
+              "src": "assets/notebook-specimen-strip.svg",
+              "alt": "Notebook specimen strip with clipped cards",
+              "caption": "three specimens"
+            },
+            {
+              "src": "assets/crisp-field-notebook.svg",
+              "alt": "Field notebook signal diagram",
+              "caption": "routing sheet"
+            }
+          ]
+        },
+        "notes": {
+          "title": "Loop Notes",
+          "time": "Open but intact",
+          "paragraphs": [
+            "The request is treated as a design brief only: no secrets, no infrastructure edits, no disabled checks. The result lives in version data, CSS flavor rules, and static assets.",
+            "The feedback loop remains part of the page instead of being painted over. The top-right dial, Versions ledger, local visitor cookie, and POST contract still belong to the shared renderer."
+          ],
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "Workflow",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
+            },
+            {
+              "label": "Repository",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite"
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/crisp-field-notebook.svg",
+              "alt": "Crisp field notebook asset",
+              "caption": "asset one"
+            },
+            {
+              "src": "assets/notebook-specimen-strip.svg",
+              "alt": "Specimen strip asset",
+              "caption": "asset two"
+            }
+          ]
+        }
+      },
+      "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/6"
     }
   ],
   "signals": [
@@ -635,6 +783,25 @@
       "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26617816595",
       "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
       "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/5",
+      "message": ""
+    },
+    {
+      "id": "signal-mpqfdjh0",
+      "versionId": "custom-codex-direct-publish-test",
+      "handle": "@codex-direct-publish-test",
+      "section": "Whole site",
+      "text": "Direct publish smoke test: make a compact but visibly distinct generated version with crisp surreal notebook energy, one or two custom assets, and keep the feedback loop intact.",
+      "sourceVersion": "custom-codex-chaos-test",
+      "visitorId": "anonymous",
+      "language": "",
+      "timeZone": "",
+      "viewport": "",
+      "url": "",
+      "createdAt": "2026-05-29T04:31:55.092Z",
+      "status": "merged",
+      "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26618077145",
+      "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
+      "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/6",
       "message": ""
     }
   ]

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" role="img" aria-labelledby="title desc">
+  <title id="title">Crisp surreal field notebook</title>
+  <desc id="desc">A compact notebook sheet with exact ruling, signal arrows, clipped stars, and bright surreal tabs.</desc>
+  <rect width="760" height="520" fill="#f8fff0"/>
+  <path d="M70 54H690V466H70Z" fill="#ffffff" stroke="#171a20" stroke-width="7"/>
+  <path d="M122 54V466" stroke="#ff5d2e" stroke-width="4"/>
+  <g stroke="#b7c7bd" stroke-width="2">
+    <path d="M70 118H690"/>
+    <path d="M70 166H690"/>
+    <path d="M70 214H690"/>
+    <path d="M70 262H690"/>
+    <path d="M70 310H690"/>
+    <path d="M70 358H690"/>
+    <path d="M70 406H690"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M178 132C244 88 286 176 352 130C418 84 466 174 536 124" stroke="#006cff" stroke-width="11"/>
+    <path d="M190 278C250 232 306 324 372 276C430 234 490 302 566 250" stroke="#00a884" stroke-width="11"/>
+    <path d="M206 398L324 350L438 404L580 342" stroke="#ff5d2e" stroke-width="10"/>
+  </g>
+  <g fill="#fff15c" stroke="#171a20" stroke-width="5">
+    <path d="M604 82L628 124L676 132L642 166L650 214L604 190L560 214L568 166L534 132L580 124Z"/>
+    <path d="M154 210L184 230L178 266L208 244L242 260L230 224L256 198L218 198L200 164L188 198Z"/>
+  </g>
+  <g fill="#171a20">
+    <circle cx="174" cy="132" r="9"/>
+    <circle cx="536" cy="124" r="9"/>
+    <circle cx="566" cy="250" r="9"/>
+    <circle cx="580" cy="342" r="9"/>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="800" fill="#171a20">
+    <text x="150" y="92" font-size="24">FIELD LOG: SIGNAL-MPQFDJH0</text>
+    <text x="154" y="456" font-size="18">one handle / one version / crisp chaos</text>
+  </g>
+</svg>
