@@ -27,14 +27,18 @@ permissions:
   pull-requests: write
 
 jobs:
-  build-version:
+  prepare-signal:
     runs-on: ubuntu-latest
+    outputs:
+      signal_id: ${{ steps.prepare.outputs.signal_id }}
+      version_id: ${{ steps.prepare.outputs.version_id }}
+      branch_name: ${{ steps.prepare.outputs.branch_name }}
+      pr_title: ${{ steps.prepare.outputs.pr_title }}
+      status_url: ${{ steps.prepare.outputs.status_url }}
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -45,7 +49,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Apply signal
+      - name: Prepare signal prompt
+        id: prepare
         env:
           DISPATCH_PAYLOAD: ${{ toJson(github.event.client_payload) }}
           WORKFLOW_HANDLE: ${{ inputs.handle }}
@@ -64,25 +69,101 @@ jobs:
               '{handle:$handle, section:$section, text:$text, sourceVersion:$sourceVersion}')"
           fi
 
-          node scripts/apply-signal.mjs
+          node scripts/prepare-signal.mjs
+          cat .signal-github-outputs >> "$GITHUB_OUTPUT"
+
+      - name: Upload prepared signal
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepared-signal
+          path: |
+            .signal-payload.json
+            .signal-branch-name
+            .signal-pr-title
+            .signal-pr-body.md
+            .codex-signal-prompt.md
+          include-hidden-files: true
+          retention-days: 1
+
+  build-version:
+    runs-on: ubuntu-latest
+    needs: prepare-signal
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download prepared signal
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-signal
+          path: .
+
+      - name: Require OpenAI API key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::Missing OPENAI_API_KEY repository secret. Add it before automatic chaos can run."
+            exit 1
+          fi
+
+      - name: Freeze validator
+        run: |
+          cp scripts/validate-site.mjs /tmp/validate-site.mjs
+          cp scripts/signal-utils.mjs /tmp/signal-utils.mjs
+
+      - name: Generate chaotic site version with Codex
+        id: run_codex
+        uses: openai/codex-action@main
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: .codex-signal-prompt.md
+          output-file: .codex-final-message.md
+          sandbox: workspace-write
+          effort: high
+          allow-bots: true
+
+      - name: Mark signal merged
+        run: |
+          node scripts/mark-signal-status.mjs merged \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --status-url "${{ needs.prepare-signal.outputs.status_url }}"
+
+      - name: Guard generated file surface
+        run: node scripts/guard-codex-output.mjs
 
       - name: Build and check
-        run: npm run check
+        run: |
+          npm run check
+          node /tmp/validate-site.mjs
 
-      - name: Commit version branch
+      - name: Commit version branch and automerge
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           BRANCH="$(cat .signal-branch-name)"
           TITLE="$(cat .signal-pr-title)"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
           git config user.name "site-signal-bot"
           git config user.email "site-signal-bot@users.noreply.github.com"
           git checkout -B "$BRANCH"
-          git add data script.js src scripts package.json package-lock.json index.html styles.css .gitignore api .github
+          git add -A
 
           if git diff --cached --quiet; then
-            echo "No lineage changes to commit."
+            echo "No generated changes to commit."
             exit 0
           fi
 
@@ -95,10 +176,81 @@ jobs:
             --title "$TITLE" \
             --body-file .signal-pr-body.md)"
 
-          gh pr merge "$PR_URL" --squash --auto --delete-branch || \
-            gh pr merge "$PR_URL" --squash --delete-branch
+          node scripts/mark-signal-status.mjs merged \
+            --run-url "$RUN_URL" \
+            --pr-url "$PR_URL" \
+            --status-url "${{ needs.prepare-signal.outputs.status_url }}"
+
+          if ! git diff --quiet -- data; then
+            git add data
+            git commit -m "Record signal PR URL"
+            git push --force-with-lease origin "$BRANCH"
+          fi
+
+          gh pr merge "$PR_URL" --squash --delete-branch || \
+            gh pr merge "$PR_URL" --squash --auto --delete-branch
+
+          for attempt in $(seq 1 30); do
+            MERGED_AT="$(gh pr view "$PR_URL" --json mergedAt -q '.mergedAt')"
+            if [ "$MERGED_AT" != "null" ] && [ -n "$MERGED_AT" ]; then
+              exit 0
+            fi
+            sleep 4
+          done
+
+          echo "::error::Pull request did not merge within the wait window."
+          exit 1
 
       - name: Publish Pages
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run pages.yml --ref main
+
+  mark-failed:
+    runs-on: ubuntu-latest
+    needs: [prepare-signal, build-version]
+    if: ${{ always() && needs.prepare-signal.result == 'success' && needs.build-version.result == 'failure' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Download prepared signal
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-signal
+          path: .
+
+      - name: Mark signal failed
+        run: |
+          node scripts/mark-signal-status.mjs failed \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --status-url "${{ needs.prepare-signal.outputs.status_url }}" \
+            --message "Automatic Codex generation failed before publishing."
+
+      - name: Validate status record
+        run: node scripts/validate-site.mjs
+
+      - name: Commit failed signal status
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "site-signal-bot"
+          git config user.email "site-signal-bot@users.noreply.github.com"
+          git add data
+
+          if git diff --cached --quiet; then
+            echo "No failed status changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Record failed site signal ${{ needs.prepare-signal.outputs.signal_id }}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          gh workflow run pages.yml --ref main || true

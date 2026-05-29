@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>perrin</title>
         <link rel="icon" type="image/png" href="logo.png" />
-        <link rel="stylesheet" href="styles.css?v=eacf5fc" />
+        <link rel="stylesheet" href="styles.css?v=chaos-loop" />
     </head>
     <body data-current-version="v1">
         <div class="version-switcher" data-version-switcher>
@@ -337,13 +337,19 @@
                                     id="feedback-text"
                                     name="request"
                                     rows="4"
-                                    placeholder="make a quieter version with fewer images"
+                                    placeholder="make the whole site stranger, brighter, and less obedient"
                                     required
                                 ></textarea>
                             </label>
 
-                            <button type="submit">Automerge</button>
+                            <button type="submit">Generate with Codex</button>
                         </form>
+
+                        <div
+                            class="generation-console"
+                            id="generation-console"
+                            aria-live="polite"
+                        ></div>
 
                         <div class="signal-log" id="signal-log"></div>
 
@@ -361,6 +367,6 @@
             <button type="button" class="tab-inactive" data-slide="4">Versions</button>
         </nav>
 
-        <script type="module" src="script.js?v=eacf5fc"></script>
+        <script type="module" src="script.js?v=chaos-loop"></script>
     </body>
 </html>

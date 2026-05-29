@@ -45,6 +45,10 @@ function versionIdForHandle(handle) {
     return `custom-${slug || "visitor"}`;
 }
 
+function workflowStatusUrl(owner, repo) {
+    return `https://github.com/${owner}/${repo}/actions/workflows/site-signal-automerge.yml`;
+}
+
 async function readBody(req) {
     if (typeof req.body === "object" && req.body !== null) return req.body;
     if (typeof req.body === "string") return JSON.parse(req.body || "{}");
@@ -78,6 +82,7 @@ function normalizeSignal(body) {
         viewport: cleanText(body.viewport).slice(0, 32),
         url: cleanText(body.url).slice(0, 300),
         createdAt: body.createdAt || new Date().toISOString(),
+        status: "queued",
     };
 }
 
@@ -117,6 +122,7 @@ export default async function handler(req, res) {
     setCors(req, res);
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Max-Age", "86400");
 
     if (req.method === "OPTIONS") {
         res.statusCode = 204;
@@ -130,9 +136,17 @@ export default async function handler(req, res) {
     }
 
     try {
+        const owner = process.env.GITHUB_OWNER || DEFAULT_OWNER;
+        const repo = process.env.GITHUB_REPO || DEFAULT_REPO;
         const signal = normalizeSignal(await readBody(req));
         await dispatchSignal(signal);
-        json(res, 202, { ok: true, signalId: signal.id, versionId: signal.versionId });
+        json(res, 202, {
+            ok: true,
+            signalId: signal.id,
+            versionId: signal.versionId,
+            status: "queued",
+            statusUrl: workflowStatusUrl(owner, repo),
+        });
     } catch (error) {
         json(res, 400, { ok: false, error: error.message });
     }

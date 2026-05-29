@@ -7,7 +7,9 @@
   "scripts": {
     "apply-signal": "node scripts/apply-signal.mjs",
     "build": "esbuild src/script-source.js --bundle --format=esm --platform=browser --target=es2022 --outfile=script.js",
-    "check": "npm run build && node --check script.js",
+    "check": "npm run build && npm run validate && node --check script.js",
+    "syntax": "node --check api/site-signal.js && for file in scripts/*.mjs; do node --check \"$file\"; done",
+    "validate": "node scripts/validate-site.mjs && npm run syntax",
     "test": "npm run check"
   },
   "repository": {

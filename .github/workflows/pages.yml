@@ -42,6 +42,15 @@ jobs:
           mkdir -p _site/data
           cp index.html styles.css script.js logo.png _site/
           cp data/site-lineage.json _site/data/
+          if [ -d data/signals ]; then
+            mkdir -p _site/data/signals
+            cp data/signals/*.json _site/data/signals/ 2>/dev/null || true
+          fi
+          for dir in assets images media; do
+            if [ -d "$dir" ]; then
+              cp -R "$dir" "_site/$dir"
+            fi
+          done
           touch _site/.nojekyll
 
       - name: Configure Pages

@@ -25,6 +25,113 @@
       "treatment": {
         "tone": "plain",
         "imageDensity": "normal"
+      },
+      "theme": {
+        "flavor": "generated",
+        "accent": "#2f66ff",
+        "background": "#f8fbff",
+        "text": "#10141f",
+        "muted": "rgba(16, 20, 31, 0.52)",
+        "rule": "#b8c8ff",
+        "link": "#183bbd",
+        "imageFilter": "contrast(1.06) saturate(1.12)"
+      },
+      "content": {
+        "home": {
+          "name": "Perrin Myerson / live loop",
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "GitHub",
+              "href": "https://github.com/perrinmyerson"
+            },
+            {
+              "label": "Runs",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
+            }
+          ],
+          "main": [
+            "This version is the instrument panel: GitHub Pages sends a visitor signal to Vercel, Vercel dispatches GitHub Actions, and the site records a new contributor version.",
+            "The page stays mostly white so the mechanism is visible. The weird part is not decoration; it is the page teaching itself to listen."
+          ],
+          "quote": "A website that can receive a signal should show the wire."
+        },
+        "about": {
+          "title": "About the loop",
+          "time": "Signal version",
+          "paragraphs": [
+            "This branch of the site exists to make the feedback system legible: a handle, a request, a dispatch, a merge, and a new version in the dial.",
+            "Automerge still keeps a local thread of the visitor state, while the canonical public lineage lives in JSON that GitHub Pages can serve."
+          ],
+          "images": [
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Hieronymus_Bosch_013.jpg/960px-Hieronymus_Bosch_013.jpg",
+              "alt": "Hieronymus Bosch, Ascent of the Blessed",
+              "caption": "signal lift"
+            },
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Bosch_-_Haywain_Triptych.jpg/960px-Bosch_-_Haywain_Triptych.jpg",
+              "alt": "Hieronymus Bosch, The Haywain Triptych",
+              "caption": "workflow cart"
+            }
+          ]
+        },
+        "timeline": {
+          "title": "Signal path",
+          "time": "From click to page",
+          "items": [
+            {
+              "label": "Feedback submitted",
+              "meta": "GitHub Pages"
+            },
+            {
+              "label": "Signal accepted",
+              "meta": "Vercel API"
+            },
+            {
+              "label": "Version merged",
+              "meta": "Actions"
+            }
+          ],
+          "paragraphs": [
+            "The version dial is the public ledger. Each handle owns one slot, and a later request rewrites that slot instead of spawning a duplicate."
+          ],
+          "images": [
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg/960px-The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg",
+              "alt": "Hieronymus Bosch, The Garden of Earthly Delights",
+              "caption": "branch garden"
+            }
+          ]
+        },
+        "notes": {
+          "title": "Backend notes",
+          "time": "Open automation",
+          "paragraphs": [
+            "A quiet frontend can hide a fairly strange machine: first-party visitor cookie, Automerge local merge, Vercel dispatch, Codex generation, pull request, Pages publish.",
+            "The console below shows whether the last signal is sent, generating, merged, or failed."
+          ],
+          "links": [
+            {
+              "label": "Workflow",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
+            },
+            {
+              "label": "Repository",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite"
+            }
+          ],
+          "images": [
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/7/76/Hieronymus_Bosch_-_The_Ship_of_Fools_-_WGA2553.jpg",
+              "alt": "Hieronymus Bosch, The Ship of Fools",
+              "caption": "dispatch vessel"
+            }
+          ]
+        }
       }
     },
     {
@@ -38,6 +145,123 @@
       "treatment": {
         "tone": "sport",
         "imageDensity": "high"
+      },
+      "theme": {
+        "flavor": "generated",
+        "accent": "#ff3b18",
+        "background": "#fffaf7",
+        "text": "#19110f",
+        "muted": "rgba(25, 17, 15, 0.5)",
+        "rule": "#ffb09d",
+        "link": "#b9250f",
+        "imageFilter": "contrast(1.12) saturate(1.28)"
+      },
+      "content": {
+        "home": {
+          "name": "Cam Scoglio / Sticky Jams",
+          "links": [
+            {
+              "label": "Sticky Jams",
+              "href": "https://stickyjams.net"
+            },
+            {
+              "label": "Products",
+              "href": "https://stickyjams.net/collections/all"
+            },
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            }
+          ],
+          "main": [
+            "A sports-page detour built for @Eileen: Cam Scoglio everywhere, Sticky Jams in the margins, white-background product energy, and a little locker-room voltage.",
+            "Helmet audio, wrestling-room pockets, jiu-jitsu errands, and a website that decided to lace up."
+          ],
+          "quote": "Train loud. Win quiet. Then put a speaker in the headgear."
+        },
+        "about": {
+          "title": "About Cam",
+          "time": "Sticky Jams version",
+          "paragraphs": [
+            "This version routes the personal site through a sports gear dream: clean white surfaces, loud product images, and Cam Scoglio as the name on every clipboard.",
+            "The page behaves like a catalog that wandered into a personal homepage and started calling plays."
+          ],
+          "images": [
+            {
+              "src": "https://stickyjams.net/cdn/shop/files/Football_Speaker.png?v=1779377751&width=1200",
+              "alt": "Sticky Jams football helmet speaker",
+              "caption": "football drop"
+            },
+            {
+              "src": "https://stickyjams.net/cdn/shop/files/Football_Speaker_Side.png?v=1779377766&width=1400",
+              "alt": "Sticky Jams football speaker side view",
+              "caption": "helmet side"
+            },
+            {
+              "src": "https://stickyjams.net/cdn/shop/files/Red_StickyJam_With_Speaker.png?v=1779377739&width=1200",
+              "alt": "Sticky Jams red wrestling speaker",
+              "caption": "wrestling pouch"
+            }
+          ]
+        },
+        "timeline": {
+          "title": "Sports timeline",
+          "time": "Drop list",
+          "items": [
+            {
+              "label": "Cam Scoglio and Sticky Jams",
+              "meta": "now"
+            },
+            {
+              "label": "Football, wrestling, jiu-jitsu",
+              "meta": "gear"
+            },
+            {
+              "label": "Headgear speakers and helmet audio",
+              "meta": "signal"
+            }
+          ],
+          "paragraphs": [
+            "Every signal becomes a play. This one calls for sport, product, and names that refuse to stay in the tiny top-right label."
+          ],
+          "images": [
+            {
+              "src": "https://stickyjams.net/cdn/shop/files/Sticky_Jams_1_1.jpg?v=1763836409&width=600",
+              "alt": "Sticky Jams product on white background",
+              "caption": "white product"
+            }
+          ]
+        },
+        "notes": {
+          "title": "Sports notes",
+          "time": "Cam request",
+          "paragraphs": [
+            "Shoutout stickyjams.net all over the site, but keep the version ledger readable.",
+            "The dial stays the scoreboard: @Eileen owns this version, and future @Eileen requests overwrite this slot."
+          ],
+          "links": [
+            {
+              "label": "Sticky Jams",
+              "href": "https://stickyjams.net"
+            },
+            {
+              "label": "All products",
+              "href": "https://stickyjams.net/collections/all"
+            }
+          ],
+          "images": [
+            {
+              "src": "https://stickyjams.net/cdn/shop/files/Red_Jam.png?v=1779377927&width=800",
+              "alt": "Red Sticky Jams product",
+              "caption": "red jam"
+            },
+            {
+              "src": "https://stickyjams.net/cdn/shop/files/ChatGPT_Image_May_9_2026_11_25_43_PM.png?v=1778385420&width=800",
+              "alt": "Sticky Jams shirt",
+              "caption": "shirt"
+            }
+          ]
+        }
       }
     },
     {
@@ -51,6 +275,118 @@
       "treatment": {
         "tone": "botanical",
         "imageDensity": "normal"
+      },
+      "theme": {
+        "flavor": "generated",
+        "accent": "#178c3b",
+        "background": "#f2ffe8",
+        "text": "#14351d",
+        "muted": "rgba(20, 53, 29, 0.58)",
+        "rule": "#8fd18b",
+        "link": "#0b6c2d",
+        "imageFilter": "saturate(1.35) hue-rotate(28deg) contrast(1.04)"
+      },
+      "content": {
+        "home": {
+          "name": "Greenman",
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "GitHub",
+              "href": "https://github.com/perrinmyerson"
+            },
+            {
+              "label": "CRISPR",
+              "href": "https://www.lizardoverthrow.com"
+            }
+          ],
+          "main": [
+            "This version goes green and funky: garden logic, mossy links, chlorophyll in the margins, and a homepage that feels like it learned photosynthesis from a terminal.",
+            "Still plain. Still white at the bones. But the signal is growing leaves through the grid."
+          ],
+          "quote": "Make it green enough to notice, weird enough to remember."
+        },
+        "about": {
+          "title": "Green About",
+          "time": "Funky version",
+          "paragraphs": [
+            "@Greenman asked for green and funky, so this version turns the site into a small botanical machine.",
+            "Climate, genetics, and AI are still here, but now they sit under a canopy of strange little visual decisions."
+          ],
+          "images": [
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg/960px-The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg",
+              "alt": "Hieronymus Bosch, The Garden of Earthly Delights",
+              "caption": "garden signal"
+            },
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Bosch_-_Haywain_Triptych.jpg/960px-Bosch_-_Haywain_Triptych.jpg",
+              "alt": "Hieronymus Bosch, The Haywain Triptych",
+              "caption": "green cart"
+            },
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Jheronimus_Bosch_050.jpg/960px-Jheronimus_Bosch_050.jpg",
+              "alt": "Hieronymus Bosch painting detail",
+              "caption": "leaf detail"
+            }
+          ]
+        },
+        "timeline": {
+          "title": "Green timeline",
+          "time": "New growth",
+          "items": [
+            {
+              "label": "Feedback sprouted",
+              "meta": "signal"
+            },
+            {
+              "label": "Version grew a green skin",
+              "meta": "merge"
+            },
+            {
+              "label": "Dial branch stays clickable",
+              "meta": "live"
+            }
+          ],
+          "paragraphs": [
+            "The best version history should feel like rings in a tree: one contributor, one visible growth layer, always reachable from the top-right handle."
+          ],
+          "images": [
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/%27The_Temptation_of_Saint_Anthony%27_by_Hieronymus_Bosch%2C_Nelson-Atkins_Museum.jpg/960px-%27The_Temptation_of_Saint_Anthony%27_by_Hieronymus_Bosch%2C_Nelson-Atkins_Museum.jpg",
+              "alt": "Hieronymus Bosch, The Temptation of Saint Anthony",
+              "caption": "green temptation"
+            }
+          ]
+        },
+        "notes": {
+          "title": "Funky notes",
+          "time": "Greenman request",
+          "paragraphs": [
+            "A page can stay basic while still behaving strangely. The trick is to let the version data carry the personality.",
+            "Future chaos generations should be more radical than this one, but this version proves that the dial can preserve the personality instead of pretending every branch is the same."
+          ],
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "Version workflow",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
+            }
+          ],
+          "images": [
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Hieronymus_Bosch_-_Death_and_the_Miser_-_Google_Art_Project.jpg/960px-Hieronymus_Bosch_-_Death_and_the_Miser_-_Google_Art_Project.jpg",
+              "alt": "Hieronymus Bosch, Death and the Miser",
+              "caption": "moss room"
+            }
+          ]
+        }
       }
     }
   ],

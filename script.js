@@ -3792,12 +3792,12 @@ var panels = Array.from(document.querySelectorAll(".slide-panel"));
 var slideNames = panels.map((panel) => panel.getAttribute("aria-label") || "");
 var track = document.querySelector(".slide-track");
 var tabs = Array.from(document.querySelectorAll("[data-slide]"));
-var revealLinks = Array.from(document.querySelectorAll(".reveal-link"));
 var versionSwitcher = document.querySelector("[data-version-switcher]");
 var versionHandle = document.querySelector("[data-version-handle]");
 var versionDial = document.querySelector("[data-version-dial]");
 var versionList = document.querySelector("#version-list");
 var signalLog = document.querySelector("#signal-log");
+var generationConsole = document.querySelector("#generation-console");
 var feedbackForm = document.querySelector("#feedback-form");
 var feedbackHandle = document.querySelector("#feedback-handle");
 var feedbackSection = document.querySelector("#feedback-section");
@@ -3810,6 +3810,15 @@ var AUTOMERGE_KEY = "perrin-site-automerge-v1";
 var JSON_KEY = "perrin-site-lineage-v1";
 var VISITOR_COOKIE = "perrin_site_visitor";
 var BASE_VERSION_ID = "v1";
+var POLL_INTERVAL_MS = 5e3;
+var POLL_ATTEMPTS = 18;
+var STATUS_ORDER = ["queued", "generating", "merged"];
+var STATUS_LABELS = {
+  queued: "sent",
+  generating: "generating",
+  merged: "merged/live",
+  failed: "failed"
+};
 var LEGACY_VERSION_IDS = /* @__PURE__ */ new Set([
   "base",
   "rami-scroll",
@@ -3818,40 +3827,8 @@ var LEGACY_VERSION_IDS = /* @__PURE__ */ new Set([
   "benji-feedback-final",
   "benji-signal-loop-final"
 ]);
-var STICKY_JAMS_URL = "https://stickyjams.net";
-var STICKY_JAMS_IMAGES = [
-  {
-    src: "https://stickyjams.net/cdn/shop/files/Football_Speaker.png?v=1779377751&width=1200",
-    alt: "Sticky Jams football helmet speaker",
-    caption: "football drop"
-  },
-  {
-    src: "https://stickyjams.net/cdn/shop/files/Football_Speaker_Side.png?v=1779377766&width=1400",
-    alt: "Sticky Jams speaker side view",
-    caption: "helmet speaker"
-  },
-  {
-    src: "https://stickyjams.net/cdn/shop/files/Red_StickyJam_With_Speaker.png?v=1779377739&width=1200",
-    alt: "Sticky Jams wrestling headgear speaker",
-    caption: "wrestling pouch"
-  },
-  {
-    src: "https://stickyjams.net/cdn/shop/files/Sticky_Jams_1_1.jpg?v=1763836409&width=600",
-    alt: "Sticky Jams product on a white background",
-    caption: "headgear audio"
-  },
-  {
-    src: "https://stickyjams.net/cdn/shop/files/ChatGPT_Image_May_9_2026_11_25_43_PM.png?v=1778385420&width=800",
-    alt: "Sticky Jams shirt",
-    caption: "sticky shirt"
-  },
-  {
-    src: "https://stickyjams.net/cdn/shop/files/Red_Jam.png?v=1779377927&width=800",
-    alt: "Red Sticky Jams product",
-    caption: "red jam"
-  }
-];
 var baseVariantSnapshot = null;
+var activePollTimer = null;
 var seedLineage = {
   currentVersion: BASE_VERSION_ID,
   versions: [
@@ -4087,17 +4064,7 @@ function normalizeHandle(value) {
   }
   return cleaned.startsWith("@") ? cleaned.slice(0, 32) : `@${cleaned.slice(0, 31)}`;
 }
-function inferTreatment(text, section) {
-  const haystack = `${section} ${text}`.toLowerCase();
-  const tone = haystack.match(
-    /stickyjams|sticky jams|cam scoglio|football|wrestling|sports|helmet/
-  ) ? "sport" : haystack.match(/quiet|minimal|plain|simple|less|fewer/) ? "plain" : haystack.match(/green|biology|climate|plant|garden|nature/) ? "botanical" : haystack.match(/dark|night|black|moody/) ? "ink" : haystack.match(/image|painting|gallery|visual|bosch/) ? "gallery" : "plain";
-  const imageDensity = haystack.match(/less|fewer|no image|minimal/) ? "low" : haystack.match(
-    /more image|many image|gallery|visual|bosch|stickyjams|sticky jams|football|wrestling|sports/
-  ) ? "high" : "normal";
-  return { tone, imageDensity };
-}
-function signalToVersion(signal, status = "pending") {
+function signalToVersion(signal, status = "queued") {
   return {
     id: signal.versionId,
     label: `${signal.section} variation`,
@@ -4106,13 +4073,41 @@ function signalToVersion(signal, status = "pending") {
     summary: summarize(signal.text),
     source: signal.sourceVersion,
     status,
-    treatment: inferTreatment(signal.text, signal.section)
+    treatment: { tone: "generated", imageDensity: "normal" }
   };
+}
+function setThemeProperty(name, value) {
+  const property = `--version-${name}`;
+  if (value) {
+    document.documentElement.style.setProperty(property, value);
+  } else {
+    document.documentElement.style.removeProperty(property);
+  }
 }
 function applyVersionTreatment(version) {
   const treatment = version?.treatment || {};
-  document.documentElement.dataset.versionTone = treatment.tone || "plain";
-  document.documentElement.dataset.imageDensity = treatment.imageDensity || "normal";
+  const theme = version?.theme || {};
+  document.documentElement.dataset.versionTone = theme.tone || treatment.tone || "plain";
+  document.documentElement.dataset.imageDensity = theme.imageDensity || treatment.imageDensity || "normal";
+  document.documentElement.dataset.versionFlavor = version?.id === BASE_VERSION_ID ? "base" : theme.flavor || (version?.content ? "generated" : "pending");
+  ["accent", "background", "text", "muted", "rule", "link", "image-filter"].forEach(
+    (name) => setThemeProperty(name, "")
+  );
+  setThemeProperty("accent", theme.accent);
+  setThemeProperty("background", theme.background);
+  setThemeProperty("text", theme.text);
+  setThemeProperty("muted", theme.muted);
+  setThemeProperty("rule", theme.rule);
+  setThemeProperty("link", theme.link);
+  setThemeProperty("image-filter", theme.imageFilter);
+  if (theme.fontFamily) {
+    document.documentElement.style.setProperty(
+      "--version-font-family",
+      theme.fontFamily
+    );
+  } else {
+    document.documentElement.style.removeProperty("--version-font-family");
+  }
 }
 function variantTargets() {
   return {
@@ -4140,15 +4135,11 @@ function captureBaseVariant() {
         element?.innerHTML || ""
       ])
     ),
-    images: Array.from(
-      document.querySelectorAll(".image-tile img, .wide-image img")
-    ).map((image) => ({
-      src: image.getAttribute("src"),
-      alt: image.getAttribute("alt")
-    })),
-    captions: Array.from(
-      document.querySelectorAll(".image-tile figcaption, .wide-image figcaption")
-    ).map((caption) => caption.innerHTML)
+    articles: {
+      about: document.querySelector("#about .benji-article")?.innerHTML || "",
+      timeline: document.querySelector("#timeline .benji-article")?.innerHTML || "",
+      notes: document.querySelector("#notes .benji-article")?.innerHTML || ""
+    }
   };
 }
 function restoreBaseVariant() {
@@ -4158,22 +4149,11 @@ function restoreBaseVariant() {
     if (element) element.innerHTML = baseVariantSnapshot.html[key];
   });
   document.querySelectorAll(".version-note").forEach((note) => note.remove());
-  document.documentElement.dataset.versionFlavor = "base";
+  document.documentElement.removeAttribute("data-active-version-id");
   document.body.classList.remove("version-swap");
-  Array.from(document.querySelectorAll(".image-tile img, .wide-image img")).forEach(
-    (image, index) => {
-      const baseImage = baseVariantSnapshot.images[index];
-      if (!baseImage) return;
-      image.setAttribute("src", baseImage.src);
-      image.setAttribute("alt", baseImage.alt);
-    }
-  );
-  Array.from(
-    document.querySelectorAll(".image-tile figcaption, .wide-image figcaption")
-  ).forEach((caption, index) => {
-    if (baseVariantSnapshot.captions[index] !== void 0) {
-      caption.innerHTML = baseVariantSnapshot.captions[index];
-    }
+  Object.entries(baseVariantSnapshot.articles).forEach(([id, html]) => {
+    const article = document.querySelector(`#${id} .benji-article`);
+    if (article) article.innerHTML = html;
   });
 }
 function signalForVersion(version, lineage) {
@@ -4192,39 +4172,6 @@ function versionIndex(version, lineage) {
     (lineage.versions || []).findIndex((item) => item.id === version?.id)
   );
 }
-function hasAny(haystack, needles) {
-  return needles.some((needle) => haystack.includes(needle));
-}
-function variantKind(version, request) {
-  const haystack = `${version?.id || ""} ${version?.contributor || ""} ${version?.summary || ""} ${request}`.toLowerCase();
-  if (hasAny(haystack, [
-    "greenman",
-    "green",
-    "funky",
-    "botanical",
-    "garden",
-    "plant"
-  ])) {
-    return "green-funky";
-  }
-  if (hasAny(haystack, [
-    "stickyjams",
-    "sticky jams",
-    "cam scoglio",
-    "football",
-    "wrestling",
-    "sports"
-  ])) {
-    return "sticky-sports";
-  }
-  if (hasAny(haystack, ["vercel", "backend", "automerge", "live browser"])) {
-    return "live-loop";
-  }
-  if (hasAny(haystack, ["bosch", "gallery", "image", "painting"])) {
-    return "gallery";
-  }
-  return "generic";
-}
 function insertVersionNote(article, version, lineage, request) {
   const header = article?.querySelector(".article-header");
   if (!header || !version) return;
@@ -4241,154 +4188,104 @@ function insertAllVersionNotes(version, lineage, request) {
     insertVersionNote(article, version, lineage, request);
   });
 }
-function setVariantImage(index, imageData) {
-  const image = document.querySelectorAll(".image-tile img, .wide-image img")[index];
-  const caption = document.querySelectorAll(
-    ".image-tile figcaption, .wide-image figcaption"
-  )[index];
-  if (!image || !imageData) return;
-  image.setAttribute("src", imageData.src);
-  image.setAttribute("alt", imageData.alt);
-  if (caption) caption.textContent = imageData.caption;
+function renderLinks(links = []) {
+  return links.filter((link) => link?.label && link?.href).map(
+    (link) => `<a class="basic-link" href="${escapeHtml(link.href)}">${escapeHtml(
+      link.label
+    )}</a>`
+  ).join("");
 }
-function applyStickySportsProjection(version, lineage, request) {
+function renderParagraphs(paragraphs = []) {
+  return paragraphs.filter(Boolean).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+}
+function renderImages(images = []) {
+  const cleanImages = images.filter((image) => image?.src);
+  if (!cleanImages.length) return "";
+  const rowClass = cleanImages.length === 2 ? "image-row two-up" : "image-row";
+  return `
+        <div class="${rowClass}" aria-label="Generated image studies">
+            ${cleanImages.slice(0, 6).map(
+    (image) => `
+                        <figure class="image-tile">
+                            <img
+                                src="${escapeHtml(image.src)}"
+                                alt="${escapeHtml(image.alt || image.caption || "")}"
+                            />
+                            <figcaption>${escapeHtml(image.caption || "")}</figcaption>
+                        </figure>
+                    `
+  ).join("")}
+        </div>
+    `;
+}
+function renderTimelineItems(items = []) {
+  if (!items.length) return "";
+  return `
+        <ul class="writing-list">
+            ${items.map(
+    (item) => `
+                        <li>
+                            <span>${escapeHtml(item.label || item.text || "")}</span>
+                            <span>${escapeHtml(item.meta || item.time || "")}</span>
+                        </li>
+                    `
+  ).join("")}
+        </ul>
+    `;
+}
+function articleHtml(page = {}, fallbackTitle = "Generated") {
+  return `
+        <header class="article-header">
+            <h1>${escapeHtml(page.title || fallbackTitle)}</h1>
+            <time>${escapeHtml(page.time || "Generated version")}</time>
+        </header>
+        ${renderTimelineItems(page.items || [])}
+        ${renderParagraphs(page.paragraphs || [])}
+        ${renderImages(page.images || [])}
+        ${page.links?.length ? `<nav class="article-links" aria-label="Links">${renderLinks(
+    page.links
+  )}</nav>` : ""}
+    `;
+}
+function applyGeneratedContent(version, lineage, request) {
+  const content = version.content || {};
   const targets = variantTargets();
-  if (targets.homeName) targets.homeName.textContent = "Cam Scoglio";
-  if (targets.homeLinks) {
-    targets.homeLinks.innerHTML += `
-            <li><a href="${STICKY_JAMS_URL}">Sticky Jams</a></li>
-        `;
+  if (targets.homeName && content.home?.name) {
+    targets.homeName.textContent = content.home.name;
   }
-  if (targets.homeMain) {
-    targets.homeMain.innerHTML = `
-            Cam Scoglio is routing this version through
-            <a href="${STICKY_JAMS_URL}">stickyjams.net</a>.
-            Football helmet audio, wrestling-room energy, and sports gear on
-            white backgrounds.
-            <br /><br />
-            Train loud. Win quiet.
-        `;
+  if (targets.homeLinks && content.home?.links?.length) {
+    targets.homeLinks.innerHTML = content.home.links.filter((link) => link?.label && link?.href).map(
+      (link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(
+        link.label
+      )}</a></li>`
+    ).join("");
   }
-  if (targets.quote) {
-    targets.quote.textContent = '"Music in your headgear. Music in your helmet." - Sticky Jams';
+  if (targets.homeMain && content.home?.main?.length) {
+    targets.homeMain.innerHTML = content.home.main.map((paragraph) => escapeHtml(paragraph)).join("<br /><br />");
   }
-  if (targets.aboutTitle) targets.aboutTitle.textContent = "About Cam";
-  if (targets.aboutTime) targets.aboutTime.textContent = "Sticky Jams version";
-  if (targets.timelineTitle) targets.timelineTitle.textContent = "Sports timeline";
-  if (targets.timelineTime) targets.timelineTime.textContent = "Sticky version";
-  if (targets.timelineList) {
-    targets.timelineList.innerHTML = `
-            <li><span>Cam Scoglio and Sticky Jams</span><span>now</span></li>
-            <li><span>Football, wrestling, jiu-jitsu</span><span>drop list</span></li>
-            <li><span>Headgear speakers and helmet audio</span><span>gear</span></li>
-        `;
+  if (targets.quote && content.home?.quote) {
+    targets.quote.textContent = content.home.quote;
   }
-  if (targets.notesTitle) targets.notesTitle.textContent = "Sports notes";
-  if (targets.notesTime) targets.notesTime.textContent = "Train loud, win quiet";
-  if (targets.articleLinks) {
-    targets.articleLinks.innerHTML = `
-            <a class="basic-link" href="${STICKY_JAMS_URL}">Sticky Jams</a>
-            <a class="basic-link" href="${STICKY_JAMS_URL}/collections/all">Products</a>
-            <a class="basic-link" href="mailto:perrinmyerson@gmail.com">Email</a>
-        `;
-  }
-  STICKY_JAMS_IMAGES.forEach((imageData, index) => {
-    setVariantImage(index, imageData);
+  [
+    ["about", content.about, "About"],
+    ["timeline", content.timeline, "Timeline"],
+    ["notes", content.notes, "Notes"]
+  ].forEach(([id, page, fallbackTitle]) => {
+    if (!page) return;
+    const article = document.querySelector(`#${id} .benji-article`);
+    if (article) article.innerHTML = articleHtml(page, fallbackTitle);
   });
-  insertAllVersionNotes(version, lineage, request);
-}
-function applyLiveLoopProjection(version, lineage, request) {
-  const targets = variantTargets();
-  if (targets.homeName) targets.homeName.textContent = "Perrin Myerson / live loop";
-  if (targets.homeMain) {
-    targets.homeMain.innerHTML = `
-            This version exists to prove the feedback loop:
-            GitHub Pages sends a signal to Vercel, Vercel dispatches GitHub
-            Actions, and the site records a new visible version.
-            <br /><br />
-            The page stays intentionally plain so the mechanism is easy to see.
-        `;
-  }
-  if (targets.aboutTitle) targets.aboutTitle.textContent = "About this loop";
-  if (targets.timelineTitle) targets.timelineTitle.textContent = "Signal path";
-  if (targets.timelineList) {
-    targets.timelineList.innerHTML = `
-            <li><span>Feedback form submitted</span><span>GitHub Pages</span></li>
-            <li><span>Signal accepted</span><span>Vercel API</span></li>
-            <li><span>Version merged</span><span>GitHub Actions</span></li>
-        `;
-  }
-  if (targets.notesTitle) targets.notesTitle.textContent = "Backend notes";
-  insertAllVersionNotes(version, lineage, request);
-}
-function applyGreenFunkyProjection(version, lineage, request) {
-  const targets = variantTargets();
-  if (targets.homeName) targets.homeName.textContent = "Greenman";
-  if (targets.homeMain) {
-    targets.homeMain.innerHTML = `
-            This version goes green and funky: garden logic, mossy links,
-            and a little unruly signal from ${escapeHtml(version.contributor)}.
-            <br /><br />
-            The site is still plain, but it has chlorophyll now.
-        `;
-  }
-  if (targets.quote) {
-    targets.quote.textContent = '"Make it green enough to notice, weird enough to remember."';
-  }
-  if (targets.aboutTitle) targets.aboutTitle.textContent = "Green About";
-  if (targets.aboutTime) targets.aboutTime.textContent = "Funky version";
-  if (targets.timelineTitle) targets.timelineTitle.textContent = "Green timeline";
-  if (targets.timelineTime) targets.timelineTime.textContent = "New growth";
-  if (targets.timelineList) {
-    targets.timelineList.innerHTML = `
-            <li><span>Feedback sprouted</span><span>signal</span></li>
-            <li><span>Version grew a green skin</span><span>merge</span></li>
-            <li><span>Dial branch stays clickable</span><span>live</span></li>
-        `;
-  }
-  if (targets.notesTitle) targets.notesTitle.textContent = "Funky notes";
-  if (targets.notesTime) targets.notesTime.textContent = "Greenman request";
-  insertAllVersionNotes(version, lineage, request);
-}
-function applyGenericProjection(version, lineage, request) {
-  const targets = variantTargets();
-  if (targets.homeName) {
-    targets.homeName.textContent = `${targets.homeName.textContent} / ${version.contributor}`;
-  }
-  if (targets.homeMain) {
-    targets.homeMain.innerHTML += `
-            <br /><br />
-            <span class="version-inline-note">Version request: ${escapeHtml(
-      summarize(request)
-    )}</span>
-        `;
-  }
   insertAllVersionNotes(version, lineage, request);
 }
 function applyVersionProjection(version, lineage) {
   restoreBaseVariant();
   if (!version || version.id === BASE_VERSION_ID) return;
   const request = requestForVersion(version, lineage);
-  const kind = variantKind(version, request);
-  document.documentElement.dataset.versionFlavor = kind;
   document.documentElement.dataset.activeVersionId = version.id;
-  if (kind === "sticky-sports") {
-    document.documentElement.dataset.versionTone = "sport";
-    document.documentElement.dataset.imageDensity = "high";
-    applyStickySportsProjection(version, lineage, request);
-  } else if (kind === "green-funky") {
-    document.documentElement.dataset.versionTone = "botanical";
-    document.documentElement.dataset.imageDensity = "high";
-    applyGreenFunkyProjection(version, lineage, request);
-  } else if (kind === "live-loop") {
-    document.documentElement.dataset.versionTone = "plain";
-    document.documentElement.dataset.imageDensity = "normal";
-    applyLiveLoopProjection(version, lineage, request);
-  } else if (kind === "gallery") {
-    document.documentElement.dataset.imageDensity = "high";
-    applyGenericProjection(version, lineage, request);
+  if (version.content) {
+    applyGeneratedContent(version, lineage, request);
   } else {
-    applyGenericProjection(version, lineage, request);
+    insertAllVersionNotes(version, lineage, request);
   }
   window.requestAnimationFrame(() => {
     document.body.classList.add("version-swap");
@@ -4431,18 +4328,78 @@ function renderVersionDial(lineage, activeVersion) {
             `;
   }).join("");
 }
+function signalStatus(signal, lineage) {
+  if (signal.status === "failed") return "failed";
+  const version = (lineage.versions || []).find(
+    (item) => item.id === signal.versionId
+  );
+  if (version?.status === "merged" || signal.status === "merged") return "merged";
+  if (signal.status === "generating" || signal.status === "queued") {
+    return signal.status;
+  }
+  return "queued";
+}
+function renderStatusSteps(status) {
+  if (status === "failed") {
+    return `<div class="status-steps is-failed"><span>failed</span></div>`;
+  }
+  const activeIndex2 = Math.max(0, STATUS_ORDER.indexOf(status));
+  return `
+        <div class="status-steps">
+            ${STATUS_ORDER.map((step, index) => {
+    const isDone = index < activeIndex2;
+    const isActive = index === activeIndex2;
+    return `<span class="${isDone ? "is-done" : ""} ${isActive ? "is-active" : ""}">${STATUS_LABELS[step]}</span>`;
+  }).join("")}
+        </div>
+    `;
+}
+function externalLink(url, label) {
+  return url ? `<a class="basic-link" href="${escapeHtml(url)}">${escapeHtml(label)}</a>` : "";
+}
+function renderGenerationConsole(lineage) {
+  if (!generationConsole) return;
+  const latest = [...lineage.signals || []].reverse()[0];
+  if (!latest) {
+    generationConsole.innerHTML = `
+            <div class="generation-heading">Automatic chaos</div>
+            <p>No live generation signals yet.</p>
+        `;
+    return;
+  }
+  const status = signalStatus(latest, lineage);
+  const links = [
+    externalLink(latest.runUrl, "workflow"),
+    externalLink(latest.prUrl, "pull request"),
+    externalLink(latest.statusUrl, "runs")
+  ].filter(Boolean);
+  generationConsole.innerHTML = `
+        <div class="generation-heading">Automatic chaos</div>
+        ${renderStatusSteps(status)}
+        <p>
+            ${escapeHtml(latest.handle)} -> ${escapeHtml(latest.section)}:
+            ${escapeHtml(summarize(latest.text))}
+        </p>
+        ${links.length ? `<div class="generation-links">${links.join("")}</div>` : ""}
+    `;
+}
 function renderLineage() {
   const lineage = getPlainLineage();
   const activeVersion = currentVersion(lineage);
   renderContributorHandle(lineage);
   renderVersionDial(lineage, activeVersion);
+  renderGenerationConsole(lineage);
   if (automergeStatus) {
     automergeStatus.textContent = automergeReady ? "Automerge local merge" : "Automerge initializing";
   }
   if (versionList) {
     versionList.innerHTML = lineage.versions.map((version, index) => {
       const active = version.id === activeVersion?.id ? ' aria-current="page"' : "";
-      const status = version.status ? ` \xB7 ${version.status}` : "";
+      const status = version.status ? ` \xB7 ${STATUS_LABELS[version.status] || version.status}` : "";
+      const links = [
+        externalLink(version.prUrl, "PR"),
+        externalLink(version.runUrl, "run")
+      ].filter(Boolean);
       return `
                     <li>
                         <div class="version-row">
@@ -4455,7 +4412,7 @@ function renderLineage() {
                         </div>
                         <p>${escapeHtml(version.summary)} \xB7 ${escapeHtml(
         formatDate(version.createdAt)
-      )}${escapeHtml(status)}</p>
+      )}${escapeHtml(status)}${links.length ? ` <span class="version-links">${links.join(" ")}</span>` : ""}</p>
                     </li>
                 `;
     }).join("");
@@ -4466,7 +4423,10 @@ function renderLineage() {
       (signal) => `
                         <li>${escapeHtml(signal.handle)} -> ${escapeHtml(
         signal.section
-      )}: ${escapeHtml(summarize(signal.text))}</li>
+      )}: ${escapeHtml(summarize(signal.text))}
+                        <span>${escapeHtml(
+        STATUS_LABELS[signalStatus(signal, lineage)] || signalStatus(signal, lineage)
+      )}</span></li>
                     `
     ).join("")}</ol>` : "<span>No signals yet.</span>";
   }
@@ -4487,7 +4447,7 @@ async function initLineage() {
   const savedAutomerge = localStorage.getItem(AUTOMERGE_KEY);
   const savedAutoPlain = savedAutomerge ? Automerge2.toJS(Automerge2.load(base64ToBytes(savedAutomerge))) : null;
   lineageDoc = Automerge2.from(
-    mergeLineages(seedLineage, published, savedPlain, savedAutoPlain)
+    mergeLineages(seedLineage, savedPlain, savedAutoPlain, published)
   );
   automergeReady = true;
   persistLineage();
@@ -4587,24 +4547,32 @@ function findVersionIndexForSignal(versions, signal) {
     return version.id === signal.versionId || version.id === stableId || key && version.id !== BASE_VERSION_ID && contributorKey(version.contributor) === key;
   });
 }
-function addSignal(signal, status) {
+function addSignal(signal, status, metadata = {}) {
   mutateLineage((lineage) => {
     const existingSignal = lineage.signals.find((item) => item.id === signal.id);
     const existingVersionIndex = findVersionIndexForSignal(
       lineage.versions,
       signal
     );
+    const nextSignal = {
+      ...signal,
+      ...metadata,
+      status,
+      versionId: normalizeVersionId(
+        metadata.versionId || signal.versionId,
+        signal.handle
+      )
+    };
     const nextVersion = signalToVersion(
-      {
-        ...signal,
-        versionId: normalizeVersionId(signal.versionId, signal.handle)
-      },
+      nextSignal,
       status
     );
     if (existingSignal) {
-      existingSignal.status = status;
+      Object.entries(nextSignal).forEach(([key, value]) => {
+        if (value !== void 0 && value !== "") existingSignal[key] = value;
+      });
     } else {
-      lineage.signals.push({ ...signal, status, versionId: nextVersion.id });
+      lineage.signals.push(nextSignal);
     }
     if (existingVersionIndex !== -1) {
       const existingVersion = lineage.versions[existingVersionIndex];
@@ -4614,7 +4582,7 @@ function addSignal(signal, status) {
     } else {
       lineage.versions.push(nextVersion);
     }
-    lineage.currentVersion = nextVersion.id;
+    if (status !== "failed") lineage.currentVersion = nextVersion.id;
   });
 }
 async function submitSignal(signal) {
@@ -4628,6 +4596,42 @@ async function submitSignal(signal) {
   }
   return response.json();
 }
+function mergePublishedLineage(published) {
+  const current = getPlainLineage();
+  lineageDoc = Automerge2.from(mergeLineages(seedLineage, current, published));
+  automergeReady = true;
+  persistLineage();
+  renderLineage();
+}
+function stopPolling() {
+  if (!activePollTimer) return;
+  window.clearTimeout(activePollTimer);
+  activePollTimer = null;
+}
+function pollForSignal(signal, attempt = 0) {
+  stopPolling();
+  activePollTimer = window.setTimeout(async () => {
+    const published = await fetchPublishedLineage();
+    if (published) {
+      mergePublishedLineage(published);
+      const plain = getPlainLineage();
+      const publishedSignal = (plain.signals || []).find(
+        (item) => item.id === signal.id
+      );
+      const status = publishedSignal ? signalStatus(publishedSignal, plain) : "generating";
+      if (status === "merged" || status === "failed") {
+        if (status === "merged") selectVersion(signal.versionId);
+        stopPolling();
+        return;
+      }
+    }
+    if (attempt + 1 < POLL_ATTEMPTS) {
+      pollForSignal(signal, attempt + 1);
+    } else {
+      stopPolling();
+    }
+  }, attempt === 0 ? 1500 : POLL_INTERVAL_MS);
+}
 panels.forEach((panel) => {
   panel.addEventListener("wheel", onWheel, { passive: true });
   panel.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -4636,13 +4640,24 @@ panels.forEach((panel) => {
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => setActiveTab(Number(tab.dataset.slide)));
 });
-revealLinks.forEach((link) => {
-  link.addEventListener("mouseenter", () => fitRevealCard(link));
-  link.addEventListener("focus", () => fitRevealCard(link));
-  link.addEventListener("touchstart", () => fitRevealCard(link), {
-    passive: true
-  });
+document.addEventListener("mouseover", (event) => {
+  const link = event.target.closest?.(".reveal-link");
+  if (link) fitRevealCard(link);
 });
+document.addEventListener("focusin", (event) => {
+  const link = event.target.closest?.(".reveal-link");
+  if (link) fitRevealCard(link);
+});
+document.addEventListener(
+  "touchstart",
+  (event) => {
+    const link = event.target.closest?.(".reveal-link");
+    if (link) fitRevealCard(link);
+  },
+  {
+    passive: true
+  }
+);
 versionHandle?.addEventListener("click", (event) => {
   event.stopPropagation();
   setDialOpen(!versionSwitcher?.classList.contains("is-open"));
@@ -4689,12 +4704,18 @@ feedbackForm?.addEventListener("submit", async (event) => {
     url: window.location.href,
     createdAt: (/* @__PURE__ */ new Date()).toISOString()
   };
-  addSignal(signal, "pending");
+  addSignal(signal, "queued");
   try {
-    await submitSignal(signal);
-    addSignal(signal, "sent");
-  } catch {
-    addSignal(signal, "local-only");
+    const result = await submitSignal(signal);
+    addSignal(signal, "generating", {
+      statusUrl: result.statusUrl,
+      versionId: result.versionId || signal.versionId
+    });
+    pollForSignal({ ...signal, versionId: result.versionId || signal.versionId });
+  } catch (error) {
+    addSignal(signal, "failed", {
+      message: error.message || "Signal endpoint failed."
+    });
   }
   feedbackForm.reset();
 });
