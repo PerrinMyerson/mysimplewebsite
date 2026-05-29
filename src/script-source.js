@@ -544,6 +544,19 @@ function variantKind(version, request) {
 
     if (
         hasAny(haystack, [
+            "greenman",
+            "green",
+            "funky",
+            "botanical",
+            "garden",
+            "plant",
+        ])
+    ) {
+        return "green-funky";
+    }
+
+    if (
+        hasAny(haystack, [
             "stickyjams",
             "sticky jams",
             "cam scoglio",
@@ -675,6 +688,39 @@ function applyLiveLoopProjection(version, lineage, request) {
     insertAllVersionNotes(version, lineage, request);
 }
 
+function applyGreenFunkyProjection(version, lineage, request) {
+    const targets = variantTargets();
+
+    if (targets.homeName) targets.homeName.textContent = "Greenman";
+    if (targets.homeMain) {
+        targets.homeMain.innerHTML = `
+            This version goes green and funky: garden logic, mossy links,
+            and a little unruly signal from ${escapeHtml(version.contributor)}.
+            <br /><br />
+            The site is still plain, but it has chlorophyll now.
+        `;
+    }
+    if (targets.quote) {
+        targets.quote.textContent =
+            '"Make it green enough to notice, weird enough to remember."';
+    }
+    if (targets.aboutTitle) targets.aboutTitle.textContent = "Green About";
+    if (targets.aboutTime) targets.aboutTime.textContent = "Funky version";
+    if (targets.timelineTitle) targets.timelineTitle.textContent = "Green timeline";
+    if (targets.timelineTime) targets.timelineTime.textContent = "New growth";
+    if (targets.timelineList) {
+        targets.timelineList.innerHTML = `
+            <li><span>Feedback sprouted</span><span>signal</span></li>
+            <li><span>Version grew a green skin</span><span>merge</span></li>
+            <li><span>Dial branch stays clickable</span><span>live</span></li>
+        `;
+    }
+    if (targets.notesTitle) targets.notesTitle.textContent = "Funky notes";
+    if (targets.notesTime) targets.notesTime.textContent = "Greenman request";
+
+    insertAllVersionNotes(version, lineage, request);
+}
+
 function applyGenericProjection(version, lineage, request) {
     const targets = variantTargets();
 
@@ -707,6 +753,10 @@ function applyVersionProjection(version, lineage) {
         document.documentElement.dataset.versionTone = "sport";
         document.documentElement.dataset.imageDensity = "high";
         applyStickySportsProjection(version, lineage, request);
+    } else if (kind === "green-funky") {
+        document.documentElement.dataset.versionTone = "botanical";
+        document.documentElement.dataset.imageDensity = "high";
+        applyGreenFunkyProjection(version, lineage, request);
     } else if (kind === "live-loop") {
         document.documentElement.dataset.versionTone = "plain";
         document.documentElement.dataset.imageDensity = "normal";
@@ -739,8 +789,14 @@ function renderVersionDial(lineage, activeVersion) {
 
     versionDial.innerHTML = lineage.versions
         .map((version, index) => {
-            const x = -112 - Math.min(index, 5) * 14;
-            const y = 52 + index * 44;
+            const total = Math.max(lineage.versions.length - 1, 1);
+            const spread = Math.min(76, 22 * total);
+            const angle = 108 + (spread * index) / total;
+            const radius = 114 + index * 12;
+            const radians = (angle * Math.PI) / 180;
+            const x = Math.round(Math.cos(radians) * radius - 50);
+            const y = Math.round(Math.sin(radians) * radius + 18);
+            const rotation = Math.round(-18 + (30 * index) / total);
             const active = version.id === activeVersion?.id;
 
             return `
@@ -750,7 +806,9 @@ function renderVersionDial(lineage, activeVersion) {
                     data-version-link="${escapeHtml(version.id)}"
                     aria-current="${active ? "true" : "false"}"
                     title="${escapeHtml(version.label)} by ${escapeHtml(version.contributor)}"
-                    style="--dial-x: ${x}px; --dial-y: ${y}px; --dial-delay: ${index * 34}ms"
+                    style="--dial-x: ${x}px; --dial-y: ${y}px; --dial-rotation: ${rotation}deg; --dial-delay: ${
+                      index * 34
+                  }ms"
                 >
                     <span class="version-dial-index">${versionNumber(index)}</span>
                     <span class="version-dial-handle">${escapeHtml(

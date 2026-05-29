@@ -96,3 +96,8 @@ jobs:
 
           gh pr merge "$PR_URL" --squash --auto --delete-branch || \
             gh pr merge "$PR_URL" --squash --delete-branch
+
+      - name: Publish Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
