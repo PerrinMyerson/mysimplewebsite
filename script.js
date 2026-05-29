@@ -4055,7 +4055,13 @@ function mutateLineage(mutator) {
 function currentVersionId() {
   const urlVersion = new URLSearchParams(window.location.search).get("v");
   const requested = urlVersion || document.body.dataset.currentVersion || seedLineage.currentVersion;
-  if (isRemovedVersionId(requested)) return removedVersionFallback(requested);
+  if (isRemovedVersionId(requested)) {
+    const fallback = removedVersionFallback(requested);
+    const url = new URL(window.location.href);
+    url.searchParams.set("v", fallback);
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    return fallback;
+  }
   return LEGACY_VERSION_IDS.has(requested) ? BASE_VERSION_ID : requested;
 }
 function currentVersion(lineage = getPlainLineage()) {
@@ -4082,11 +4088,10 @@ function selectVersion(id) {
 function syncDisplayedVersionUrl(version, lineage) {
   const requested = new URLSearchParams(window.location.search).get("v");
   if (!requested || requested === version?.id) return;
-  const known = (lineage.versions || []).some((item) => item.id === requested);
-  if (!known || LEGACY_VERSION_IDS.has(requested) || isRemovedVersionId(requested)) {
+  if (LEGACY_VERSION_IDS.has(requested) || isRemovedVersionId(requested)) {
     const url = new URL(window.location.href);
     url.searchParams.set("v", version.id);
-    window.history.replaceState({}, "", url);
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
   }
 }
 function setDialOpen(isOpen) {
