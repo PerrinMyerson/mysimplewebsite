@@ -20,6 +20,8 @@ const feedbackHandle = document.querySelector("#feedback-handle");
 const feedbackSection = document.querySelector("#feedback-section");
 const feedbackText = document.querySelector("#feedback-text");
 const automergeStatus = document.querySelector("[data-automerge-status]");
+const VERSION_UI_ENABLED = Boolean(versionSwitcher && versionHandle && versionDial);
+const ANNOTATIONS_ENABLED = false;
 
 const PRODUCTION_SIGNAL_ORIGIN = "https://mysimplewebsite-two.vercel.app";
 const SIGNAL_ENDPOINT =
@@ -117,7 +119,7 @@ const ORG_LINKS = [
     },
     {
         label: "LinkedIn",
-        href: "https://www.linkedin.com/in/perrinm/",
+        href: "https://www.linkedin.com/",
         note: "Visit LinkedIn.",
     },
     {
@@ -179,29 +181,9 @@ const ANNOTATION_RULES = [
         text: "Early Truveta context, separated from the Truveta link so the company card can stay purely navigational.",
     },
     {
-        phrase: "high-acuity calls",
-        title: "Crisis infrastructure",
-        text: "LinkedIn recommendation context names advisory board and training work around high-acuity crisis calls, virtual training, and 988 adoption.",
-    },
-    {
-        phrase: "Pathways Scholar",
-        title: "Apple Pathways",
-        text: "Scholarship signal from the public LinkedIn profile.",
-    },
-    {
-        phrase: "George Scholar",
-        title: "George Scholar",
-        text: "Leadership-oriented scholarship listed on the public LinkedIn profile.",
-    },
-    {
         phrase: "municipal permitting",
         title: "GovGoose wedge",
-        text: "GeekWire described GovGoose as automating city-code, permit, zoning, and submission workflows.",
-    },
-    {
-        phrase: "AlphaFast",
-        title: "Recent research signal",
-        text: "Public LinkedIn activity points to GPU-accelerated MSA construction for high-throughput AlphaFold 3 work.",
+        text: "GovGoose focused on city-code, permit, zoning, and submission workflows for sign companies.",
     },
     {
         phrase: "LLM embedding based recommendation system",
@@ -239,7 +221,7 @@ const ANNOTATION_RULES = [
         text: "Placed third nationally; the competition paid for tuition.",
     },
     {
-        phrase: "era's tour",
+        phrase: "Eras Tour",
         title: "Tour work",
         text: "A tiny design/production side quest from the Eras Tour period.",
     },
@@ -705,6 +687,8 @@ function renumberAnnotations() {
 
 function syncAnnotations() {
     removeAnnotationScaffolding();
+    if (!ANNOTATIONS_ENABLED) return;
+
     liftInlineLinkNotes();
     decorateAnnotationText();
     renumberAnnotations();
@@ -1022,6 +1006,8 @@ function mutateLineage(mutator) {
 }
 
 function currentVersionId() {
+    if (!VERSION_UI_ENABLED) return BASE_VERSION_ID;
+
     const urlVersion = new URLSearchParams(window.location.search).get("v");
     const requested =
         urlVersion || document.body.dataset.currentVersion || seedLineage.currentVersion;
@@ -1056,6 +1042,8 @@ function versionUrl(id) {
 }
 
 function selectVersion(id) {
+    if (!VERSION_UI_ENABLED) return;
+
     const nextId = LEGACY_VERSION_IDS.has(id) ? BASE_VERSION_ID : id;
     const url = new URL(window.location.href);
     url.searchParams.set("v", nextId);
@@ -1424,22 +1412,33 @@ function applyVersionProjection(version, lineage) {
 }
 
 function renderContributorHandle(lineage = getPlainLineage()) {
-    const version = currentVersion(lineage);
+    const version =
+        currentVersion(lineage) ||
+        lineage.versions.find((item) => item.id === BASE_VERSION_ID) ||
+        lineage.versions[0];
 
-    if (!versionHandle || !version) return;
+    if (!version) {
+        decorateOrgLinks();
+        syncAnnotations();
+        return;
+    }
 
     const index = Math.max(versionIndex(version, lineage), 0);
     document.body.dataset.currentVersion = version.id;
-    syncDisplayedVersionUrl(version, lineage);
-    versionHandle.innerHTML = `
-        <span class="version-dial-index">${versionNumber(index)}</span>
-        <span class="version-dial-handle">${escapeHtml(version.contributor)}</span>
-    `;
-    versionHandle.title = `Customized by ${version.contributor}`;
-    versionHandle.setAttribute(
-        "aria-label",
-        `Open version dial, current version ${versionNumber(index)} by ${version.contributor}`,
-    );
+
+    if (versionHandle) {
+        syncDisplayedVersionUrl(version, lineage);
+        versionHandle.innerHTML = `
+            <span class="version-dial-index">${versionNumber(index)}</span>
+            <span class="version-dial-handle">${escapeHtml(version.contributor)}</span>
+        `;
+        versionHandle.title = `Customized by ${version.contributor}`;
+        versionHandle.setAttribute(
+            "aria-label",
+            `Open version dial, current version ${versionNumber(index)} by ${version.contributor}`,
+        );
+    }
+
     applyVersionTreatment(version);
     applyVersionProjection(version, lineage);
     decorateOrgLinks();

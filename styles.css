@@ -1501,21 +1501,56 @@ body.version-swap .article-page {
     white-space: nowrap;
 }
 
+.career-timeline {
+    position: relative;
+    margin-top: 1.35rem;
+    padding-top: 0.2rem;
+}
+
+.career-timeline::before {
+    position: absolute;
+    top: 0.35rem;
+    bottom: 0.5rem;
+    left: 5.55rem;
+    width: 1px;
+    background: var(--version-rule, #ececea);
+    content: "";
+}
+
 .career-timeline li {
+    position: relative;
     display: grid;
-    grid-template-columns: 5.8rem minmax(0, 1fr);
-    gap: 1rem;
-    padding: 0.68rem 0;
+    grid-template-columns: 4.7rem 1rem minmax(0, 1fr);
+    gap: 0.45rem 0.7rem;
+    align-items: start;
+    padding: 0.16rem 0 1.05rem;
+    border-bottom: 0;
+}
+
+.career-timeline li::before {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 0.48rem;
+    height: 0.48rem;
+    margin: 0.28rem auto 0;
+    border: 1px solid var(--version-text, #111);
+    border-radius: 50%;
+    background: var(--version-bg, #fff);
+    content: "";
+    z-index: 1;
 }
 
 .career-timeline .career-time {
-    color: var(--version-muted, rgba(0, 0, 0, 0.42));
+    grid-column: 1;
+    color: var(--version-muted, rgba(0, 0, 0, 0.48));
     font-size: 0.75rem;
     line-height: 1.1rem;
+    text-align: right;
     white-space: normal;
 }
 
 .career-timeline li .career-body {
+    grid-column: 3;
     min-width: 0;
     color: var(--version-text, #111);
     white-space: normal;
@@ -1532,9 +1567,9 @@ body.version-swap .article-page {
 .career-timeline li .career-detail {
     display: block;
     margin-top: 0.16rem;
-    color: var(--version-muted, rgba(0, 0, 0, 0.62));
+    color: var(--version-muted, rgba(0, 0, 0, 0.64));
     font-size: 0.8125rem;
-    line-height: 1.16rem;
+    line-height: 1.2rem;
     overflow-wrap: anywhere;
     white-space: normal;
 }
@@ -1547,14 +1582,6 @@ body.version-swap .article-page {
 .writing-list.career-timeline li span.career-detail {
     flex: 1 1 auto;
     white-space: normal;
-}
-
-.timeline-throughline {
-    color: var(--version-muted, rgba(0, 0, 0, 0.64));
-}
-
-.timeline-source-links {
-    margin-top: 1rem;
 }
 
 .wide-image {
@@ -1903,9 +1930,23 @@ body.version-swap .article-page {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .career-timeline::before {
+        left: 0.45rem;
+    }
+
     .career-timeline li {
-        grid-template-columns: 1fr;
-        gap: 0.2rem;
+        grid-template-columns: 0.9rem minmax(0, 1fr);
+        gap: 0.1rem 0.65rem;
+    }
+
+    .career-timeline li::before {
+        grid-column: 1;
+    }
+
+    .career-timeline .career-time,
+    .career-timeline li .career-body {
+        grid-column: 2;
+        text-align: left;
     }
 
     .contributor-handle {

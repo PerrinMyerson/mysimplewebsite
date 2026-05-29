@@ -62,15 +62,6 @@
     "siteName": "LinkedIn",
     "source": "static"
   },
-  "https://www.linkedin.com/in/perrinm/": {
-    "title": "Perrin Myerson on LinkedIn",
-    "description": "Public LinkedIn profile with education, projects, honors, activity, and recommendations.",
-    "domain": "linkedin.com",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg",
-    "imageMode": "logo",
-    "siteName": "LinkedIn",
-    "source": "static"
-  },
   "https://www.crisisconnections.org/": {
     "title": "Crisis Connections",
     "description": "Washington crisis support, training, and community resource organization.",
