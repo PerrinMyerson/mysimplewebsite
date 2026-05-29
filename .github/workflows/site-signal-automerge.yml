@@ -29,6 +29,10 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+concurrency:
+  group: site-signal-automerge
+  cancel-in-progress: false
+
 jobs:
   prepare-signal:
     runs-on: ubuntu-latest
