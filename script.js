@@ -4388,7 +4388,7 @@ function renderVersionDial(lineage, activeVersion) {
     const orbitAngle = -arcSlot * 12;
     const radius = 70;
     const radians = orbitAngle * Math.PI / 180;
-    const x = Math.round((Math.cos(radians) - 1) * radius - Math.abs(arcSlot) * 18 - 4);
+    const x = Math.round((Math.cos(radians) - 1) * radius - Math.abs(arcSlot) * 6 - 32);
     const y = Math.round(Math.sin(radians) * radius + 56);
     const rotation = Math.round(orbitAngle * -0.42);
     const distance = Math.abs(relative);
