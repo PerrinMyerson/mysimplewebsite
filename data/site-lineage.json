@@ -1,5 +1,5 @@
 {
-  "currentVersion": "custom-eileen",
+  "currentVersion": "custom-greenman",
   "versions": [
     {
       "id": "v1",
@@ -38,6 +38,19 @@
       "treatment": {
         "tone": "sport",
         "imageDensity": "high"
+      }
+    },
+    {
+      "id": "custom-greenman",
+      "label": "Whole site variation",
+      "contributor": "@Greenman",
+      "createdAt": "2026-05-29T03:41:44.287Z",
+      "summary": "Make this shit green and funky",
+      "source": "custom-eileen",
+      "status": "merged",
+      "treatment": {
+        "tone": "botanical",
+        "imageDensity": "normal"
       }
     }
   ],
@@ -85,6 +98,21 @@
       "viewport": "840x998",
       "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-live-test&live-check=dfd5d5a",
       "createdAt": "2026-05-29T03:28:38.985Z",
+      "status": "merged"
+    },
+    {
+      "id": "signal-mpqdl0bh",
+      "versionId": "custom-greenman",
+      "handle": "@Greenman",
+      "section": "Whole site",
+      "text": "Make this shit green and funky",
+      "sourceVersion": "custom-eileen",
+      "visitorId": "04d5f66d-8f53-4544-87b6-09d1e18b3080",
+      "language": "en-US",
+      "timeZone": "America/Los_Angeles",
+      "viewport": "728x998",
+      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-eileen&live-click=f54f4db-1780025910473",
+      "createdAt": "2026-05-29T03:41:44.287Z",
       "status": "merged"
     }
   ]
