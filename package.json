@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "main": "script.js",
   "scripts": {
     "apply-signal": "node scripts/apply-signal.mjs",
