@@ -4397,7 +4397,7 @@ function renderVersionDial(lineage, activeVersion) {
     const arcSlot = clamp(relative, -visibleRadius, visibleRadius);
     const orbitAngle = arcSlot * 8;
     const x = 0;
-    const y = 55;
+    const y = 21;
     const rotation = orbitAngle;
     const distance = Math.abs(relative);
     const scale = Math.max(0.86, 1 - Math.min(distance, 6) * 0.025);

@@ -175,8 +175,8 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .version-switcher {
     position: fixed;
-    top: 1.1rem;
-    right: 1.1rem;
+    top: 0.1rem;
+    right: -0.8rem;
     z-index: 30;
     --dial-progress: 0%;
 }
@@ -226,7 +226,7 @@ html[data-version-flavor="pending"] .bottom-tabs {
     font: inherit;
     font-size: 0.6875rem;
     line-height: 0.94rem;
-    margin-top: 2.62rem;
+    margin-top: 0.55rem;
     padding: 0.28rem 0.42rem 0.28rem 0.34rem;
     transform-origin: right center;
     transition:
@@ -1657,8 +1657,8 @@ body.version-swap .article-page {
     }
 
     .version-switcher {
-        top: 0.85rem;
-        right: 1.1rem;
+        top: 0.1rem;
+        right: -0.8rem;
     }
 
     .version-dial-item {
