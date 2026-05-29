@@ -74,6 +74,10 @@ const seedLineage = {
 let activeIndex = 0;
 let wheelTotal = 0;
 let lastWheelAt = 0;
+let dialFocusIndex = 0;
+let dialWheelTotal = 0;
+let lastDialWheelAt = 0;
+let dialScrollTimer = null;
 let slideLocked = false;
 let touchStartY = 0;
 let touchStartScroll = 0;
@@ -82,6 +86,10 @@ let automergeReady = false;
 
 function clone(value) {
     return JSON.parse(JSON.stringify(value));
+}
+
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
 }
 
 function escapeHtml(value) {
@@ -318,6 +326,12 @@ function currentVersion(lineage = getPlainLineage()) {
     );
 }
 
+function currentVersionIndex(lineage = getPlainLineage()) {
+    const version = currentVersion(lineage);
+    const index = lineage.versions.findIndex((item) => item.id === version?.id);
+    return Math.max(index, 0);
+}
+
 function versionUrl(id) {
     const url = new URL(window.location.href);
     url.searchParams.set("v", id);
@@ -335,6 +349,16 @@ function selectVersion(id) {
 
 function setDialOpen(isOpen) {
     if (!versionSwitcher) return;
+    const lineage = getPlainLineage();
+
+    if (isOpen) {
+        dialFocusIndex = currentVersionIndex(lineage);
+        dialWheelTotal = 0;
+        renderVersionDial(lineage, currentVersion(lineage));
+    } else {
+        versionSwitcher.classList.remove("is-scrolling");
+    }
+
     versionSwitcher.classList.toggle("is-open", isOpen);
     versionHandle?.setAttribute("aria-expanded", String(isOpen));
 }
@@ -675,6 +699,7 @@ function renderContributorHandle(lineage = getPlainLineage()) {
 
     if (!versionHandle || !version) return;
 
+    document.body.dataset.currentVersion = version.id;
     versionHandle.textContent = version.contributor;
     versionHandle.title = `Customized by ${version.contributor}`;
     applyVersionTreatment(version);
@@ -684,16 +709,43 @@ function renderContributorHandle(lineage = getPlainLineage()) {
 function renderVersionDial(lineage, activeVersion) {
     if (!versionDial) return;
 
-    versionDial.innerHTML = lineage.versions
+    const versions = lineage.versions || [];
+    const count = versions.length;
+    const activeIndex = Math.max(
+        versions.findIndex((version) => version.id === activeVersion?.id),
+        0,
+    );
+    const isOpen = Boolean(versionSwitcher?.classList.contains("is-open"));
+    const visibleSlots = Math.min(8, Math.max(count, 1));
+    const slotTotal = Math.max(visibleSlots - 1, 1);
+    const progress =
+        count > 1 ? `${Math.round((activeIndex / (count - 1)) * 100)}%` : "0%";
+
+    if (!isOpen) dialFocusIndex = activeIndex;
+
+    dialFocusIndex = clamp(dialFocusIndex, 0, Math.max(count - 1, 0));
+    const maxStart = Math.max(count - visibleSlots, 0);
+    const windowStart = clamp(dialFocusIndex - visibleSlots + 1, 0, maxStart);
+    versionSwitcher?.classList.toggle("has-scrollable-dial", count > visibleSlots);
+    versionSwitcher?.style.setProperty("--dial-progress", progress);
+    versionDial.dataset.versionCount = String(count);
+
+    versionDial.innerHTML = versions
         .map((version, index) => {
-            const total = Math.max(lineage.versions.length - 1, 1);
-            const spread = Math.min(76, 22 * total);
-            const angle = 108 + (spread * index) / total;
-            const radius = 114 + index * 12;
+            const slot = index - windowStart;
+            const hidden = slot < 0 || slot >= visibleSlots;
+            const clampedSlot = clamp(slot, 0, slotTotal);
+            const spread = Math.min(82, 18 * slotTotal);
+            const angle = 108 + (spread * clampedSlot) / slotTotal;
+            const radius = 114 + clampedSlot * 12;
             const radians = (angle * Math.PI) / 180;
             const x = Math.round(Math.cos(radians) * radius - 50);
-            const y = Math.round(Math.sin(radians) * radius + 18);
-            const rotation = Math.round(-18 + (30 * index) / total);
+            const y = Math.round(Math.sin(radians) * radius + 92);
+            const rotation = Math.round(-18 + (30 * clampedSlot) / slotTotal);
+            const distance = Math.abs(index - activeIndex);
+            const scale = Math.max(0.86, 1 - Math.min(distance, 6) * 0.025);
+            const opacity = hidden ? 0 : Math.max(0.62, 1 - distance * 0.06);
+            const zIndex = 40 - distance;
             const active = version.id === activeVersion?.id;
 
             return `
@@ -701,11 +753,19 @@ function renderVersionDial(lineage, activeVersion) {
                     class="version-dial-item"
                     type="button"
                     data-version-link="${escapeHtml(version.id)}"
+                    data-dial-hidden="${hidden ? "true" : "false"}"
                     aria-current="${active ? "true" : "false"}"
+                    aria-hidden="${hidden ? "true" : "false"}"
+                    tabindex="${hidden ? "-1" : "0"}"
                     title="${escapeHtml(version.label)} by ${escapeHtml(version.contributor)}"
-                    style="--dial-x: ${x}px; --dial-y: ${y}px; --dial-rotation: ${rotation}deg; --dial-delay: ${
-                      index * 34
-                  }ms"
+                    style="--dial-x: ${x}px; --dial-y: ${y}px; --dial-rotation: ${rotation}deg; --dial-scale: ${scale.toFixed(
+                      2,
+                  )}; --dial-opacity: ${opacity.toFixed(
+                      2,
+                  )}; --dial-z: ${zIndex}; --dial-delay: ${Math.min(
+                      Math.abs(slot),
+                      visibleSlots,
+                  ) * 26}ms"
                 >
                     <span class="version-dial-index">${versionNumber(index)}</span>
                     <span class="version-dial-handle">${escapeHtml(
@@ -944,6 +1004,63 @@ function onWheel(event) {
     }
 }
 
+function stepDial(direction) {
+    const lineage = getPlainLineage();
+    const versions = lineage.versions || [];
+
+    if (!versions.length) return false;
+
+    const currentIndex = currentVersionIndex(lineage);
+    const nextIndex = clamp(currentIndex + direction, 0, versions.length - 1);
+
+    if (nextIndex === currentIndex) return false;
+
+    dialFocusIndex = nextIndex;
+    selectVersion(versions[nextIndex].id);
+    versionSwitcher?.classList.add("is-scrolling");
+    window.clearTimeout(dialScrollTimer);
+    dialScrollTimer = window.setTimeout(() => {
+        versionSwitcher?.classList.remove("is-scrolling");
+    }, 360);
+    return true;
+}
+
+function onDialWheel(event) {
+    const lineage = getPlainLineage();
+    const versions = lineage.versions || [];
+
+    if (versions.length < 2) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!versionSwitcher?.classList.contains("is-open")) {
+        setDialOpen(true);
+    }
+
+    const now = Date.now();
+    const delta =
+        Math.abs(event.deltaX) > Math.abs(event.deltaY)
+            ? event.deltaX
+            : event.deltaY;
+
+    if (!delta) return;
+    if (now - lastDialWheelAt > 220) dialWheelTotal = 0;
+
+    lastDialWheelAt = now;
+    dialWheelTotal += delta;
+
+    const lineMode =
+        typeof WheelEvent !== "undefined" &&
+        event.deltaMode === WheelEvent.DOM_DELTA_LINE;
+    const threshold = lineMode ? 3 : 42;
+
+    if (Math.abs(dialWheelTotal) >= threshold) {
+        stepDial(Math.sign(dialWheelTotal));
+        dialWheelTotal = 0;
+    }
+}
+
 function onTouchStart(event) {
     const panel = panels[activeIndex];
     touchStartY = event.touches[0].clientY;
@@ -1143,6 +1260,8 @@ versionHandle?.addEventListener("click", (event) => {
     setDialOpen(!versionSwitcher?.classList.contains("is-open"));
 });
 
+versionSwitcher?.addEventListener("wheel", onDialWheel, { passive: false });
+
 versionDial?.addEventListener("click", (event) => {
     const link = event.target.closest("[data-version-link]");
 
@@ -1217,6 +1336,15 @@ feedbackForm?.addEventListener("submit", async (event) => {
 
 window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setDialOpen(false);
+
+    if (
+        versionSwitcher?.classList.contains("is-open") &&
+        ["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft"].includes(event.key)
+    ) {
+        event.preventDefault();
+        stepDial(event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : -1);
+        return;
+    }
 
     if (event.key === "ArrowDown" || event.key === "PageDown") {
         nextSlide();

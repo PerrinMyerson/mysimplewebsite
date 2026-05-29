@@ -178,6 +178,32 @@ html[data-version-flavor="pending"] .bottom-tabs {
     top: 1.1rem;
     right: 1.1rem;
     z-index: 30;
+    --dial-progress: 0%;
+}
+
+.version-switcher.has-scrollable-dial::after {
+    position: absolute;
+    top: 2.1rem;
+    right: -0.65rem;
+    width: 2px;
+    height: 5.6rem;
+    border-radius: 999px;
+    background: linear-gradient(
+        to bottom,
+        #111 0 var(--dial-progress),
+        #ececea var(--dial-progress) 100%
+    );
+    content: "";
+    opacity: 0;
+    transform: translateY(-0.35rem);
+    transition:
+        opacity 0.18s ease,
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.version-switcher.is-open.has-scrollable-dial::after {
+    opacity: 0.86;
+    transform: translateY(0);
 }
 
 .contributor-handle {
@@ -205,9 +231,13 @@ html[data-version-flavor="pending"] .bottom-tabs {
     position: absolute;
     top: 50%;
     right: 0;
-    width: 1px;
-    height: 1px;
+    width: min(24rem, calc(100vw - 1.5rem));
+    height: min(22rem, calc(100vh - 3rem));
     pointer-events: none;
+}
+
+.version-switcher.is-open .version-dial {
+    pointer-events: auto;
 }
 
 .version-dial-item {
@@ -241,13 +271,24 @@ html[data-version-flavor="pending"] .bottom-tabs {
         border-color 0.16s ease;
     transition-delay: var(--dial-delay, 0ms);
     white-space: nowrap;
+    will-change: opacity, transform;
+    z-index: var(--dial-z, 1);
 }
 
 .version-switcher.is-open .version-dial-item {
-    opacity: 1;
+    opacity: var(--dial-opacity, 1);
     pointer-events: auto;
     transform: translate(var(--dial-x), calc(var(--dial-y) - 50%))
-        rotate(var(--dial-rotation, 0deg)) scale(1);
+        rotate(var(--dial-rotation, 0deg)) scale(var(--dial-scale, 1));
+}
+
+.version-switcher.is-scrolling .version-dial-item {
+    transition-duration: 0.18s, 0.26s, 0.16s;
+}
+
+.version-switcher.is-open .version-dial-item[data-dial-hidden="true"] {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .version-dial-item:hover,
@@ -255,6 +296,12 @@ html[data-version-flavor="pending"] .bottom-tabs {
 .version-dial-item[aria-current="true"] {
     border-color: #111;
     outline: none;
+}
+
+.version-dial-item[aria-current="true"] {
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.08),
+        0 0 0 2px rgba(0, 0, 0, 0.05);
 }
 
 .version-dial-index {
@@ -270,6 +317,7 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .version-dial-handle {
     min-width: 0;
+    max-width: 13rem;
     overflow: hidden;
     text-overflow: ellipsis;
 }
