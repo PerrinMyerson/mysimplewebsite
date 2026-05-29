@@ -1,0 +1,29 @@
+{
+  "signal": {
+    "id": "signal-mpqczt73",
+    "versionId": "custom-codex-live-test",
+    "handle": "@codex-live-test",
+    "section": "Whole site",
+    "text": "Live browser form smoke test: keep the site basic, white, and versioned while sending feedback to Vercel.",
+    "sourceVersion": "v1",
+    "visitorId": "04d5f66d-8f53-4544-87b6-09d1e18b3080",
+    "language": "en-US",
+    "timeZone": "America/Los_Angeles",
+    "viewport": "840x998",
+    "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=v1&live-check=6940b82",
+    "createdAt": "2026-05-29T03:25:15.281Z"
+  },
+  "version": {
+    "id": "custom-codex-live-test",
+    "label": "Whole site variation",
+    "contributor": "@codex-live-test",
+    "createdAt": "2026-05-29T03:25:15.281Z",
+    "summary": "Live browser form smoke test: keep the site basic, white, and versioned while sending feedbac...",
+    "source": "v1",
+    "status": "merged",
+    "treatment": {
+      "tone": "plain",
+      "imageDensity": "normal"
+    }
+  }
+}
