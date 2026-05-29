@@ -1,5 +1,5 @@
 {
-  "currentVersion": "v1",
+  "currentVersion": "custom-codex-live-test",
   "versions": [
     {
       "id": "v1",
@@ -13,7 +13,36 @@
         "tone": "plain",
         "imageDensity": "normal"
       }
+    },
+    {
+      "id": "custom-codex-live-test",
+      "label": "Whole site variation",
+      "contributor": "@codex-live-test",
+      "createdAt": "2026-05-29T02:37:00.000Z",
+      "summary": "Production backend smoke test from Codex after wiring the Vercel API.",
+      "source": "v1",
+      "status": "merged",
+      "treatment": {
+        "tone": "plain",
+        "imageDensity": "normal"
+      }
     }
   ],
-  "signals": []
+  "signals": [
+    {
+      "id": "signal-codex-live-smoke",
+      "versionId": "custom-codex-live-test",
+      "handle": "@codex-live-test",
+      "section": "Whole site",
+      "text": "Production backend smoke test from Codex after wiring the Vercel API.",
+      "sourceVersion": "v1",
+      "visitorId": "codex-smoke",
+      "language": "en-US",
+      "timeZone": "America/Los_Angeles",
+      "viewport": "1280x800",
+      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=v1",
+      "createdAt": "2026-05-29T02:37:00.000Z",
+      "status": "merged"
+    }
+  ]
 }
