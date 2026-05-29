@@ -1389,14 +1389,13 @@ body.version-swap .article-page {
     top: var(--annotation-top, 0);
     left: 0;
     width: 100%;
-    padding: 0.7rem 0.75rem 0.72rem;
-    border: 1px solid #e7e7e2;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.12);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
     color: #111;
     opacity: 0;
-    transform: translate(-0.35rem, 0.2rem);
+    transform: translate(-0.2rem, 0.1rem);
     transition:
         opacity 0.16s ease,
         transform 0.16s ease,
@@ -1425,16 +1424,16 @@ body.version-swap .article-page {
 
 .annotation-card-title {
     margin-top: 0.1rem;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1.08rem;
+    line-height: 1rem;
 }
 
 .annotation-card-text {
-    margin-top: 0.28rem;
+    margin-top: 0.2rem;
     color: rgba(0, 0, 0, 0.62);
-    font-size: 0.75rem;
-    line-height: 1rem;
+    font-size: 0.72rem;
+    line-height: 0.98rem;
 }
 
 .image-row {
