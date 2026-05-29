@@ -4374,7 +4374,7 @@ function renderVersionDial(lineage, activeVersion) {
     0
   );
   const isOpen = Boolean(versionSwitcher?.classList.contains("is-open"));
-  const visibleRadius = count <= 5 ? 2 : 3;
+  const visibleRadius = 2;
   const progress = count > 1 ? `${Math.round(activeIndex2 / (count - 1) * 100)}%` : "0%";
   if (!isOpen) dialFocusIndex = activeIndex2;
   dialFocusIndex = clamp(dialFocusIndex, 0, Math.max(count - 1, 0));
@@ -4385,12 +4385,12 @@ function renderVersionDial(lineage, activeVersion) {
     const relative = index - activeIndex2;
     const hidden = Math.abs(relative) > visibleRadius;
     const arcSlot = clamp(relative, -visibleRadius, visibleRadius);
-    const angle = 180 + arcSlot * 18;
-    const radius = 176;
-    const radians = angle * Math.PI / 180;
-    const x = Math.round(Math.cos(radians) * radius - 42);
-    const y = Math.round(Math.sin(radians) * radius + 138);
-    const rotation = Math.round(-arcSlot * 7);
+    const orbitAngle = -arcSlot * 24;
+    const radius = 196;
+    const radians = orbitAngle * Math.PI / 180;
+    const x = Math.round(Math.cos(radians) * -radius - 24);
+    const y = Math.round(Math.sin(radians) * radius + 156);
+    const rotation = Math.round(orbitAngle * -0.62);
     const distance = Math.abs(relative);
     const scale = Math.max(0.86, 1 - Math.min(distance, 6) * 0.025);
     const opacity = hidden ? 0 : Math.max(0.62, 1 - distance * 0.06);
@@ -4410,7 +4410,9 @@ function renderVersionDial(lineage, activeVersion) {
       2
     )}; --dial-opacity: ${opacity.toFixed(
       2
-    )}; --dial-z: ${zIndex}; --dial-delay: ${Math.min(
+    )}; --dial-z: ${zIndex}; --dial-angle: ${orbitAngle}deg; --dial-closed-rotation: ${Math.round(
+      rotation * 0.55
+    )}deg; --dial-delay: ${Math.min(
       distance,
       visibleRadius
     ) * 26}ms"

@@ -229,10 +229,10 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .version-dial {
     position: absolute;
-    top: 50%;
+    top: 1.55rem;
     right: 0;
-    width: min(24rem, calc(100vw - 1.5rem));
-    height: min(22rem, calc(100vh - 3rem));
+    width: min(28rem, calc(100vw - 1.5rem));
+    height: min(24rem, calc(100vh - 3rem));
     pointer-events: none;
 }
 
@@ -263,11 +263,12 @@ html[data-version-flavor="pending"] .bottom-tabs {
     opacity: 0;
     padding: 0.42rem 0.64rem 0.42rem 0.48rem;
     pointer-events: none;
-    transform: translate(0, -50%) rotate(-10deg) scale(0.88);
+    transform: translate(0.55rem, -50%) rotate(var(--dial-closed-rotation, -22deg))
+        scale(0.56);
     transform-origin: right center;
     transition:
         opacity 0.22s ease,
-        transform 0.36s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.46s cubic-bezier(0.19, 1, 0.22, 1),
         border-color 0.16s ease;
     transition-delay: var(--dial-delay, 0ms);
     white-space: nowrap;
@@ -283,7 +284,7 @@ html[data-version-flavor="pending"] .bottom-tabs {
 }
 
 .version-switcher.is-scrolling .version-dial-item {
-    transition-duration: 0.18s, 0.26s, 0.16s;
+    transition-duration: 0.16s, 0.3s, 0.16s;
 }
 
 .version-switcher.is-open .version-dial-item[data-dial-hidden="true"] {
