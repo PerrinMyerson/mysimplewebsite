@@ -3,7 +3,8 @@
     "title": "Perrin Myerson on GitHub",
     "description": "Code, experiments, and public projects.",
     "domain": "github.com",
-    "image": "https://github.githubassets.com/favicons/favicon.svg",
+    "image": "https://avatars.githubusercontent.com/u/54953657?v=4",
+    "imageMode": "logo",
     "siteName": "GitHub",
     "source": "static"
   },
@@ -11,7 +12,8 @@
     "title": "Truveta",
     "description": "Health data platform built with health systems to improve patient care and research.",
     "domain": "truveta.com",
-    "image": "https://www.truveta.com/favicon.ico",
+    "image": "https://www.truveta.com/wp-content/uploads/2025/01/Truveta-home-featured-image-1.png",
+    "imageMode": "hero",
     "siteName": "Truveta",
     "source": "static"
   },
@@ -19,7 +21,8 @@
     "title": "DARPA",
     "description": "The Defense Advanced Research Projects Agency creates breakthrough technologies for national security.",
     "domain": "darpa.mil",
-    "image": "https://www.darpa.mil/favicon.ico",
+    "image": "https://www.darpa.mil/sites/default/files/gallery/2024-12/og-luke-arm.png",
+    "imageMode": "hero",
     "siteName": "DARPA",
     "source": "static"
   },
@@ -27,7 +30,8 @@
     "title": "Extellis",
     "description": "Embedded systems and machine learning research spin-out.",
     "domain": "extellis.com",
-    "image": "https://www.extellis.com/favicon.ico",
+    "image": "https://framerusercontent.com/images/Ab5Ts5BWoZ7viXUiOtJjJABsvco.jpg",
+    "imageMode": "hero",
     "siteName": "Extellis",
     "source": "static"
   },
@@ -35,7 +39,8 @@
     "title": "Y Combinator",
     "description": "Startup accelerator and founder community.",
     "domain": "ycombinator.com",
-    "image": "https://www.ycombinator.com/favicon.ico",
+    "image": "https://www.ycombinator.com/assets/ycdc/yc-og-image-c440a0ad1dacfb86eeeb343717479cc54d256614449b4ef719977a0a451f8bc8.png",
+    "imageMode": "hero",
     "siteName": "Y Combinator",
     "source": "static"
   },
@@ -43,6 +48,8 @@
     "title": "GovGoose",
     "description": "YC W25 company.",
     "domain": "govgoose.com",
+    "image": "https://www.ycombinator.com/assets/ycdc/yc-og-image-c440a0ad1dacfb86eeeb343717479cc54d256614449b4ef719977a0a451f8bc8.png",
+    "imageMode": "hero",
     "siteName": "GovGoose",
     "source": "static"
   },
@@ -50,7 +57,8 @@
     "title": "LinkedIn",
     "description": "Professional network and career platform.",
     "domain": "linkedin.com",
-    "image": "https://www.linkedin.com/favicon.ico",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg",
+    "imageMode": "logo",
     "siteName": "LinkedIn",
     "source": "static"
   },
@@ -58,7 +66,8 @@
     "title": "Amazon Web Services",
     "description": "Cloud computing services and infrastructure.",
     "domain": "aws.amazon.com",
-    "image": "https://aws.amazon.com/favicon.ico",
+    "image": "https://d1.awsstatic.com/onedam/marketing-channels/website/aws/en_US/homepage/global-nav/h1-moment.b955278c71c505c58291edb192d823f0334ac8c0.png",
+    "imageMode": "hero",
     "siteName": "AWS",
     "source": "static"
   },
@@ -66,7 +75,8 @@
     "title": "Civic News Company",
     "description": "Civic news products and local information infrastructure.",
     "domain": "civicnews.org",
-    "image": "https://civicnews.org/favicon.ico",
+    "image": "https://civicnews.org/wp-content/uploads/2024/08/union-square-new-york-city.jpg",
+    "imageMode": "hero",
     "siteName": "Civic News Company",
     "source": "static"
   },
@@ -74,7 +84,8 @@
     "title": "Obama Foundation",
     "description": "Civic leadership, public service, and community programs.",
     "domain": "obama.org",
-    "image": "https://www.obama.org/favicon.ico",
+    "image": "https://images.ctfassets.net/l7h59hfnlxjx/7r0DGakBg9qcjawk8j57zx/a50161aa96baf8c6d9f2c9bf042d71ec/BOF_RisingSun.png?q=75&w=1200&fm=png",
+    "imageMode": "hero",
     "siteName": "Obama Foundation",
     "source": "static"
   },
@@ -82,7 +93,8 @@
     "title": "Duke Electrical and Computer Engineering",
     "description": "Electrical and computer engineering at Duke University.",
     "domain": "ece.duke.edu",
-    "image": "https://ece.duke.edu/favicon.ico",
+    "image": "https://ece.duke.edu/wp-content/uploads/sites/9/2026/03/semiconductor-ai-imagery.jpg",
+    "imageMode": "hero",
     "siteName": "Duke ECE",
     "source": "static"
   },
@@ -90,7 +102,8 @@
     "title": "Duke Computer Science",
     "description": "Computer science at Duke University.",
     "domain": "cs.duke.edu",
-    "image": "https://cs.duke.edu/favicon.ico",
+    "image": "https://cs.duke.edu/sites/cs.duke.edu/files/styles/large_feature_slide_1240x595/public/background-images/2026_Comp_Sci_201_Astrachan-1.jpg?h=790be497&itok=ZAzOTGtl",
+    "imageMode": "hero",
     "siteName": "Duke CS",
     "source": "static"
   },
@@ -98,7 +111,8 @@
     "title": "Duke University",
     "description": "Duke University.",
     "domain": "duke.edu",
-    "image": "https://duke.edu/favicon.ico",
+    "image": "https://www.duke.edu/wp-content/uploads/2025/12/20251212_duke.edu_share-scaled.jpg",
+    "imageMode": "hero",
     "siteName": "Duke",
     "source": "static"
   },
@@ -106,7 +120,8 @@
     "title": "FIRST",
     "description": "Robotics programs and competitions for students.",
     "domain": "firstinspires.org",
-    "image": "https://www.firstinspires.org/favicon.ico",
+    "image": "https://www.firstinspires.org/hs-fs/hubfs/20230420_bm_0319.jpg?width=1200&height=800&name=20230420_bm_0319.jpg",
+    "imageMode": "hero",
     "siteName": "FIRST",
     "source": "static"
   },
@@ -114,7 +129,8 @@
     "title": "Taylor Swift",
     "description": "Official Taylor Swift site.",
     "domain": "taylorswift.com",
-    "image": "https://www.taylorswift.com/favicon.ico",
+    "image": "https://www.taylorswift.com/wp-content/uploads/sites/2529/2026/05/Share-Card_1200x630.jpg",
+    "imageMode": "hero",
     "siteName": "Taylor Swift",
     "source": "static"
   }

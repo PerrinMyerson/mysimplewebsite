@@ -1251,7 +1251,7 @@ body.version-swap .article-page {
     align-items: start;
 }
 
-.link-preview-card.has-image .link-preview-inner {
+.link-preview-card.has-logo-image .link-preview-inner {
     grid-template-columns: 2.4rem minmax(0, 1fr);
 }
 
@@ -1313,6 +1313,24 @@ body.version-swap .article-page {
     border: 1px solid #eeeeea;
     border-radius: 6px;
     background: #f8f8f5;
+    object-fit: cover;
+}
+
+.link-preview-card.has-hero-image {
+    width: 18rem;
+    max-width: min(18rem, calc(100vw - 32px));
+}
+
+.link-preview-card.has-hero-image .link-preview-inner {
+    display: block;
+}
+
+.link-preview-card.has-hero-image .link-preview-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 0 0 0.58rem;
+    border-radius: 5px;
     object-fit: cover;
 }
 

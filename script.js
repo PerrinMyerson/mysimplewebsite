@@ -4037,6 +4037,21 @@ function appendIfPresent(parent, tag, className, text) {
   parent.append(element);
   return element;
 }
+function previewImageMode(preview, imageSource) {
+  const explicitMode = String(preview?.imageMode || "").toLowerCase();
+  if (explicitMode === "hero" || explicitMode === "logo") return explicitMode;
+  if (!imageSource) return "";
+  try {
+    const imageUrl = new URL(imageSource, window.location.href);
+    const iconUrl = preview?.icon ? new URL(preview.icon, window.location.href) : null;
+    const imagePath = imageUrl.pathname.toLowerCase();
+    if (iconUrl?.href === imageUrl.href) return "logo";
+    if (/favicon|touch-icon|apple-icon|logo|icon/.test(imagePath)) return "logo";
+  } catch {
+    return "logo";
+  }
+  return "hero";
+}
 function renderLinkPreview(link, preview) {
   if (!preview) return;
   let card = link.querySelector(".reveal-card");
@@ -4047,20 +4062,24 @@ function renderLinkPreview(link, preview) {
     link.append(card);
   }
   clearElement(card);
-  card.className = `reveal-card link-preview-card${preview.image || preview.icon ? " has-image" : ""}`;
+  const imageSource = preview.image || preview.icon || "";
+  const imageMode = previewImageMode(preview, imageSource);
+  card.className = `reveal-card link-preview-card${imageSource ? ` has-image has-${imageMode}-image` : ""}`;
   card.dataset.previewSource = preview.source || "static";
   const inner = document.createElement("span");
   inner.className = "link-preview-inner";
-  if (preview.image || preview.icon) {
+  if (imageSource) {
     const image = document.createElement("img");
     image.className = "link-preview-image";
     image.alt = "";
     image.loading = "lazy";
     image.referrerPolicy = "no-referrer";
-    image.src = preview.image || preview.icon;
+    image.src = imageSource;
     image.addEventListener("error", () => {
       image.remove();
       card.classList.remove("has-image");
+      card.classList.remove("has-hero-image");
+      card.classList.remove("has-logo-image");
     });
     inner.append(image);
   }
