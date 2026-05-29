@@ -1192,7 +1192,7 @@ body.version-swap .article-page {
 }
 
 .reveal-link {
-    cursor: help;
+    cursor: pointer;
     outline: none;
     white-space: nowrap;
 }

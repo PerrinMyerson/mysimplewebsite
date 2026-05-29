@@ -3831,6 +3831,109 @@ var REMOVED_VERSION_FALLBACKS = /* @__PURE__ */ new Map([
   ["custom-eileen", "custom-codex-live-test"]
 ]);
 var REMOVED_CONTRIBUTOR_KEYS = /* @__PURE__ */ new Set(["@eileen"]);
+var ORG_LINKS = [
+  {
+    label: "CivicNewsCompany",
+    href: "https://civicnews.org/",
+    note: "Visit Civic News Company."
+  },
+  {
+    label: "Civic News Company",
+    href: "https://civicnews.org/",
+    note: "Visit Civic News Company."
+  },
+  {
+    label: "Amazon Web Services",
+    href: "https://aws.amazon.com/",
+    note: "Visit AWS."
+  },
+  {
+    label: "Y Combinator",
+    href: "https://www.ycombinator.com/",
+    note: "Visit Y Combinator."
+  },
+  {
+    label: "Taylor Swift",
+    href: "https://www.taylorswift.com/",
+    note: "Visit Taylor Swift."
+  },
+  {
+    label: "Duke CS",
+    href: "https://cs.duke.edu/",
+    note: "Visit Duke Computer Science."
+  },
+  {
+    label: "Duke ECE",
+    href: "https://ece.duke.edu/",
+    note: "Visit Duke ECE."
+  },
+  {
+    label: "Obama Foundation",
+    href: "https://www.obama.org/",
+    note: "Visit Obama Foundation."
+  },
+  {
+    label: "GovGoose",
+    href: "https://www.govgoose.com/",
+    note: "Visit GovGoose."
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/",
+    note: "Visit LinkedIn."
+  },
+  {
+    label: "Truveta",
+    href: "https://www.truveta.com/",
+    note: "Visit Truveta."
+  },
+  {
+    label: "Extellis",
+    href: "https://www.extellis.com/",
+    note: "Visit Extellis."
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/perrinmyerson",
+    note: "Visit GitHub."
+  },
+  {
+    label: "DARPA",
+    href: "https://www.darpa.mil/",
+    note: "Visit DARPA."
+  },
+  {
+    label: "FIRST",
+    href: "https://www.firstinspires.org/",
+    note: "Visit FIRST."
+  },
+  {
+    label: "Obama",
+    href: "https://www.obama.org/",
+    note: "Visit Obama Foundation."
+  },
+  {
+    label: "AWS",
+    href: "https://aws.amazon.com/",
+    note: "Visit AWS."
+  },
+  {
+    label: "YC",
+    href: "https://www.ycombinator.com/",
+    note: "Visit Y Combinator."
+  },
+  {
+    label: "Duke",
+    href: "https://duke.edu/",
+    note: "Visit Duke."
+  }
+];
+var ORG_LINK_PATTERN = new RegExp(
+  `\\b(${ORG_LINKS.map(
+    (item) => item.label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  ).join("|")})\\b`,
+  "g"
+);
 var baseVariantSnapshot = null;
 var activePollTimer = null;
 var seedLineage = {
@@ -3876,6 +3979,62 @@ function escapeHtml(value) {
       '"': "&quot;",
       "'": "&#39;"
     }[character];
+  });
+}
+function orgLinkElement(label) {
+  const org = ORG_LINKS.find((item) => item.label === label);
+  if (!org) return document.createTextNode(label);
+  const link = document.createElement("a");
+  link.className = "reveal-link";
+  link.href = org.href;
+  link.append(document.createTextNode(label));
+  const card = document.createElement("span");
+  card.className = "reveal-card text-only";
+  card.setAttribute("role", "note");
+  const text = document.createElement("span");
+  text.textContent = org.note;
+  card.append(text);
+  link.append(card);
+  return link;
+}
+function shouldDecorateTextNode(node) {
+  const parent = node.parentElement;
+  if (!parent || !node.nodeValue?.trim()) return false;
+  return !parent.closest(
+    "a, button, input, select, textarea, script, style, .reveal-card, .version-switcher, #versions"
+  );
+}
+function decorateOrgLinks() {
+  const roots = document.querySelectorAll("#home, #about, #timeline, #notes");
+  roots.forEach((root) => {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        return shouldDecorateTextNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach((node) => {
+      const text = node.nodeValue || "";
+      ORG_LINK_PATTERN.lastIndex = 0;
+      if (!ORG_LINK_PATTERN.test(text)) return;
+      ORG_LINK_PATTERN.lastIndex = 0;
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+      for (const match of text.matchAll(ORG_LINK_PATTERN)) {
+        const [label] = match;
+        const index = match.index || 0;
+        if (index > lastIndex) {
+          fragment.append(document.createTextNode(text.slice(lastIndex, index)));
+        }
+        fragment.append(orgLinkElement(label));
+        lastIndex = index + label.length;
+      }
+      if (lastIndex < text.length) {
+        fragment.append(document.createTextNode(text.slice(lastIndex)));
+      }
+      node.replaceWith(fragment);
+    });
   });
 }
 function readCookie(name) {
@@ -4372,6 +4531,7 @@ function renderContributorHandle(lineage = getPlainLineage()) {
   );
   applyVersionTreatment(version);
   applyVersionProjection(version, lineage);
+  decorateOrgLinks();
 }
 function renderVersionDial(lineage, activeVersion) {
   if (!versionDial) return;
