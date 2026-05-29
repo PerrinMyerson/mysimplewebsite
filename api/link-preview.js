@@ -2,8 +2,10 @@ const MAX_HTML_BYTES = 1200000;
 const REQUEST_TIMEOUT_MS = 5000;
 const ALLOWED_HOSTS = new Set([
     "aws.amazon.com",
+    "www.apple.com",
     "civicnews.org",
     "cs.duke.edu",
+    "www.crisisconnections.org",
     "duke.edu",
     "ece.duke.edu",
     "github.com",

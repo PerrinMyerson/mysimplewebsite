@@ -3845,6 +3845,16 @@ var ORG_LINKS = [
     note: "Visit Civic News Company."
   },
   {
+    label: "Crisis Connections",
+    href: "https://www.crisisconnections.org/",
+    note: "Visit Crisis Connections."
+  },
+  {
+    label: "Apple",
+    href: "https://www.apple.com/",
+    note: "Visit Apple."
+  },
+  {
     label: "Amazon Web Services",
     href: "https://aws.amazon.com/",
     note: "Visit AWS."
@@ -3881,7 +3891,7 @@ var ORG_LINKS = [
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/",
+    href: "https://www.linkedin.com/in/perrinm/",
     note: "Visit LinkedIn."
   },
   {
@@ -3941,6 +3951,31 @@ var ANNOTATION_RULES = [
     phrase: "First intern",
     title: "First intern",
     text: "Early Truveta context, separated from the Truveta link so the company card can stay purely navigational."
+  },
+  {
+    phrase: "high-acuity calls",
+    title: "Crisis infrastructure",
+    text: "LinkedIn recommendation context names advisory board and training work around high-acuity crisis calls, virtual training, and 988 adoption."
+  },
+  {
+    phrase: "Pathways Scholar",
+    title: "Apple Pathways",
+    text: "Scholarship signal from the public LinkedIn profile."
+  },
+  {
+    phrase: "George Scholar",
+    title: "George Scholar",
+    text: "Leadership-oriented scholarship listed on the public LinkedIn profile."
+  },
+  {
+    phrase: "municipal permitting",
+    title: "GovGoose wedge",
+    text: "GeekWire described GovGoose as automating city-code, permit, zoning, and submission workflows."
+  },
+  {
+    phrase: "AlphaFast",
+    title: "Recent research signal",
+    text: "Public LinkedIn activity points to GPU-accelerated MSA construction for high-throughput AlphaFold 3 work."
   },
   {
     phrase: "LLM embedding based recommendation system",

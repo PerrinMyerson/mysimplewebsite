@@ -62,6 +62,33 @@
     "siteName": "LinkedIn",
     "source": "static"
   },
+  "https://www.linkedin.com/in/perrinm/": {
+    "title": "Perrin Myerson on LinkedIn",
+    "description": "Public LinkedIn profile with education, projects, honors, activity, and recommendations.",
+    "domain": "linkedin.com",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg",
+    "imageMode": "logo",
+    "siteName": "LinkedIn",
+    "source": "static"
+  },
+  "https://www.crisisconnections.org/": {
+    "title": "Crisis Connections",
+    "description": "Washington crisis support, training, and community resource organization.",
+    "domain": "crisisconnections.org",
+    "image": "https://crisisconnections.org/wp-content/uploads/2026/02/Rank-Math-1200x630-Site-Image.png",
+    "imageMode": "hero",
+    "siteName": "Crisis Connections",
+    "source": "static"
+  },
+  "https://www.apple.com/": {
+    "title": "Apple",
+    "description": "Apple products, platforms, and programs.",
+    "domain": "apple.com",
+    "image": "https://www.apple.com/ac/structured-data/images/open_graph_logo.png?202604211141",
+    "imageMode": "logo",
+    "siteName": "Apple",
+    "source": "static"
+  },
   "https://aws.amazon.com/": {
     "title": "Amazon Web Services",
     "description": "Cloud computing services and infrastructure.",

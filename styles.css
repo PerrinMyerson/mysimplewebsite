@@ -1501,6 +1501,62 @@ body.version-swap .article-page {
     white-space: nowrap;
 }
 
+.career-timeline li {
+    display: grid;
+    grid-template-columns: 5.8rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0.68rem 0;
+}
+
+.career-timeline .career-time {
+    color: var(--version-muted, rgba(0, 0, 0, 0.42));
+    font-size: 0.75rem;
+    line-height: 1.1rem;
+    white-space: normal;
+}
+
+.career-timeline li .career-body {
+    min-width: 0;
+    color: var(--version-text, #111);
+    white-space: normal;
+}
+
+.career-timeline strong {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.18rem;
+}
+
+.career-timeline li .career-detail {
+    display: block;
+    margin-top: 0.16rem;
+    color: var(--version-muted, rgba(0, 0, 0, 0.62));
+    font-size: 0.8125rem;
+    line-height: 1.16rem;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.career-timeline .reveal-link {
+    white-space: normal;
+}
+
+.writing-list.career-timeline li span.career-body,
+.writing-list.career-timeline li span.career-detail {
+    flex: 1 1 auto;
+    white-space: normal;
+}
+
+.timeline-throughline {
+    color: var(--version-muted, rgba(0, 0, 0, 0.64));
+}
+
+.timeline-source-links {
+    margin-top: 1rem;
+}
+
 .wide-image {
     margin-top: 1.5rem;
 }
@@ -1845,6 +1901,11 @@ body.version-swap .article-page {
 
     .image-row {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .career-timeline li {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
     }
 
     .contributor-handle {
