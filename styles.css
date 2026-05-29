@@ -245,12 +245,12 @@ html[data-version-flavor="pending"] .bottom-tabs {
     top: 0;
     right: 0;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 0.45rem;
-    width: max-content;
-    min-width: 10.5rem;
-    max-width: min(18rem, calc(100vw - 2rem));
+    width: min(16.5rem, calc(100vw - 2rem));
+    min-width: 0;
+    max-width: none;
     border: 1px solid #ececea;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.96);
@@ -381,14 +381,6 @@ html[data-version-tone="botanical"] .article-page {
 
 html[data-version-tone="ink"] .article-page {
     background: #fbfbfb;
-}
-
-html[data-version-tone="sport"] .article-page {
-    background: #fff;
-}
-
-html[data-version-flavor="sticky-sports"] .article-page {
-    background: #fff;
 }
 
 html[data-version-flavor="live-loop"] .article-page {
@@ -1388,11 +1380,13 @@ body.version-swap .article-page {
 }
 
 .version-list {
-    display: block;
+    position: relative;
+    display: grid;
     margin: 1.25rem 0 0;
     padding: 0;
-    border-top: 1px solid #ececea;
     list-style: none;
+    min-height: 13.8rem;
+    isolation: isolate;
 }
 
 .version-list li,
@@ -1403,8 +1397,38 @@ body.version-swap .article-page {
 }
 
 .version-list li {
-    padding: 0.65rem 0;
-    border-bottom: 1px solid #ececea;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: min(31rem, calc(100% - 2.4rem));
+    min-height: 10.75rem;
+    padding: 0.78rem 0.88rem 0.92rem;
+    border: 1px solid #ececea;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.07);
+    transform: translate(var(--stack-x, 0), var(--stack-y, 0))
+        rotate(var(--stack-rotation, 0deg));
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.18s ease,
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: var(--stack-z, 1);
+}
+
+.version-list li:hover,
+.version-list li:focus-within {
+    border-color: #111;
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.1);
+    transform: translate(
+            calc(var(--stack-x, 0rem) - 0.18rem),
+            calc(var(--stack-y, 0rem) - 0.18rem)
+        )
+        rotate(var(--stack-rotation, 0deg));
+}
+
+.version-list li:first-child {
+    border-color: #111;
 }
 
 .version-row {
@@ -1611,7 +1635,8 @@ body.version-swap .article-page {
     }
 
     .version-dial-item {
-        min-width: 8.6rem;
+        width: min(12.5rem, calc(100vw - 2rem));
+        min-width: 0;
         max-width: calc(100vw - 2rem);
         font-size: 0.75rem;
     }

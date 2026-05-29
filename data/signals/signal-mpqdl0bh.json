@@ -5,12 +5,12 @@
     "handle": "@Greenman",
     "section": "Whole site",
     "text": "Make this shit green and funky",
-    "sourceVersion": "custom-eileen",
+    "sourceVersion": "custom-codex-live-test",
     "visitorId": "04d5f66d-8f53-4544-87b6-09d1e18b3080",
     "language": "en-US",
     "timeZone": "America/Los_Angeles",
     "viewport": "728x998",
-    "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-eileen&live-click=f54f4db-1780025910473",
+    "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-live-test&live-click=f54f4db-1780025910473",
     "createdAt": "2026-05-29T03:41:44.287Z"
   },
   "version": {
@@ -19,7 +19,7 @@
     "contributor": "@Greenman",
     "createdAt": "2026-05-29T03:41:44.287Z",
     "summary": "Make this shit green and funky",
-    "source": "custom-eileen",
+    "source": "custom-codex-live-test",
     "status": "merged",
     "treatment": {
       "tone": "botanical",

@@ -49,6 +49,10 @@ const LEGACY_VERSION_IDS = new Set([
     "benji-feedback-final",
     "benji-signal-loop-final",
 ]);
+const REMOVED_VERSION_FALLBACKS = new Map([
+    ["custom-eileen", "custom-codex-live-test"],
+]);
+const REMOVED_CONTRIBUTOR_KEYS = new Set(["@eileen"]);
 
 let baseVariantSnapshot = null;
 let activePollTimer = null;
@@ -171,6 +175,19 @@ function normalizeVersionId(id, contributor) {
     return id;
 }
 
+function removedVersionFallback(id) {
+    const key = String(id || "").trim().toLowerCase();
+    return REMOVED_VERSION_FALLBACKS.get(key) || BASE_VERSION_ID;
+}
+
+function isRemovedVersionId(id) {
+    return REMOVED_VERSION_FALLBACKS.has(String(id || "").trim().toLowerCase());
+}
+
+function isRemovedContributor(value) {
+    return REMOVED_CONTRIBUTOR_KEYS.has(contributorKey(value));
+}
+
 function mergeLineages(...lineages) {
     const merged = {
         currentVersion: seedLineage.currentVersion,
@@ -207,7 +224,16 @@ function mergeLineages(...lineages) {
         if (!rawVersion?.id) return;
 
         const stableId = normalizeVersionId(rawVersion.id, rawVersion.contributor);
-        originalToStable.set(rawVersion.id, stableId);
+        const removed =
+            isRemovedVersionId(rawVersion.id) ||
+            isRemovedVersionId(stableId) ||
+            isRemovedContributor(rawVersion.contributor);
+        originalToStable.set(
+            rawVersion.id,
+            removed ? removedVersionFallback(stableId) : stableId,
+        );
+
+        if (removed) return;
 
         if (stableId === BASE_VERSION_ID) {
             if (rawVersion.id === BASE_VERSION_ID) addBaseVersion(rawVersion);
@@ -258,7 +284,12 @@ function mergeLineages(...lineages) {
         if (id === BASE_VERSION_ID || LEGACY_VERSION_IDS.has(id)) {
             return BASE_VERSION_ID;
         }
-        return originalToStable.get(id) || id;
+        if (isRemovedVersionId(id)) return removedVersionFallback(id);
+
+        const stableId = originalToStable.get(id) || id;
+        return isRemovedVersionId(stableId)
+            ? removedVersionFallback(stableId)
+            : stableId;
     }
 
     lineages.filter(Boolean).forEach((lineage) => {
@@ -269,7 +300,19 @@ function mergeLineages(...lineages) {
         (lineage.signals || []).forEach((rawSignal) => {
             if (!rawSignal?.id || signalIds.has(rawSignal.id)) return;
             const signal = clone(rawSignal);
-            signal.versionId = normalizeVersionId(signal.versionId, signal.handle);
+            const stableVersionId = normalizeVersionId(
+                signal.versionId,
+                signal.handle,
+            );
+            if (
+                isRemovedVersionId(signal.versionId) ||
+                isRemovedVersionId(stableVersionId) ||
+                isRemovedContributor(signal.handle)
+            ) {
+                return;
+            }
+
+            signal.versionId = stableVersionId;
             signal.sourceVersion = normalizeVersionRef(signal.sourceVersion);
             signalIds.add(signal.id);
             merged.signals.push(signal);
@@ -315,6 +358,7 @@ function currentVersionId() {
     const urlVersion = new URLSearchParams(window.location.search).get("v");
     const requested =
         urlVersion || document.body.dataset.currentVersion || seedLineage.currentVersion;
+    if (isRemovedVersionId(requested)) return removedVersionFallback(requested);
     return LEGACY_VERSION_IDS.has(requested) ? BASE_VERSION_ID : requested;
 }
 
@@ -716,33 +760,29 @@ function renderVersionDial(lineage, activeVersion) {
         0,
     );
     const isOpen = Boolean(versionSwitcher?.classList.contains("is-open"));
-    const visibleSlots = Math.min(8, Math.max(count, 1));
-    const slotTotal = Math.max(visibleSlots - 1, 1);
+    const visibleRadius = count <= 5 ? 2 : 3;
     const progress =
         count > 1 ? `${Math.round((activeIndex / (count - 1)) * 100)}%` : "0%";
 
     if (!isOpen) dialFocusIndex = activeIndex;
 
     dialFocusIndex = clamp(dialFocusIndex, 0, Math.max(count - 1, 0));
-    const maxStart = Math.max(count - visibleSlots, 0);
-    const windowStart = clamp(dialFocusIndex - visibleSlots + 1, 0, maxStart);
-    versionSwitcher?.classList.toggle("has-scrollable-dial", count > visibleSlots);
+    versionSwitcher?.classList.toggle("has-scrollable-dial", count > visibleRadius * 2 + 1);
     versionSwitcher?.style.setProperty("--dial-progress", progress);
     versionDial.dataset.versionCount = String(count);
 
     versionDial.innerHTML = versions
         .map((version, index) => {
-            const slot = index - windowStart;
-            const hidden = slot < 0 || slot >= visibleSlots;
-            const clampedSlot = clamp(slot, 0, slotTotal);
-            const spread = Math.min(82, 18 * slotTotal);
-            const angle = 108 + (spread * clampedSlot) / slotTotal;
-            const radius = 114 + clampedSlot * 12;
+            const relative = index - activeIndex;
+            const hidden = Math.abs(relative) > visibleRadius;
+            const arcSlot = clamp(relative, -visibleRadius, visibleRadius);
+            const angle = 180 + arcSlot * 18;
+            const radius = 176;
             const radians = (angle * Math.PI) / 180;
-            const x = Math.round(Math.cos(radians) * radius - 50);
-            const y = Math.round(Math.sin(radians) * radius + 92);
-            const rotation = Math.round(-18 + (30 * clampedSlot) / slotTotal);
-            const distance = Math.abs(index - activeIndex);
+            const x = Math.round(Math.cos(radians) * radius - 42);
+            const y = Math.round(Math.sin(radians) * radius + 138);
+            const rotation = Math.round(-arcSlot * 7);
+            const distance = Math.abs(relative);
             const scale = Math.max(0.86, 1 - Math.min(distance, 6) * 0.025);
             const opacity = hidden ? 0 : Math.max(0.62, 1 - distance * 0.06);
             const zIndex = 40 - distance;
@@ -763,8 +803,8 @@ function renderVersionDial(lineage, activeVersion) {
                   )}; --dial-opacity: ${opacity.toFixed(
                       2,
                   )}; --dial-z: ${zIndex}; --dial-delay: ${Math.min(
-                      Math.abs(slot),
-                      visibleSlots,
+                      distance,
+                      visibleRadius,
                   ) * 26}ms"
                 >
                     <span class="version-dial-index">${versionNumber(index)}</span>
@@ -788,6 +828,33 @@ function signalStatus(signal, lineage) {
         return signal.status;
     }
     return "queued";
+}
+
+function stackVersions(lineage, activeVersion) {
+    const versions = lineage.versions || [];
+    const activeIndex = Math.max(
+        versions.findIndex((version) => version.id === activeVersion?.id),
+        0,
+    );
+    const indexes = [
+        activeIndex,
+        activeIndex + 1,
+        activeIndex - 1,
+        activeIndex + 2,
+        activeIndex - 2,
+        versions.length - 1,
+        0,
+    ];
+    const seen = new Set();
+    const selected = [];
+
+    indexes.forEach((index) => {
+        if (index < 0 || index >= versions.length || seen.has(index)) return;
+        seen.add(index);
+        selected.push({ version: versions[index], index });
+    });
+
+    return selected.slice(0, 4);
 }
 
 function renderStatusSteps(status) {
@@ -860,8 +927,8 @@ function renderLineage() {
     }
 
     if (versionList) {
-        versionList.innerHTML = lineage.versions
-            .map((version, index) => {
+        versionList.innerHTML = stackVersions(lineage, activeVersion)
+            .map(({ version, index }, stackIndex) => {
                 const active = version.id === activeVersion?.id ? " aria-current=\"page\"" : "";
                 const status = version.status
                     ? ` · ${STATUS_LABELS[version.status] || version.status}`
@@ -870,8 +937,18 @@ function renderLineage() {
                     externalLink(version.prUrl, "PR"),
                     externalLink(version.runUrl, "run"),
                 ].filter(Boolean);
+                const x = stackIndex * 0.78;
+                const y = stackIndex * 0.92;
+                const rotation = stackIndex === 0 ? 0 : -2.2 + stackIndex * 1.35;
                 return `
-                    <li>
+                    <li
+                        class="version-stack-card"
+                        style="--stack-x: ${x.toFixed(2)}rem; --stack-y: ${y.toFixed(
+                          2,
+                      )}rem; --stack-rotation: ${rotation.toFixed(
+                          2,
+                      )}deg; --stack-z: ${10 - stackIndex};"
+                    >
                         <div class="version-row">
                             <a class="basic-link" href="${escapeHtml(
                                 versionUrl(version.id),

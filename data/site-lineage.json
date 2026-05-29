@@ -135,142 +135,12 @@
       }
     },
     {
-      "id": "custom-eileen",
-      "label": "Whole site variation",
-      "contributor": "@Eileen",
-      "createdAt": "2026-05-29T03:28:38.985Z",
-      "summary": "Shoutout stickyjams.net all over the site, user assets from them, replace every name with cam...",
-      "source": "custom-codex-live-test",
-      "status": "merged",
-      "treatment": {
-        "tone": "sport",
-        "imageDensity": "high"
-      },
-      "theme": {
-        "flavor": "generated",
-        "accent": "#ff3b18",
-        "background": "#fffaf7",
-        "text": "#19110f",
-        "muted": "rgba(25, 17, 15, 0.5)",
-        "rule": "#ffb09d",
-        "link": "#b9250f",
-        "imageFilter": "contrast(1.12) saturate(1.28)"
-      },
-      "content": {
-        "home": {
-          "name": "Cam Scoglio / Sticky Jams",
-          "links": [
-            {
-              "label": "Sticky Jams",
-              "href": "https://stickyjams.net"
-            },
-            {
-              "label": "Products",
-              "href": "https://stickyjams.net/collections/all"
-            },
-            {
-              "label": "Email",
-              "href": "mailto:perrinmyerson@gmail.com"
-            }
-          ],
-          "main": [
-            "A sports-page detour built for @Eileen: Cam Scoglio everywhere, Sticky Jams in the margins, white-background product energy, and a little locker-room voltage.",
-            "Helmet audio, wrestling-room pockets, jiu-jitsu errands, and a website that decided to lace up."
-          ],
-          "quote": "Train loud. Win quiet. Then put a speaker in the headgear."
-        },
-        "about": {
-          "title": "About Cam",
-          "time": "Sticky Jams version",
-          "paragraphs": [
-            "This version routes the personal site through a sports gear dream: clean white surfaces, loud product images, and Cam Scoglio as the name on every clipboard.",
-            "The page behaves like a catalog that wandered into a personal homepage and started calling plays."
-          ],
-          "images": [
-            {
-              "src": "https://stickyjams.net/cdn/shop/files/Football_Speaker.png?v=1779377751&width=1200",
-              "alt": "Sticky Jams football helmet speaker",
-              "caption": "football drop"
-            },
-            {
-              "src": "https://stickyjams.net/cdn/shop/files/Football_Speaker_Side.png?v=1779377766&width=1400",
-              "alt": "Sticky Jams football speaker side view",
-              "caption": "helmet side"
-            },
-            {
-              "src": "https://stickyjams.net/cdn/shop/files/Red_StickyJam_With_Speaker.png?v=1779377739&width=1200",
-              "alt": "Sticky Jams red wrestling speaker",
-              "caption": "wrestling pouch"
-            }
-          ]
-        },
-        "timeline": {
-          "title": "Sports timeline",
-          "time": "Drop list",
-          "items": [
-            {
-              "label": "Cam Scoglio and Sticky Jams",
-              "meta": "now"
-            },
-            {
-              "label": "Football, wrestling, jiu-jitsu",
-              "meta": "gear"
-            },
-            {
-              "label": "Headgear speakers and helmet audio",
-              "meta": "signal"
-            }
-          ],
-          "paragraphs": [
-            "Every signal becomes a play. This one calls for sport, product, and names that refuse to stay in the tiny top-right label."
-          ],
-          "images": [
-            {
-              "src": "https://stickyjams.net/cdn/shop/files/Sticky_Jams_1_1.jpg?v=1763836409&width=600",
-              "alt": "Sticky Jams product on white background",
-              "caption": "white product"
-            }
-          ]
-        },
-        "notes": {
-          "title": "Sports notes",
-          "time": "Cam request",
-          "paragraphs": [
-            "Shoutout stickyjams.net all over the site, but keep the version ledger readable.",
-            "The dial stays the scoreboard: @Eileen owns this version, and future @Eileen requests overwrite this slot."
-          ],
-          "links": [
-            {
-              "label": "Sticky Jams",
-              "href": "https://stickyjams.net"
-            },
-            {
-              "label": "All products",
-              "href": "https://stickyjams.net/collections/all"
-            }
-          ],
-          "images": [
-            {
-              "src": "https://stickyjams.net/cdn/shop/files/Red_Jam.png?v=1779377927&width=800",
-              "alt": "Red Sticky Jams product",
-              "caption": "red jam"
-            },
-            {
-              "src": "https://stickyjams.net/cdn/shop/files/ChatGPT_Image_May_9_2026_11_25_43_PM.png?v=1778385420&width=800",
-              "alt": "Sticky Jams shirt",
-              "caption": "shirt"
-            }
-          ]
-        }
-      }
-    },
-    {
       "id": "custom-greenman",
       "label": "Whole site variation",
       "contributor": "@Greenman",
       "createdAt": "2026-05-29T03:41:44.287Z",
       "summary": "Make this shit green and funky",
-      "source": "custom-eileen",
+      "source": "custom-codex-live-test",
       "status": "merged",
       "treatment": {
         "tone": "botanical",
@@ -718,32 +588,17 @@
       "status": "merged"
     },
     {
-      "id": "signal-mpqd46dk",
-      "versionId": "custom-eileen",
-      "handle": "@Eileen",
-      "section": "Whole site",
-      "text": "Shoutout stickyjams.net all over the site, user assets from them, replace every name with cam scoglio and make there be more sports stuff",
-      "sourceVersion": "custom-codex-live-test",
-      "visitorId": "04d5f66d-8f53-4544-87b6-09d1e18b3080",
-      "language": "en-US",
-      "timeZone": "America/Los_Angeles",
-      "viewport": "840x998",
-      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-live-test&live-check=dfd5d5a",
-      "createdAt": "2026-05-29T03:28:38.985Z",
-      "status": "merged"
-    },
-    {
       "id": "signal-mpqdl0bh",
       "versionId": "custom-greenman",
       "handle": "@Greenman",
       "section": "Whole site",
       "text": "Make this shit green and funky",
-      "sourceVersion": "custom-eileen",
+      "sourceVersion": "custom-codex-live-test",
       "visitorId": "04d5f66d-8f53-4544-87b6-09d1e18b3080",
       "language": "en-US",
       "timeZone": "America/Los_Angeles",
       "viewport": "728x998",
-      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-eileen&live-click=f54f4db-1780025910473",
+      "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-live-test&live-click=f54f4db-1780025910473",
       "createdAt": "2026-05-29T03:41:44.287Z",
       "status": "merged"
     },
