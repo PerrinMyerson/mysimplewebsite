@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" role="img" aria-labelledby="title desc">
+  <title id="title">Living notebook dream</title>
+  <desc id="desc">A bright open notebook with tilted notes, loops, moons, and colored signal paths.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffbe8"/>
+      <stop offset="0.5" stop-color="#f8fffb"/>
+      <stop offset="1" stop-color="#ffe8f5"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#10163b"/>
+      <stop offset="0.42" stop-color="#0f726f"/>
+      <stop offset="1" stop-color="#ffd447"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#150923" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="960" height="680" fill="url(#sky)"/>
+  <path d="M78 110 C188 44 310 80 420 128 C548 184 650 44 816 86 C900 108 932 182 912 252 C882 354 756 324 674 408 C574 510 466 618 292 586 C142 558 42 448 52 304 C58 220 16 148 78 110Z" fill="#f7ff5c" opacity="0.32"/>
+  <g filter="url(#soft-shadow)">
+    <path d="M145 145 L462 96 L492 564 L164 608 Z" fill="url(#paper)" stroke="#25153f" stroke-width="8"/>
+    <path d="M498 112 L828 158 L778 610 L492 564 Z" fill="#fff7fb" stroke="#25153f" stroke-width="8"/>
+    <path d="M462 96 C478 212 488 378 492 564" fill="none" stroke="#25153f" stroke-width="7"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M194 222 C260 198 316 236 378 210" stroke="#ff4c9a" stroke-width="11"/>
+    <path d="M198 276 L386 248" stroke="#25153f" stroke-width="7"/>
+    <path d="M206 326 C266 356 318 286 386 330" stroke="#00a896" stroke-width="10"/>
+    <path d="M214 406 L402 376" stroke="#25153f" stroke-width="7"/>
+    <path d="M560 238 C630 178 712 250 766 190" stroke="#4b2fff" stroke-width="12"/>
+    <path d="M546 324 L756 354" stroke="#25153f" stroke-width="7"/>
+    <path d="M536 436 C620 472 680 394 754 450" stroke="#ff8f00" stroke-width="12"/>
+  </g>
+  <g fill="#25153f">
+    <circle cx="266" cy="180" r="16"/>
+    <circle cx="408" cy="304" r="12"/>
+    <circle cx="582" cy="174" r="14"/>
+    <circle cx="760" cy="304" r="18"/>
+    <path d="M670 92 C640 126 638 164 664 190 C622 176 606 132 628 92 C642 66 668 52 700 52 C688 62 678 74 670 92Z"/>
+  </g>
+  <g fill="#fff">
+    <path d="M116 416 L132 452 L170 458 L140 482 L148 520 L116 500 L82 520 L92 482 L62 458 L100 452 Z"/>
+    <path d="M846 382 L858 410 L888 414 L864 434 L870 464 L846 448 L820 464 L828 434 L804 414 L834 410 Z"/>
+  </g>
+  <path d="M114 620 C220 548 310 660 414 594 C514 532 590 622 676 564 C742 520 802 544 868 604" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+</svg>

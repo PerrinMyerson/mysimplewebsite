@@ -362,6 +362,349 @@ html[data-version-flavor="green-funky"] .wide-image img {
     filter: saturate(1.32) hue-rotate(32deg);
 }
 
+html[data-version-flavor="living-notebook-dream"] body,
+html[data-version-flavor="living-notebook-dream"] .page {
+    background:
+        radial-gradient(circle at 16% 18%, rgba(255, 76, 154, 0.28), transparent 22rem),
+        radial-gradient(circle at 86% 12%, rgba(247, 255, 92, 0.38), transparent 18rem),
+        linear-gradient(90deg, rgba(0, 168, 150, 0.12) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(36, 18, 56, 0.1) 1px, transparent 1px),
+        var(--version-background, #fff7d6);
+    background-size:
+        auto,
+        auto,
+        42px 42px,
+        42px 42px,
+        auto;
+}
+
+html[data-version-flavor="living-notebook-dream"] .center {
+    width: min(calc(100vw - 64px), 920px);
+    align-items: stretch;
+    padding: clamp(1.4rem, 3vw, 2.6rem);
+    border: 3px solid var(--version-text, #241238);
+    border-radius: 8px;
+    background:
+        linear-gradient(105deg, rgba(255, 255, 255, 0.82), rgba(255, 248, 219, 0.64)),
+        url("assets/notebook-dream.svg") right 1rem center / min(46vw, 420px) auto
+            no-repeat;
+    box-shadow: 12px 12px 0 #00a896, -10px -10px 0 #ff4c9a;
+    transform: translate(-50%, -50%) rotate(-1.8deg);
+}
+
+html[data-version-flavor="living-notebook-dream"] .center table,
+html[data-version-flavor="living-notebook-dream"] .center tbody,
+html[data-version-flavor="living-notebook-dream"] .center tr,
+html[data-version-flavor="living-notebook-dream"] .center th,
+html[data-version-flavor="living-notebook-dream"] .center td {
+    display: block;
+}
+
+html[data-version-flavor="living-notebook-dream"] .center th {
+    width: 92px;
+    height: 92px;
+    margin: 0 0 1.2rem;
+}
+
+html[data-version-flavor="living-notebook-dream"] .horiz {
+    width: 92px;
+    height: 92px;
+    border: 2px solid var(--version-text, #241238);
+    border-radius: 50%;
+    background: #f7ff5c;
+    filter: hue-rotate(52deg) saturate(1.6);
+    object-fit: contain;
+    transform: rotate(9deg);
+    animation: dreamStamp 7s ease-in-out infinite;
+}
+
+html[data-version-flavor="living-notebook-dream"] #header {
+    max-width: min(28rem, 56vw);
+    margin-top: 0 !important;
+}
+
+html[data-version-flavor="living-notebook-dream"] #header h1 {
+    max-width: 11ch;
+    margin: 0;
+    color: var(--version-text, #241238);
+    font-size: clamp(2.35rem, 8vw, 5.6rem);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 0.92;
+    text-transform: uppercase;
+}
+
+html[data-version-flavor="living-notebook-dream"] #header ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 1rem 0 0;
+    padding: 0;
+}
+
+html[data-version-flavor="living-notebook-dream"] #header li {
+    display: block;
+    float: none;
+    margin: 0;
+}
+
+html[data-version-flavor="living-notebook-dream"] #header a,
+html[data-version-flavor="living-notebook-dream"] .article-links a {
+    display: inline-block;
+    padding: 0.32rem 0.5rem;
+    border: 2px solid currentColor;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--version-link, #4b2fff);
+    text-decoration: none;
+    transform: rotate(var(--tag-tilt, -1deg));
+}
+
+html[data-version-flavor="living-notebook-dream"] #header li:nth-child(2n) a,
+html[data-version-flavor="living-notebook-dream"] .article-links a:nth-child(2n) {
+    --tag-tilt: 1.5deg;
+    color: #008b7f;
+}
+
+html[data-version-flavor="living-notebook-dream"] #main {
+    max-width: min(31rem, 58vw);
+    margin-top: 1.2rem;
+}
+
+html[data-version-flavor="living-notebook-dream"] #main p {
+    color: var(--version-text, #241238);
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    line-height: 1.5;
+}
+
+html[data-version-flavor="living-notebook-dream"] .quote {
+    right: 8vw;
+    bottom: 88px;
+    left: auto;
+    width: min(28rem, calc(100vw - 36px));
+    color: var(--version-text, #241238);
+    text-align: right;
+    transform: rotate(1.4deg);
+}
+
+html[data-version-flavor="living-notebook-dream"] .quote p {
+    display: inline;
+    padding: 0.45rem 0.65rem;
+    background: #f7ff5c;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+html[data-version-flavor="living-notebook-dream"] .article-page {
+    background:
+        linear-gradient(90deg, transparent 0 5.4rem, rgba(255, 76, 154, 0.55) 5.4rem 5.5rem, transparent 5.5rem),
+        repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0 2.65rem, rgba(0, 168, 150, 0.18) 2.7rem 2.78rem),
+        var(--version-background, #fff7d6);
+    color: var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .benji-article {
+    width: min(calc(100vw - 44px), 68rem);
+    padding: 5.4rem 0 8.2rem;
+}
+
+html[data-version-flavor="living-notebook-dream"] .article-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    padding: 1rem 0 1.2rem;
+    border-bottom: 4px double var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .article-header::before {
+    position: absolute;
+    top: -0.8rem;
+    left: -1rem;
+    width: 4.2rem;
+    height: 1.2rem;
+    background: rgba(247, 255, 92, 0.78);
+    content: "";
+    transform: rotate(-9deg);
+}
+
+html[data-version-flavor="living-notebook-dream"] .article-header h1 {
+    font-size: clamp(2rem, 6vw, 4.25rem);
+    font-weight: 900;
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+html[data-version-flavor="living-notebook-dream"] .article-header time {
+    max-width: 15rem;
+    color: var(--version-text, #241238);
+    font-weight: 700;
+    text-align: right;
+}
+
+html[data-version-flavor="living-notebook-dream"] .version-note {
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 1rem;
+    padding: 0.55rem 0.7rem !important;
+    border: 2px solid var(--version-text, #241238);
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 6px 6px 0 rgba(255, 76, 154, 0.4);
+    transform: rotate(-0.8deg);
+}
+
+html[data-version-flavor="living-notebook-dream"] .benji-article p {
+    max-width: 42rem;
+    padding-top: 1.15rem;
+    color: var(--version-text, #241238);
+    font-size: 0.98rem;
+    line-height: 1.62;
+}
+
+html[data-version-flavor="living-notebook-dream"] .writing-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin-top: 1.35rem;
+    border: 0;
+}
+
+html[data-version-flavor="living-notebook-dream"] .writing-list li {
+    display: grid;
+    min-height: 8rem;
+    align-content: space-between;
+    padding: 0.8rem;
+    border: 2px solid var(--version-text, #241238);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.74);
+    box-shadow: 5px 5px 0 #00a896;
+    transform: rotate(var(--note-tilt, -1.5deg));
+}
+
+html[data-version-flavor="living-notebook-dream"] .writing-list li:nth-child(2n) {
+    --note-tilt: 1.4deg;
+    box-shadow: 5px 5px 0 #ff4c9a;
+}
+
+html[data-version-flavor="living-notebook-dream"] .writing-list li span:last-child {
+    justify-self: start;
+    padding: 0.1rem 0.35rem;
+    background: #f7ff5c;
+    color: var(--version-text, #241238);
+    white-space: normal;
+}
+
+html[data-version-flavor="living-notebook-dream"] .image-row,
+html[data-version-flavor="living-notebook-dream"] .image-row.two-up {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+
+html[data-version-flavor="living-notebook-dream"] .image-tile {
+    grid-column: span 2;
+    padding: 0.5rem;
+    border: 2px solid var(--version-text, #241238);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 8px 8px 0 rgba(75, 47, 255, 0.3);
+    transform: rotate(var(--image-tilt, -2deg));
+    animation: dreamFloat 8s ease-in-out infinite;
+}
+
+html[data-version-flavor="living-notebook-dream"] .image-tile:nth-child(2n) {
+    --image-tilt: 2.5deg;
+    animation-delay: -2s;
+}
+
+html[data-version-flavor="living-notebook-dream"] .image-tile:nth-child(3n) {
+    --image-tilt: -4deg;
+    grid-column: span 3;
+    animation-delay: -4s;
+}
+
+html[data-version-flavor="living-notebook-dream"] .image-tile img {
+    aspect-ratio: 4 / 3;
+    border-radius: 4px;
+    filter: var(--version-image-filter, none);
+}
+
+html[data-version-flavor="living-notebook-dream"] .image-tile figcaption,
+html[data-version-flavor="living-notebook-dream"] .wide-image figcaption {
+    color: var(--version-text, #241238);
+    font-weight: 700;
+}
+
+html[data-version-flavor="living-notebook-dream"] .bottom-tabs {
+    border-top: 2px solid rgba(36, 18, 56, 0.28);
+    background: rgba(255, 247, 214, 0.86);
+}
+
+html[data-version-flavor="living-notebook-dream"] .bottom-tabs button {
+    color: var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .tab-active {
+    border-bottom-color: var(--version-accent, #ff4c9a) !important;
+}
+
+html[data-version-flavor="living-notebook-dream"] .version-dial-item {
+    border: 2px solid var(--version-text, #241238);
+    background: #fffbe8;
+    box-shadow: 6px 6px 0 rgba(0, 168, 150, 0.35);
+    color: var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .version-dial-index {
+    border-color: var(--version-text, #241238);
+    background: #f7ff5c;
+    color: var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .generation-console,
+html[data-version-flavor="living-notebook-dream"] .feedback-form,
+html[data-version-flavor="living-notebook-dream"] .version-list,
+html[data-version-flavor="living-notebook-dream"] .version-list li,
+html[data-version-flavor="living-notebook-dream"] .signal-log li {
+    border-color: rgba(36, 18, 56, 0.34);
+}
+
+html[data-version-flavor="living-notebook-dream"] .generation-heading,
+html[data-version-flavor="living-notebook-dream"] .status-steps .is-done,
+html[data-version-flavor="living-notebook-dream"] .status-steps .is-active {
+    color: var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .generation-console p,
+html[data-version-flavor="living-notebook-dream"] .generation-links,
+html[data-version-flavor="living-notebook-dream"] .status-steps,
+html[data-version-flavor="living-notebook-dream"] .version-row span,
+html[data-version-flavor="living-notebook-dream"] .version-list p,
+html[data-version-flavor="living-notebook-dream"] .signal-log,
+html[data-version-flavor="living-notebook-dream"] .feedback-form label {
+    color: var(--version-muted, rgba(36, 18, 56, 0.62));
+}
+
+html[data-version-flavor="living-notebook-dream"] .feedback-form input,
+html[data-version-flavor="living-notebook-dream"] .feedback-form select,
+html[data-version-flavor="living-notebook-dream"] .feedback-form textarea {
+    border: 2px solid rgba(36, 18, 56, 0.34);
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--version-text, #241238);
+}
+
+html[data-version-flavor="living-notebook-dream"] .feedback-form button {
+    padding: 0.42rem 0.6rem;
+    border: 2px solid var(--version-text, #241238);
+    border-radius: 6px;
+    background: #f7ff5c;
+    color: var(--version-text, #241238);
+    box-shadow: 4px 4px 0 #ff4c9a;
+}
+
 html[data-version-flavor="generated"] .article-page,
 html[data-version-flavor="pending"] .article-page {
     background: var(--version-background, #fdfdfb);
@@ -920,6 +1263,69 @@ body.version-swap .article-page {
         grid-template-columns: 1fr;
     }
 
+    html[data-version-flavor="living-notebook-dream"] .center {
+        left: 18px;
+        width: calc(100vw - 36px);
+        min-height: 62vh;
+        padding: 1.15rem;
+        background:
+            linear-gradient(105deg, rgba(255, 255, 255, 0.86), rgba(255, 248, 219, 0.74)),
+            url("assets/notebook-dream.svg") right -4.2rem bottom 0.5rem / 18rem auto
+                no-repeat;
+        box-shadow: 7px 7px 0 #00a896, -5px -5px 0 #ff4c9a;
+        transform: translate(0, -50%) rotate(-1deg);
+    }
+
+    html[data-version-flavor="living-notebook-dream"] #header,
+    html[data-version-flavor="living-notebook-dream"] #main {
+        max-width: 100%;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] #header h1 {
+        max-width: 9ch;
+        font-size: clamp(2.25rem, 15vw, 3.8rem);
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .quote {
+        right: auto;
+        bottom: 78px;
+        left: 18px;
+        width: calc(100vw - 36px);
+        text-align: left;
+        transform: rotate(0.8deg);
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .benji-article {
+        width: min(calc(100vw - 36px), 36.375rem);
+        padding-top: 4rem;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .article-header {
+        grid-template-columns: 1fr;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .article-header time {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .writing-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .writing-list li {
+        min-height: 7rem;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .image-row,
+    html[data-version-flavor="living-notebook-dream"] .image-row.two-up {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .image-tile,
+    html[data-version-flavor="living-notebook-dream"] .image-tile:nth-child(3n) {
+        grid-column: auto;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -928,6 +1334,11 @@ body.version-swap .article-page {
     }
 
     body.version-swap .article-page {
+        animation: none;
+    }
+
+    html[data-version-flavor="living-notebook-dream"] .horiz,
+    html[data-version-flavor="living-notebook-dream"] .image-tile {
         animation: none;
     }
 }
@@ -939,5 +1350,27 @@ body.version-swap .article-page {
 
     to {
         opacity: 1;
+    }
+}
+
+@keyframes dreamStamp {
+    0%,
+    100% {
+        transform: rotate(9deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(-5deg) scale(1.05);
+    }
+}
+
+@keyframes dreamFloat {
+    0%,
+    100% {
+        translate: 0 0;
+    }
+
+    50% {
+        translate: 0 -8px;
     }
 }
