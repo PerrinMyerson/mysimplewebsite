@@ -683,7 +683,7 @@
           ]
         }
       },
-      "prUrl": ""
+      "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/6"
     }
   ],
   "signals": [
@@ -801,7 +801,7 @@
       "status": "merged",
       "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26618077145",
       "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
-      "prUrl": "",
+      "prUrl": "https://github.com/PerrinMyerson/mysimplewebsite/pull/6",
       "message": ""
     }
   ]
