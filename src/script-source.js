@@ -391,6 +391,19 @@ function selectVersion(id) {
     renderLineage();
 }
 
+function syncDisplayedVersionUrl(version, lineage) {
+    const requested = new URLSearchParams(window.location.search).get("v");
+
+    if (!requested || requested === version?.id) return;
+
+    const known = (lineage.versions || []).some((item) => item.id === requested);
+    if (!known || LEGACY_VERSION_IDS.has(requested) || isRemovedVersionId(requested)) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("v", version.id);
+        window.history.replaceState({}, "", url);
+    }
+}
+
 function setDialOpen(isOpen) {
     if (!versionSwitcher) return;
     const lineage = getPlainLineage();
@@ -744,6 +757,7 @@ function renderContributorHandle(lineage = getPlainLineage()) {
     if (!versionHandle || !version) return;
 
     document.body.dataset.currentVersion = version.id;
+    syncDisplayedVersionUrl(version, lineage);
     versionHandle.textContent = version.contributor;
     versionHandle.title = `Customized by ${version.contributor}`;
     applyVersionTreatment(version);
