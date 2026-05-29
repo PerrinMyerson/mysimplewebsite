@@ -1,0 +1,21 @@
+{
+  "signal": {
+    "id": "signal-publish-token-smoke",
+    "versionId": "custom-codex-publish-token-smoke",
+    "handle": "@codex-publish-token-smoke",
+    "section": "Whole site",
+    "text": "Final smoke test after Vercel framework fixes and publish-token workflow fixes. Make a small visible automatic-chaos version about a clean relay switchboard and successful branch publishing, while preserving v1, the top-right dial, feedback form, version ledger, and API contract.",
+    "sourceVersion": "custom-codex-direct-publish-test",
+    "visitorId": "codex-publish-token-smoke",
+    "language": "en-US",
+    "timeZone": "America/Los_Angeles",
+    "viewport": "1440x900",
+    "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-codex-direct-publish-test",
+    "createdAt": "2026-05-29T04:47:49.637Z",
+    "status": "failed",
+    "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26618598340",
+    "prUrl": "",
+    "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
+    "message": "Automatic Codex generation failed before publishing."
+  }
+}
