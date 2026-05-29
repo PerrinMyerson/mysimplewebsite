@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>perrin</title>
         <link rel="icon" type="image/png" href="logo.png" />
-        <link rel="stylesheet" href="styles.css?v=current-tag-trigger-edge" />
+        <link rel="stylesheet" href="styles.css?v=blackstar-note" />
     </head>
-    <body data-current-version="custom-codex-direct-publish-test">
+    <body data-current-version="v1">
         <div class="version-switcher" data-version-switcher>
             <button
                 class="contributor-handle"
@@ -30,56 +30,102 @@
 
         <main class="slide-viewport">
             <div class="slide-track">
-                <section class="slide-panel page" id="home" aria-label="Home">
-                    <div class="center">
-                        <table>
-                            <tr>
-                                <th><img src="logo.png" class="horiz" alt="" /></th>
-                                <td>
-                                    <div id="header" style="margin-top: -10px">
-                                        <h1>Perrin Myerson</h1>
-                                        <ul>
-                                            <li>
-                                                <a href="mailto:perrinmyerson@gmail.com"
-                                                    >perrinmyerson@gmail.com</a
-                                                >
-                                            </li>
-                                            <!--<li><a href="Resume.pdf">Resume</a></li> -->
-                                            <li>
-                                                <a
-                                                    href="https://github.com/perrinmyerson"
-                                                    >GitHub</a
-                                                >
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <br /><br />
-                                    <div id="main">
-                                        <p class="top">
-                                            Formerly @Duke, YC, and China.
-                                            <br /><br />
-                                            I'm learning, working and investing in
-                                            novel frontier problems in climate,
-                                            genetics and AI.
-                                            <br /><br />
-                                            Having fun with
-                                            <a href="https://www.lizardoverthrow.com">
-                                                CRISPR;
-                                            </a>
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="quote">
+                <section
+                    class="slide-panel page profile-page"
+                    id="home"
+                    aria-label="Home"
+                >
+                    <article class="profile-letter">
+                        <h1>Hi!</h1>
+
                         <p>
-                            <i>
-                                "We are as gods and might as well get good at it."
-                                - Brand
-                            </i>
+                            I am deeply interested &amp; curious about Blackstar.
+                            Really enjoy both the web aesthetics and HCI overall.
                         </p>
-                    </div>
+
+                        <p>Some points of interest!</p>
+
+                        <p>
+                            First intern at
+                            <a class="profile-link" href="https://www.truveta.com/"
+                                >Truveta</a
+                            >
+                            (Now Unicorn +)
+                        </p>
+
+                        <p>
+                            Darpa embedded systems and ML research for 3 years,
+                            spun-out by PI into
+                            <a class="profile-link" href="https://www.extellis.com/"
+                                >Extellis</a
+                            >.
+                        </p>
+
+                        <p>
+                            Briefly YC founder before realizing that it was not my
+                            goal. RIP GovGoose (YC W25)...
+                        </p>
+
+                        <p>
+                            Built first LinkedIn LLM embedding based recommendation
+                            system. AWS infrastructure intern.
+                        </p>
+
+                        <p>
+                            Led AI product at the
+                            <a class="profile-link" href="https://civicnews.org/"
+                                >CivicNewsCompany</a
+                            >.
+                        </p>
+
+                        <p>
+                            Volunteer for and built foundational infra for ~40% of
+                            suicide hotlines, met
+                            <a class="profile-link" href="https://www.obama.org/"
+                                >Obama</a
+                            >!
+                        </p>
+
+                        <p>Duke ECE, CS 3 years grad with honors.</p>
+
+                        <p>
+                            Grew up in China (Shanghai + Guangzhou), sister is
+                            adopted. Quite adept navigating Shenzhen.
+                        </p>
+
+                        <p>
+                            Moderately hardware knowledgeable, proficient in CAD, won
+                            FIRST robotics worlds, third in national civil
+                            engineering comp (paid for my tuition).
+                        </p>
+
+                        <p>
+                            Decent design sense? I hope? Worked for Taylor Swift
+                            during the era's tour.
+                        </p>
+
+                        <p>If any of that sounds interesting would love to chat!</p>
+
+                        <p>
+                            Cheers,<br />
+                            Perrin
+                        </p>
+
+                        <p>
+                            Attached some images of work across the stack. Love
+                            working, love learning :)
+                        </p>
+
+                        <figure
+                            class="profile-work-strip"
+                            aria-label="Images of work across the stack"
+                        >
+                            <img
+                                src="assets/work-strip.svg"
+                                alt="Illustrated strip of talks, hardware, cleanroom work, logistics, and laptop prototyping"
+                            />
+                        </figure>
+                    </article>
                 </section>
 
                 <section
@@ -296,9 +342,10 @@
                 </section>
 
                 <section
-                    class="slide-panel page article-page"
+                    class="page article-page version-utility"
                     id="versions"
                     aria-label="Versions"
+                    hidden
                 >
                     <article class="benji-article version-console">
                         <header class="article-header">
@@ -365,9 +412,8 @@
             <button type="button" class="tab-inactive" data-slide="1">About</button>
             <button type="button" class="tab-inactive" data-slide="2">Timeline</button>
             <button type="button" class="tab-inactive" data-slide="3">Notes</button>
-            <button type="button" class="tab-inactive" data-slide="4">Versions</button>
         </nav>
 
-        <script type="module" src="script.js?v=current-tag-trigger-edge"></script>
+        <script type="module" src="script.js?v=blackstar-note"></script>
     </body>
 </html>
