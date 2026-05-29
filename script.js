@@ -4385,12 +4385,12 @@ function renderVersionDial(lineage, activeVersion) {
     const relative = index - activeIndex2;
     const hidden = Math.abs(relative) > visibleRadius;
     const arcSlot = clamp(relative, -visibleRadius, visibleRadius);
-    const orbitAngle = -arcSlot * 24;
+    const orbitAngle = -arcSlot * 20;
     const radius = 196;
     const radians = orbitAngle * Math.PI / 180;
     const x = Math.round(Math.cos(radians) * -radius - 24);
-    const y = Math.round(Math.sin(radians) * radius + 156);
-    const rotation = Math.round(orbitAngle * -0.62);
+    const y = Math.round(Math.sin(radians) * radius + 172);
+    const rotation = Math.round(orbitAngle * -0.72);
     const distance = Math.abs(relative);
     const scale = Math.max(0.86, 1 - Math.min(distance, 6) * 0.025);
     const opacity = hidden ? 0 : Math.max(0.62, 1 - distance * 0.06);
