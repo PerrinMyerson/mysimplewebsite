@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-labelledby="title desc">
+  <title id="title">Signal margins</title>
+  <desc id="desc">Layered notebook margins filled with arrows, moons, and colored annotations.</desc>
+  <rect width="720" height="520" fill="#fff8db"/>
+  <g stroke="#2a183d" stroke-width="5" fill="none">
+    <path d="M72 78 H604"/>
+    <path d="M72 142 H432"/>
+    <path d="M72 206 H650"/>
+    <path d="M72 270 H506"/>
+    <path d="M72 334 H618"/>
+    <path d="M72 398 H458"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 118 C198 46 282 178 352 104 C418 34 478 130 548 76" stroke="#ff4c9a" stroke-width="12"/>
+    <path d="M108 302 C174 252 230 348 300 286 C356 236 416 310 484 260" stroke="#00a896" stroke-width="12"/>
+    <path d="M222 434 C300 378 358 482 436 414 C498 360 558 424 624 374" stroke="#4b2fff" stroke-width="12"/>
+  </g>
+  <g fill="#ffd447" stroke="#2a183d" stroke-width="5">
+    <path d="M574 124 L610 154 L650 130 L634 174 L672 202 L624 200 L608 246 L592 200 L544 202 L582 174 Z"/>
+    <circle cx="140" cy="410" r="30"/>
+    <path d="M510 316 C488 340 488 374 510 396 C474 390 452 362 462 326 C470 292 502 272 538 278 C526 286 516 298 510 316Z"/>
+  </g>
+  <g fill="#2a183d">
+    <circle cx="88" cy="118" r="10"/>
+    <circle cx="630" cy="332" r="10"/>
+    <circle cx="528" cy="438" r="10"/>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-labelledby="title desc">
+  <title id="title">Page orbit</title>
+  <desc id="desc">Floating notebook pages orbiting a bright central signal.</desc>
+  <rect width="720" height="520" fill="#0f1229"/>
+  <circle cx="360" cy="260" r="90" fill="#f7ff5c"/>
+  <circle cx="360" cy="260" r="52" fill="#ff4c9a" opacity="0.9"/>
+  <g fill="#fff7e8" stroke="#2a183d" stroke-width="6">
+    <path d="M108 116 L230 86 L252 218 L128 246 Z"/>
+    <path d="M470 70 L616 112 L576 244 L434 206 Z"/>
+    <path d="M112 340 L258 318 L280 452 L132 466 Z"/>
+    <path d="M456 328 L604 304 L632 430 L482 462 Z"/>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-width="5" opacity="0.8">
+    <ellipse cx="360" cy="260" rx="260" ry="150"/>
+    <ellipse cx="360" cy="260" rx="232" ry="194" transform="rotate(-24 360 260)"/>
+    <ellipse cx="360" cy="260" rx="206" ry="228" transform="rotate(32 360 260)"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-width="8">
+    <path d="M146 150 L220 132" stroke="#00a896"/>
+    <path d="M154 182 L226 164" stroke="#2a183d"/>
+    <path d="M496 126 L578 150" stroke="#ff8f00"/>
+    <path d="M486 166 L566 188" stroke="#2a183d"/>
+    <path d="M152 384 L236 370" stroke="#4b2fff"/>
+    <path d="M160 420 L238 410" stroke="#2a183d"/>
+    <path d="M494 370 L584 354" stroke="#ff4c9a"/>
+    <path d="M502 408 L590 392" stroke="#2a183d"/>
+  </g>
+</svg>

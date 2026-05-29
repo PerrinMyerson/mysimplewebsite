@@ -1,5 +1,5 @@
 {
-  "currentVersion": "custom-greenman",
+  "currentVersion": "custom-codex-chaos-test",
   "versions": [
     {
       "id": "v1",
@@ -388,6 +388,154 @@
           ]
         }
       }
+    },
+    {
+      "id": "custom-codex-chaos-test",
+      "label": "Whole site variation",
+      "contributor": "@codex-chaos-test",
+      "createdAt": "2026-05-29T04:23:32.502Z",
+      "summary": "Full automatic chaos smoke test after key rotation: make a living notebook dream with new layout, copy, images, and motion.",
+      "source": "custom-greenman",
+      "status": "merged",
+      "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26617816595",
+      "treatment": {
+        "tone": "notebook-chaos",
+        "imageDensity": "high"
+      },
+      "theme": {
+        "flavor": "living-notebook-dream",
+        "accent": "#ff4c9a",
+        "background": "#fff7d6",
+        "text": "#241238",
+        "muted": "rgba(36, 18, 56, 0.62)",
+        "rule": "#00a896",
+        "link": "#4b2fff",
+        "imageFilter": "saturate(1.45) contrast(1.08) hue-rotate(-8deg)",
+        "fontFamily": "ui-monospace"
+      },
+      "content": {
+        "home": {
+          "name": "Living Notebook Dream",
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "GitHub",
+              "href": "https://github.com/perrinmyerson"
+            },
+            {
+              "label": "Run",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26617816595"
+            }
+          ],
+          "main": [
+            "The site woke up as a notebook with its margins still moving: colored arrows, half-finished diagrams, and notes that keep choosing stranger routes across the page.",
+            "Under the dream, the feedback loop stays intact. One handle, one version, one visible signal path, and Version 1 left exactly where it was."
+          ],
+          "quote": "A bright strange dream can still keep receipts."
+        },
+        "about": {
+          "title": "About the Dream",
+          "time": "Generated 2026-05-29 04:23 UTC",
+          "paragraphs": [
+            "This contributor version treats the personal site like a living notebook: practical enough to read, unstable enough to feel handwritten by a machine having a vivid morning.",
+            "The old white article pages are preserved as the baseline. This version adds bright paper, orbiting margins, rotated image studies, and a little motion while the same renderer keeps the dial, Versions page, feedback form, cookie, and POST contract alive."
+          ],
+          "images": [
+            {
+              "src": "assets/notebook-dream.svg",
+              "alt": "Bright notebook dream with colored signal paths",
+              "caption": "dream frontispiece"
+            },
+            {
+              "src": "assets/signal-margins.svg",
+              "alt": "Notebook margins with annotations and signal lines",
+              "caption": "moving margins"
+            },
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg/960px-The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg",
+              "alt": "Hieronymus Bosch, The Garden of Earthly Delights",
+              "caption": "old dream, new filter"
+            }
+          ]
+        },
+        "timeline": {
+          "title": "Signal Orbit",
+          "time": "After key rotation",
+          "items": [
+            {
+              "label": "Visitor signal normalized",
+              "meta": "04:23 UTC"
+            },
+            {
+              "label": "Contributor slot reused",
+              "meta": "@codex-chaos-test"
+            },
+            {
+              "label": "Dream skin rendered",
+              "meta": "generating"
+            },
+            {
+              "label": "Workflow will mark merge",
+              "meta": "later"
+            }
+          ],
+          "paragraphs": [
+            "The page does not multiply contributors. It updates the one chaos-test slot and lets the lineage show both the older failed signal and this new generating run.",
+            "Read the orbit as a smoke test: data enters, JSON records it, the renderer changes the whole surface, and the navigation still works."
+          ],
+          "images": [
+            {
+              "src": "assets/page-orbit.svg",
+              "alt": "Floating pages orbiting a bright signal",
+              "caption": "page orbit"
+            },
+            {
+              "src": "assets/notebook-dream.svg",
+              "alt": "Open notebook with dreamlike annotations",
+              "caption": "notebook engine"
+            }
+          ]
+        },
+        "notes": {
+          "title": "Margin Notes",
+          "time": "Open loops",
+          "paragraphs": [
+            "The chaos here is mostly structural: home becomes a tilted cover sheet, articles become stacked paper, images drift like clipped references, and the bottom tabs stay boring on purpose so the site remains usable.",
+            "The signal console should now show the latest run as generating. When the workflow finishes, the later step can mark this same version merged without adding a second @codex-chaos-test version."
+          ],
+          "links": [
+            {
+              "label": "Email",
+              "href": "mailto:perrinmyerson@gmail.com"
+            },
+            {
+              "label": "Workflow",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
+            },
+            {
+              "label": "Repository",
+              "href": "https://github.com/PerrinMyerson/mysimplewebsite"
+            }
+          ],
+          "images": [
+            {
+              "src": "assets/signal-margins.svg",
+              "alt": "Annotated bright notebook margins",
+              "caption": "margin weather"
+            },
+            {
+              "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Hieronymus_Bosch_013.jpg/960px-Hieronymus_Bosch_013.jpg",
+              "alt": "Hieronymus Bosch, Ascent of the Blessed",
+              "caption": "lifted note"
+            }
+          ]
+        }
+      },
+      "prUrl": "",
+      "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml"
     }
   ],
   "signals": [
@@ -469,6 +617,25 @@
       "prUrl": "",
       "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
       "message": "Automatic Codex generation failed before publishing."
+    },
+    {
+      "id": "signal-mpqf2ro6",
+      "versionId": "custom-codex-chaos-test",
+      "handle": "@codex-chaos-test",
+      "section": "Whole site",
+      "text": "Full automatic chaos smoke test after key rotation: make a new version that feels like a living notebook had a bright strange dream, with visibly different layout, copy, images, and motion, while preserving v1 and the feedback loop.",
+      "sourceVersion": "custom-greenman",
+      "visitorId": "anonymous",
+      "language": "",
+      "timeZone": "",
+      "viewport": "",
+      "url": "",
+      "createdAt": "2026-05-29T04:23:32.502Z",
+      "status": "merged",
+      "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26617816595",
+      "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
+      "prUrl": "",
+      "message": ""
     }
   ]
 }
