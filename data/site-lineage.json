@@ -450,6 +450,25 @@
       "url": "https://perrinmyerson.github.io/mysimplewebsite/?v=custom-eileen&live-click=f54f4db-1780025910473",
       "createdAt": "2026-05-29T03:41:44.287Z",
       "status": "merged"
+    },
+    {
+      "id": "signal-mpqeu343",
+      "versionId": "custom-codex-chaos-test",
+      "handle": "@codex-chaos-test",
+      "section": "Whole site",
+      "text": "Full automatic chaos smoke test: make a new version that feels like a living notebook had a bright strange dream, with visibly different layout, copy, images, and motion, while preserving v1 and the feedback loop.",
+      "sourceVersion": "custom-greenman",
+      "visitorId": "anonymous",
+      "language": "",
+      "timeZone": "",
+      "viewport": "",
+      "url": "",
+      "createdAt": "2026-05-29T04:16:47.427Z",
+      "status": "failed",
+      "runUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/runs/26617617534",
+      "prUrl": "",
+      "statusUrl": "https://github.com/PerrinMyerson/mysimplewebsite/actions/workflows/site-signal-automerge.yml",
+      "message": "Automatic Codex generation failed before publishing."
     }
   ]
 }
