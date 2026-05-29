@@ -9,6 +9,19 @@ function json(res, status, body) {
     res.end(JSON.stringify(body));
 }
 
+function setCors(req, res) {
+    const allowedOrigin = process.env.ALLOWED_ORIGIN;
+
+    if (!allowedOrigin) return;
+
+    const requestOrigin = req.headers?.origin;
+    if (!requestOrigin || requestOrigin === allowedOrigin) {
+        res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+    }
+
+    res.setHeader("Vary", "Origin");
+}
+
 function cleanText(value, fallback = "") {
     return String(value || fallback)
         .replace(/\s+/g, " ")
@@ -89,7 +102,7 @@ async function dispatchSignal(signal) {
             },
             body: JSON.stringify({
                 event_type: "site_signal",
-                client_payload: signal,
+                client_payload: { signal },
             }),
         },
     );
@@ -101,12 +114,9 @@ async function dispatchSignal(signal) {
 }
 
 export default async function handler(req, res) {
+    setCors(req, res);
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-    if (process.env.ALLOWED_ORIGIN) {
-        res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN);
-    }
 
     if (req.method === "OPTIONS") {
         res.statusCode = 204;

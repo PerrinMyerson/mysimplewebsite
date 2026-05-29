@@ -107,6 +107,12 @@ function normalizeSignal(payload) {
     };
 }
 
+function unwrapPayload(payload) {
+    return payload?.signal && typeof payload.signal === "object"
+        ? payload.signal
+        : payload;
+}
+
 async function readLineage() {
     const raw = await readFile(lineagePath, "utf8");
     const lineage = JSON.parse(raw);
@@ -201,7 +207,7 @@ function prBody(signal, version) {
 const payload = process.env.SIGNAL_PAYLOAD
     ? JSON.parse(process.env.SIGNAL_PAYLOAD)
     : JSON.parse(process.argv[2] || "{}");
-const signal = normalizeSignal(payload);
+const signal = normalizeSignal(unwrapPayload(payload));
 
 if (!signal.text) {
     throw new Error("Signal text is required.");

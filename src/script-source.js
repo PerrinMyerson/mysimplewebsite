@@ -21,7 +21,12 @@ const feedbackSection = document.querySelector("#feedback-section");
 const feedbackText = document.querySelector("#feedback-text");
 const automergeStatus = document.querySelector("[data-automerge-status]");
 
-const SIGNAL_ENDPOINT = "/api/site-signal";
+const PRODUCTION_SIGNAL_ORIGIN = "https://mysimplewebsite-two.vercel.app";
+const SIGNAL_ENDPOINT =
+    window.location.hostname === "perrinmyerson.github.io" &&
+    PRODUCTION_SIGNAL_ORIGIN
+        ? `${PRODUCTION_SIGNAL_ORIGIN}/api/site-signal`
+        : "/api/site-signal";
 const PUBLISHED_LINEAGE_URL = "data/site-lineage.json";
 const AUTOMERGE_KEY = "perrin-site-automerge-v1";
 const JSON_KEY = "perrin-site-lineage-v1";

@@ -548,8 +548,7 @@ html[data-image-density="high"] .image-tile img {
 
 .version-row span,
 .version-list p,
-.signal-log,
-.privacy-note {
+.signal-log {
     color: rgba(0, 0, 0, 0.48);
     font-size: 0.8125rem;
     letter-spacing: 0;
@@ -638,10 +637,6 @@ html[data-image-density="high"] .image-tile img {
 .signal-log li {
     padding: 0.4rem 0;
     border-top: 1px solid #f0f0ed;
-}
-
-.privacy-note {
-    margin: 1.25rem 0 0;
 }
 
 @media (max-width: 740px) {
