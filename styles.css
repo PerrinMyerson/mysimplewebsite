@@ -208,23 +208,43 @@ html[data-version-flavor="pending"] .bottom-tabs {
 
 .contributor-handle {
     position: relative;
-    z-index: 2;
-    border: 0;
-    border-bottom: 1px solid #d8d8d5;
-    background: transparent;
-    color: rgba(0, 0, 0, 0.68);
+    z-index: 3;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.32rem;
+    width: min(10.75rem, calc(100vw - 1.5rem));
+    min-width: 0;
+    border: 1px solid #111;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow:
+        0 8px 18px rgba(0, 0, 0, 0.08),
+        0 0 0 2px rgba(0, 0, 0, 0.05);
+    color: #111;
     cursor: pointer;
     font: inherit;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    padding: 0;
+    font-size: 0.6875rem;
+    line-height: 0.94rem;
+    margin-top: 2.62rem;
+    padding: 0.28rem 0.42rem 0.28rem 0.34rem;
+    transform-origin: right center;
+    transition:
+        border-color 0.16s ease,
+        box-shadow 0.18s ease,
+        transform 0.32s cubic-bezier(0.19, 1, 0.22, 1);
+    white-space: nowrap;
 }
 
 .contributor-handle:hover,
 .contributor-handle:focus {
-    border-bottom-color: #555;
+    border-color: #111;
     color: #111;
     outline: none;
+}
+
+.version-switcher.is-open .contributor-handle {
+    transform: rotate(0deg) scale(1.01);
 }
 
 .version-dial {
@@ -692,6 +712,7 @@ html[data-version-flavor="living-notebook-dream"] .tab-active {
     border-bottom-color: var(--version-accent, #ff4c9a) !important;
 }
 
+html[data-version-flavor="living-notebook-dream"] .contributor-handle,
 html[data-version-flavor="living-notebook-dream"] .version-dial-item {
     border: 2px solid var(--version-text, #241238);
     background: #fffbe8;
@@ -1008,6 +1029,7 @@ html[data-version-flavor="crisp-surreal-notebook"] .bottom-tabs {
 }
 
 html[data-version-flavor="crisp-surreal-notebook"] .bottom-tabs button,
+html[data-version-flavor="crisp-surreal-notebook"] .contributor-handle,
 html[data-version-flavor="crisp-surreal-notebook"] .version-dial-item,
 html[data-version-flavor="crisp-surreal-notebook"] .version-dial-index {
     color: var(--version-text, #171a20);
@@ -1017,6 +1039,7 @@ html[data-version-flavor="crisp-surreal-notebook"] .tab-active {
     border-bottom-color: var(--version-accent, #ff5d2e) !important;
 }
 
+html[data-version-flavor="crisp-surreal-notebook"] .contributor-handle,
 html[data-version-flavor="crisp-surreal-notebook"] .version-dial-item {
     border: 2px solid var(--version-text, #171a20);
     border-radius: 6px;
@@ -1627,7 +1650,9 @@ body.version-swap .article-page {
     }
 
     .contributor-handle {
-        font-size: 0.8125rem;
+        width: min(12.5rem, calc(100vw - 2rem));
+        max-width: calc(100vw - 2rem);
+        font-size: 0.75rem;
     }
 
     .version-switcher {

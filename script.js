@@ -4358,10 +4358,18 @@ function applyVersionProjection(version, lineage) {
 function renderContributorHandle(lineage = getPlainLineage()) {
   const version = currentVersion(lineage);
   if (!versionHandle || !version) return;
+  const index = Math.max(versionIndex(version, lineage), 0);
   document.body.dataset.currentVersion = version.id;
   syncDisplayedVersionUrl(version, lineage);
-  versionHandle.textContent = version.contributor;
+  versionHandle.innerHTML = `
+        <span class="version-dial-index">${versionNumber(index)}</span>
+        <span class="version-dial-handle">${escapeHtml(version.contributor)}</span>
+    `;
   versionHandle.title = `Customized by ${version.contributor}`;
+  versionHandle.setAttribute(
+    "aria-label",
+    `Open version dial, current version ${versionNumber(index)} by ${version.contributor}`
+  );
   applyVersionTreatment(version);
   applyVersionProjection(version, lineage);
 }
@@ -4382,18 +4390,19 @@ function renderVersionDial(lineage, activeVersion) {
   versionSwitcher?.style.setProperty("--dial-progress", progress);
   versionDial.dataset.versionCount = String(count);
   versionDial.innerHTML = versions.map((version, index) => {
+    const active = version.id === activeVersion?.id;
+    if (active) return "";
     const relative = index - activeIndex2;
     const hidden = Math.abs(relative) > visibleRadius;
     const arcSlot = clamp(relative, -visibleRadius, visibleRadius);
     const orbitAngle = arcSlot * 8;
-    const x = -4;
-    const y = 58;
+    const x = 0;
+    const y = 55;
     const rotation = orbitAngle;
     const distance = Math.abs(relative);
     const scale = Math.max(0.86, 1 - Math.min(distance, 6) * 0.025);
     const opacity = hidden ? 0 : Math.max(0.62, 1 - distance * 0.06);
     const zIndex = 40 - distance;
-    const active = version.id === activeVersion?.id;
     return `
                 <button
                     class="version-dial-item"
